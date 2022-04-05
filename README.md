@@ -1,3 +1,5 @@
+2022-04-05 — This is still in testing — reach out to victor@glow.app if you have comments / questions / suggestions
+
 # @glow-app/js-sdk
 
 The `@glow-app/js-sdk` gives you a client to interact with the Glow Desktop and Safari Extension from your website or
