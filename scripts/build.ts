@@ -34,12 +34,10 @@ const main = async () => {
     format: "esm",
   });
 
-  console.log("hi");
   await new Generator({
     entry: "./src/index.ts",
     output: "./dist/index.d.ts",
   }).generate();
-  console.log("ok");
 };
 
 main();
