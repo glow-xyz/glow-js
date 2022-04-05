@@ -1,6 +1,7 @@
 #!/usr/bin/env node -r esbuild-register
 
 import { BuildOptions } from "esbuild";
+import { Generator } from "npm-dts";
 import * as esbuild from "esbuild";
 import packageJson from "../package.json";
 
@@ -33,7 +34,12 @@ const main = async () => {
     format: "esm",
   });
 
-  // TODO: build types with tsc or tsup
+  console.log("hi");
+  await new Generator({
+    entry: "./src/index.ts",
+    output: "./dist/index.d.ts",
+  }).generate();
+  console.log("ok");
 };
 
 main();

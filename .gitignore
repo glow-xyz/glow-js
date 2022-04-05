@@ -36,3 +36,5 @@ dump.rdb
 
 # markdown editor
 .obsidian
+
+dist/

@@ -1,15 +1,21 @@
 {
-  "extends": "../base.tsconfig.json",
   "compilerOptions": {
     "allowJs": true,
     "baseUrl": ".",
+    "esModuleInterop": true,
     "incremental": true,
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ES2020",
-    "noEmit": true,
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "outDir": "dist/",
+    "declaration": true,
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
-    "target": "ES2021",
+    "strict": true,
+    "target": "ES2021"
   },
   "exclude": ["node_modules", "dist"],
   "include": ["src/**/*.ts*"]
