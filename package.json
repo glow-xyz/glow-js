@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/js-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.cjs.js",
@@ -9,6 +9,10 @@
     "dist/**/*",
     "src/**/*"
   ],
+  "scripts": {
+    "build": "tsc",
+    "release": "tsc && yarn version && npm publish --access public"
+  },
   "dependencies": {
     "buffer": "6.0.3",
     "eventemitter3": "4.0.7",
@@ -21,5 +25,6 @@
     "npm-dts": "1.3.11",
     "prettier": "2.6.2"
   },
+  "private": false,
   "license": "ISC"
 }
