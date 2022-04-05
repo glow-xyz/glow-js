@@ -1,0 +1,16 @@
+{
+  "extends": "../base.tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "incremental": true,
+    "jsx": "react",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "ES2020",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "target": "ES2021",
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*.ts*"]
+}
