@@ -1,2 +1,4 @@
 packages:
-  - "packages/browser-js"
+  - "packages/example-next-js"
+  - "packages/glow-client"
+  - "packages/glow-react"
