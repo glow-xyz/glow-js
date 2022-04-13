@@ -1,13 +1,9 @@
-import { Address, GlowClient } from "@glow-app/glow-client";
 import { useGlowContext } from "@glow-app/glow-react";
 import "bootstrap/dist/css/bootstrap.css";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-
-const glowClient = new GlowClient();
-type User = { address: Address };
 
 const Home: NextPage = () => {
   const { user, signIn, signOut, canSignIn } = useGlowContext();

@@ -7,9 +7,6 @@
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "CommonJS",
-    "paths": {
-      "@hooks/*": ["src/hooks/*"]
-    },
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "outDir": "dist/",

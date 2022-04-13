@@ -1,6 +1,6 @@
 import { GlowClient } from "@glow-app/glow-client";
-import { useOnMount } from "@hooks/useOnMount";
-import { usePolling } from "@hooks/usePolling";
+import { useOnMount } from "./hooks/useOnMount";
+import { usePolling } from "./hooks/usePolling";
 import React, { createContext, useCallback, useContext, useState } from "react";
 import { GlowAdapter, PhantomAdapter, Address } from "@glow-app/glow-client";
 
