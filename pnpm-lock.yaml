@@ -12,8 +12,8 @@ importers:
 
   packages/example-next-js:
     specifiers:
-      '@glow-app/glow-client': latest
-      '@glow-app/glow-react': latest
+      '@glow-app/glow-client': 0.0.6
+      '@glow-app/glow-react': 0.0.7
       '@types/node': 17.0.23
       '@types/react': 18.0.3
       '@types/react-dom': 18.0.0
@@ -26,7 +26,7 @@ importers:
       typescript: 4.6.3
     dependencies:
       '@glow-app/glow-client': link:../glow-client
-      '@glow-app/glow-react': link:../glow-react
+      '@glow-app/glow-react': 0.0.7
       bootstrap: 5.1.3
       next: 12.1.5_react-dom@18.0.0+react@18.0.0
       react: 18.0.0
@@ -128,6 +128,22 @@ packages:
       '@ethersproject/logger': 5.6.0
       hash.js: 1.1.7
     dev: true
+
+  /@glow-app/glow-client/0.0.6:
+    resolution: {integrity: sha512-d82NZkY43VN9HW7tjiRE57gTWwizBl/a27wRJ9xIVyr85OrewPeIFt2ft1t+jeS1s8Qy4KDGVV/ccW/GBAt0EQ==}
+    dependencies:
+      buffer: 6.0.3
+      eventemitter3: 4.0.7
+      zod: 3.14.3
+    dev: false
+
+  /@glow-app/glow-react/0.0.7:
+    resolution: {integrity: sha512-/ZsN6oAs4zMVbnuoCeqni2+/TomlaKjezm1uqEX12tzNNapM0zLcFvkAzZ1Gf0UZsnxKq3QpahoPXMa1P670cg==}
+    dependencies:
+      '@glow-app/glow-client': 0.0.6
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
+    dev: false
 
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
@@ -2461,6 +2477,10 @@ packages:
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
+
+  /zod/3.14.3:
+    resolution: {integrity: sha512-OzwRCSXB1+/8F6w6HkYHdbuWysYWnAF4fkRgKDcSFc54CE+Sv0rHXKfeNUReGCrHukm1LNpi6AYeXotznhYJbQ==}
+    dev: false
 
   /zod/3.14.4:
     resolution: {integrity: sha512-U9BFLb2GO34Sfo9IUYp0w3wJLlmcyGoMd75qU9yf+DrdGA4kEx6e+l9KOkAlyUO0PSQzZCa3TR4qVlcmwqSDuw==}
