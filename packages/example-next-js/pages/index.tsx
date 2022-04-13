@@ -1,5 +1,6 @@
 import { useGlowContext } from "@glow-app/glow-react";
 import "bootstrap/dist/css/bootstrap.css";
+import { sign } from "crypto";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -20,18 +21,23 @@ const Home: NextPage = () => {
           Welcome to <a href="https://glow.app">Glow</a>
         </h1>
 
-        <p className={styles.description}>
+        <div className={styles.description}>
           {user ? (
-            <div>Signed in as {user.address}</div>
+            <div>
+              Signed in as
+              <div>
+                <b>{user.address}</b>
+              </div>
+            </div>
           ) : (
             <div>Not signed in.</div>
           )}
-        </p>
+        </div>
 
         <div className={styles.grid}>
           {user ? (
             <button
-              className="btn btn-secondary"
+              className="btn btn-secondary btn-lg"
               type="button"
               onClick={() => {
                 signOut();
@@ -41,7 +47,7 @@ const Home: NextPage = () => {
             </button>
           ) : (
             <button
-              className="btn btn-primary"
+              className="btn btn-primary btn-lg"
               type="button"
               disabled={!canSignIn}
               onClick={() => {

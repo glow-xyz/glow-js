@@ -33,15 +33,23 @@ export const GlowProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<GlowUser | null>(null);
   const [canSignIn, setCanSignIn] = useState(false);
 
-  usePolling(() => {
-    if (window.glow || window.solana) {
-      setCanSignIn(true);
-    }
-  }, 250);
+  usePolling(
+    () => {
+      if (window.glow || window.solana) {
+        setCanSignIn(true);
+      }
+    },
+    canSignIn ? null : 250,
+    { runOnMount: true }
+  );
 
   useOnMount(() => {
+    glowClient.on("loaded", () => {
+      setCanSignIn(true);
+    });
     glowClient.on("update", () => {
       setUser(glowClient.address ? { address: glowClient.address } : null);
+      setCanSignIn(true);
     });
   });
 
