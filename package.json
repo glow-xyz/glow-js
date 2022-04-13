@@ -2,8 +2,12 @@
   "name": "glow-js",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "next-build": "pnpm -r --filter @glow-app/glow-client --filter @luma-team/glow-react build && pnpm build --filter @glow-app/example-next-js"
+  },
   "devDependencies": {
     "prettier": "2.6.2",
+    "turbo": "^1.2.3",
     "typescript": "4.6.3"
   }
 }

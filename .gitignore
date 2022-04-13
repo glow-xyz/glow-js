@@ -38,3 +38,8 @@ dump.rdb
 .obsidian
 
 dist/
+
+.turbo
+build/**
+dist/**
+.next/**
