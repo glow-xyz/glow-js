@@ -13,7 +13,7 @@
     "release": "tsc && yarn version && npm publish --access public"
   },
   "dependencies": {
-    "@glow-app/glow-client": "latest",
+    "@glow-app/glow-client": "0.0.6",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },

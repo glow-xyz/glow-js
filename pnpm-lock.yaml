@@ -60,7 +60,7 @@ importers:
 
   packages/glow-react:
     specifiers:
-      '@glow-app/glow-client': latest
+      '@glow-app/glow-client': 0.0.6
       '@solana/web3.js': ~1.35.1
       esbuild: ^0.14.30
       esbuild-register: ^3.3.2
