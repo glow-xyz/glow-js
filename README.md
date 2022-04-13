@@ -1,5 +1,7 @@
 # Glow JS
 
+This is a set of packages that helps you integrate the [Glow Solana Wallet](https://glow.app) into your dApp. 🤩
+
 ## Video Overview
 
 [![Glow JS Overview](https://cdn.loom.com/sessions/thumbnails/837a218eca284292a5c69d719564ed9d-with-play.gif)](https://www.loom.com/share/837a218eca284292a5c69d719564ed9d)
