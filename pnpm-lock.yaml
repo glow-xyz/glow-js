@@ -12,8 +12,8 @@ importers:
 
   packages/example-next-js:
     specifiers:
-      '@glow-app/glow-client': 0.0.6
-      '@glow-app/glow-react': 0.0.10
+      '@glow-app/glow-client': latest
+      '@glow-app/glow-react': latest
       '@types/node': 17.0.23
       '@types/react': 18.0.3
       '@types/react-dom': 18.0.0
@@ -60,7 +60,7 @@ importers:
 
   packages/glow-react:
     specifiers:
-      '@glow-app/glow-client': 0.0.6
+      '@glow-app/glow-client': latest
       '@solana/web3.js': ~1.35.1
       esbuild: ^0.14.30
       esbuild-register: ^3.3.2
