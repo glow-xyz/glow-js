@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@glow-app/glow-react": "latest",
     "@glow-app/glow-client": "latest",
     "bootstrap": "^5.1.3",
     "next": "12.1.5",

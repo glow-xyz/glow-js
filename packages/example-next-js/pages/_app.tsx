@@ -1,8 +1,13 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css";
+import { GlowProvider } from "@glow-app/glow-react";
+import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <GlowProvider>
+      <Component {...pageProps} />
+    </GlowProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;

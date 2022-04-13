@@ -1,54 +1,16 @@
+import { Address, GlowClient } from "@glow-app/glow-client";
+import { useGlowContext } from "@glow-app/glow-react";
+import "bootstrap/dist/css/bootstrap.css";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import {
-  GlowClient,
-  Address,
-  GlowAdapter,
-  PhantomAdapter,
-} from "@glow-app/glow-client";
-import { useState } from "react";
 import styles from "../styles/Home.module.css";
-import "bootstrap/dist/css/bootstrap.css";
 
 const glowClient = new GlowClient();
 type User = { address: Address };
 
-
 const Home: NextPage = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [canSignIn, setCanSignIn] = useState(false);
-
-  usePolling(() => {
-    if (window.glow || window.solana) {
-      setCanSignIn(true);
-    }
-  }, 250);
-
-  useOnMount(() => {
-    glowClient.on("update", () => {
-      setUser(glowClient.address ? { address: glowClient.address } : null);
-    });
-  });
-
-  const signIn = useCallback(async () => {
-    await callWithToast(
-      async () => {
-        const { address } = await glowClient.connect();
-        setUser({ address });
-      },
-      {
-        loading: "Signing in...",
-        success: "Signed in with Glow.",
-        error: "Error signing in with Glow.",
-      }
-    );
-  }, [setUser]);
-
-  const signOut = useCallback(async () => {
-    await window.glow!.signOut();
-    setUser(null);
-  }, [setUser]);
+  const { user, signIn, signOut, canSignIn } = useGlowContext();
 
   return (
     <div className={styles.container}>
@@ -63,14 +25,36 @@ const Home: NextPage = () => {
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.tsx</code>
+          {user ? (
+            <div>Signed in as {user.address}</div>
+          ) : (
+            <div>Not signed in.</div>
+          )}
         </p>
 
         <div className={styles.grid}>
-          <button className="btn btn-primary" type="button" onClick={() => {}}>
-            Button
-          </button>
+          {user ? (
+            <button
+              className="btn btn-secondary"
+              type="button"
+              onClick={() => {
+                signOut();
+              }}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              type="button"
+              disabled={!canSignIn}
+              onClick={() => {
+                signIn();
+              }}
+            >
+              Sign In
+            </button>
+          )}
         </div>
       </main>
 
