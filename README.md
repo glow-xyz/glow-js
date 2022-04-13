@@ -1,66 +1,11 @@
-2022-04-05 — This is still in testing — reach out to victor@glow.app if you have comments / questions / suggestions
+# Glow JS
 
-# @glow-app/js-sdk
+Here is a set of packages that you can use to integrate Glow onto your dApp:
 
-The `@glow-app/js-sdk` gives you a client to interact with the Glow Desktop and Safari Extension from your website or
-dApp.
+- `packages/glow-client` - this gives you a `GlowClient` instance which interacts with the Glow Chrome Extension
+- `packages/glow-react` - this gives you a React Context provider `<GlowProvider />` that makes it easy to integrate Glow with React
+- `packages/example-next-js` - this is a Next.js example which [you can see deployed here](https://glow-js.luma-dev.com/)
 
-If you're building a website that interacts with Solana, you can use the `@glow-app/js-sdk` to ask the user to:
+## Support
 
-- connect their Solana wallet
-- sign messages
-- approve transactions
-
-## Installing
-
-```sh
-# npm
-npm install @glow-app/js-sdk
-
-# yarn
-yarn add @glow-app/js-sdk
-
-# pnpm
-pnpm install @glow-app/js-sdk
-```
-
-## Usage
-
-```ts
-import { GlowClient } from "@glow-app/js-sdk";
-
-const glowClient = new GlowClient();
-
-glowClient.on("update", () => {
-  console.log("Current address", glowClient.address);
-});
-
-// Connect
-const { address } = await glowClient.connect();
-
-// Sign Message
-const { signature_base64: sig1 } = await glowClient.signMessage({
-  message_utf8: 'Hi this is a message!'
-});
-const { signature_base64: sig2 } = await glowClient.signMessage({
-  message_hex: 'deadbeef' // You can specify different message formats
-});
-
-// Sign Transaction
-// Transaction from @solana/web3.js
-const transaction = Transaction.from(...);
-await glowClient.signTransaction({
-  transaction,
-  network: Solana.Network.Devnet,
-});
-```
-
-## Alternatives
-
-The most popular project in the ecosystem is the [`@solana-labs/wallet-adapter`](https://github.com/solana-labs/wallet-adapter) which is great if you want to support every wallet in the ecosystem. 
-
-But if you want to just support Glow and have a lighter, easier API to work with, this is a useful library for you!
-
-We also plan on adding more fun methods to the Glow JS SDK that other wallets probably won't support. So those methods will be found here and not in the `@solana-labs/wallet-adapter`.
-
-
+You can join our Telegram chat here: [https://t.me/+-yjcsc1WStNiODA5](https://t.me/+-yjcsc1WStNiODA5)
