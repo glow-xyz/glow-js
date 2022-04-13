@@ -47,7 +47,7 @@ const { signature_base64: sig2 } = await glowClient.signMessage({
 
 // Sign Transaction
 // Transaction from @solana/web3.js
-const transaction = Transaction.from(...);
+const transaction = Transaction.from(Buffer.from(str, 'base64'));
 await glowClient.signTransaction({
   transaction,
   network: Solana.Network.Devnet,
