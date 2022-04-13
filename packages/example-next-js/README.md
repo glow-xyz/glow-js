@@ -6,6 +6,9 @@ This is an example of how you can use Next.js to integrate with Glow.
 
 You can check this deployed on production here: https://glow-js.luma-dev.com/
 
+![CleanShot 2022-04-13 at 14 49 13](https://user-images.githubusercontent.com/1319079/163250841-82d2b4e9-ec6a-4efa-9e5b-0fbd6591d4ca.gif)
+
+
 ## Running Locally 
 
 First, run the development server:
