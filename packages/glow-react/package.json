@@ -1,7 +1,6 @@
 {
-  "name": "@glow-app/glow-client",
-  "version": "0.0.6",
-  "description": "",
+  "name": "@glow-app/glow-react",
+  "version": "0.0.9",
   "main": "dist/index.js",
   "module": "dist/index.cjs.js",
   "typings": "dist/index.d.ts",
@@ -14,9 +13,9 @@
     "release": "tsc && yarn version && npm publish --access public"
   },
   "dependencies": {
-    "buffer": "^6.0.3",
-    "eventemitter3": "^4.0.7",
-    "zod": "^3.14.3"
+    "@glow-app/glow-client": "latest",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
     "@solana/web3.js": "~1.35.1",
@@ -24,6 +23,5 @@
     "esbuild-register": "^3.3.2",
     "prettier": "^2.6.2"
   },
-  "private": false,
-  "license": "ISC"
+  "private": false
 }
