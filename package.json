@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "next-build": "pnpm -r --filter @glow-app/glow-client --filter @luma-team/glow-react build && pnpm build --filter @glow-app/example-next-js"
+    "next-build": "pnpm turbo run build"
   },
   "devDependencies": {
     "prettier": "2.6.2",
