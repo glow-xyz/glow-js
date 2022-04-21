@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  background: #ebebeb;
+  padding: 2rem;
+}
+
+.buttons {
+  display: grid;
+  grid-gap: 1.5rem 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 auto;
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    grid-column: span 4;
+  }
+}
+
+.button-group {
+  > *:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+}

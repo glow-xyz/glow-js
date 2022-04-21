@@ -3,10 +3,11 @@ import "bootstrap/dist/css/bootstrap.css";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { GlowSignInButton } from "../components/GlowSignInButton";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const { user, signIn, signOut, canSignIn } = useGlowContext();
+  const { user, signOut } = useGlowContext();
 
   return (
     <div className={styles.container}>
@@ -45,16 +46,7 @@ const Home: NextPage = () => {
               Sign Out
             </button>
           ) : (
-            <button
-              className="btn btn-primary btn-lg"
-              type="button"
-              disabled={!canSignIn}
-              onClick={() => {
-                signIn();
-              }}
-            >
-              Sign In
-            </button>
+            <GlowSignInButton />
           )}
         </div>
       </main>
