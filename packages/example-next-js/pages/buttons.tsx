@@ -16,252 +16,108 @@ const ButtonsExample: NextPage = () => {
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="lg" shape="squared" variant="black" />
-          <GlowSignInButton
-            disabled
-            size="lg"
-            shape="squared"
-            variant="black"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="lg" shape="squared" variant="purple" />
-          <GlowSignInButton
-            disabled
-            size="lg"
-            shape="squared"
-            variant="purple"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="lg" shape="squared" variant="white-outline" />
-          <GlowSignInButton
-            disabled
-            size="lg"
-            shape="squared"
-            variant="white-outline"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="lg" shape="squared" variant="white-naked" />
-          <GlowSignInButton
-            disabled
-            size="lg"
-            shape="squared"
-            variant="white-naked"
-          />
         </div>
 
         <h3>Medium Squared</h3>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="md" shape="squared" variant="black" />
-          <GlowSignInButton
-            disabled
-            size="md"
-            shape="squared"
-            variant="black"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="md" shape="squared" variant="purple" />
-          <GlowSignInButton
-            disabled
-            size="md"
-            shape="squared"
-            variant="purple"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="md" shape="squared" variant="white-outline" />
-          <GlowSignInButton
-            disabled
-            size="md"
-            shape="squared"
-            variant="white-outline"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="md" shape="squared" variant="white-naked" />
-          <GlowSignInButton
-            disabled
-            size="md"
-            shape="squared"
-            variant="white-naked"
-          />
         </div>
 
         <h3>Small Squared</h3>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="sm" shape="squared" variant="black" />
-          <GlowSignInButton
-            disabled
-            size="sm"
-            shape="squared"
-            variant="black"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="sm" shape="squared" variant="purple" />
-          <GlowSignInButton
-            disabled
-            size="sm"
-            shape="squared"
-            variant="purple"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="sm" shape="squared" variant="white-outline" />
-          <GlowSignInButton
-            disabled
-            size="sm"
-            shape="squared"
-            variant="white-outline"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="sm" shape="squared" variant="white-naked" />
-          <GlowSignInButton
-            disabled
-            size="sm"
-            shape="squared"
-            variant="white-naked"
-          />
         </div>
 
         <h3>Large Rounded</h3>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="lg" shape="rounded" variant="black" />
-          <GlowSignInButton
-            disabled
-            size="lg"
-            shape="rounded"
-            variant="black"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="lg" shape="rounded" variant="purple" />
-          <GlowSignInButton
-            disabled
-            size="lg"
-            shape="rounded"
-            variant="purple"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="lg" shape="rounded" variant="white-outline" />
-          <GlowSignInButton
-            disabled
-            size="lg"
-            shape="rounded"
-            variant="white-outline"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="lg" shape="rounded" variant="white-naked" />
-          <GlowSignInButton
-            disabled
-            size="lg"
-            shape="rounded"
-            variant="white-naked"
-          />
         </div>
 
         <h3>Medium Rounded</h3>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="md" shape="rounded" variant="black" />
-          <GlowSignInButton
-            disabled
-            size="md"
-            shape="rounded"
-            variant="black"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="md" shape="rounded" variant="purple" />
-          <GlowSignInButton
-            disabled
-            size="md"
-            shape="rounded"
-            variant="purple"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="md" shape="rounded" variant="white-outline" />
-          <GlowSignInButton
-            disabled
-            size="md"
-            shape="rounded"
-            variant="white-outline"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="md" shape="rounded" variant="white-naked" />
-          <GlowSignInButton
-            disabled
-            size="md"
-            shape="rounded"
-            variant="white-naked"
-          />
         </div>
 
         <h3>Small Rounded</h3>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="sm" shape="rounded" variant="black" />
-          <GlowSignInButton
-            disabled
-            size="sm"
-            shape="rounded"
-            variant="black"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="sm" shape="rounded" variant="purple" />
-          <GlowSignInButton
-            disabled
-            size="sm"
-            shape="rounded"
-            variant="purple"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="sm" shape="rounded" variant="white-outline" />
-          <GlowSignInButton
-            disabled
-            size="sm"
-            shape="rounded"
-            variant="white-outline"
-          />
         </div>
 
         <div className={styles["button-group"]}>
           <GlowSignInButton size="sm" shape="rounded" variant="white-naked" />
-          <GlowSignInButton
-            disabled
-            size="sm"
-            shape="rounded"
-            variant="white-naked"
-          />
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 .container {
-  display: flex;
+  align-items: flex-start;
   background: #ebebeb;
+  display: flex;
+  min-height: 100vh;
   padding: 2rem;
 }
 
