@@ -42,6 +42,12 @@ body {
     letter-spacing: -0.02em;
   }
 
+  .glow--icon-3d {
+    // Optical alignment. The svg has some px in the bottom for the shadow.
+    --shadow-size: 5px;
+    margin-bottom: calc(var(--shadow-size) / -2);
+  }
+
   // SIZES
   // =====
 
@@ -49,10 +55,19 @@ body {
     min-width: 15rem;
     padding: 0.84375rem 1.25rem;
 
+    &.glow--variant-purple {
+      padding: 0.796875rem 1.25rem;
+    }
+
     .glow--icon {
       margin-right: 0.625rem;
       width: 1.25rem;
       height: 1.25rem;
+
+      &.glow--icon-3d {
+        width: 1.5625rem;
+        height: 1.5625rem;
+      }
     }
 
     .glow--sign-in-button-text {
@@ -66,10 +81,19 @@ body {
     min-width: 14.375rem;
     padding: 0.625rem 0.875rem;
 
+    &.glow--variant-purple {
+      padding: 0.5625rem 0.875rem;
+    }
+
     .glow--icon {
       margin-right: 0.625rem;
       width: 1.125rem;
       height: 1.125rem;
+
+      &.glow--icon-3d {
+        width: 22.5px;
+        height: 22.5px;
+      }
     }
 
     .glow--sign-in-button-text {
@@ -87,6 +111,11 @@ body {
       margin-right: 0.625rem;
       width: 0.875rem;
       height: 0.875rem;
+
+      &.glow--icon-3d {
+        width: 17.5px;
+        height: 17.5px;
+      }
     }
 
     .glow--sign-in-button-text {
@@ -149,7 +178,8 @@ body {
   // ======
 
   &:not(:disabled) {
-    &:hover, &:active {
+    &:hover,
+    &:active {
       &.glow--variant-black {
         background: var(--glow--gray-dark);
       }
@@ -158,11 +188,11 @@ body {
         --glow--white-50: rgba(255, 255, 255, 0.5);
 
         background: linear-gradient(
-                        93deg,
-                        rgba(209, 64, 221, 0.7) 1.51%,
-                        rgba(161, 38, 209, 0.7) 99.28%
-        ),
-        #ffffff;
+            93deg,
+            rgba(209, 64, 221, 0.7) 1.51%,
+            rgba(161, 38, 209, 0.7) 99.28%
+          ),
+          #ffffff;
         box-shadow: inset 0 0 44.9123px var(--glow--white-50);
         border-color: var(--glow--white-50);
       }

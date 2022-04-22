@@ -1,7 +1,8 @@
-import classNames from "classnames"
-import React from "react"
-import {useGlowContext} from "@glow-app/glow-react"
-import {GlowIcon} from "../assets/GlowIcon"
+import classNames from "classnames";
+import React from "react";
+import { useGlowContext } from "@glow-app/glow-react";
+import { GlowIcon } from "../assets/GlowIcon";
+import { GlowIcon3D } from "../assets/GlowIcon3D";
 
 export const GlowSignInButton = ({
   className,
@@ -37,7 +38,11 @@ export const GlowSignInButton = ({
       type="button"
       {...props}
     >
-      <GlowIcon aria-hidden="true" className="glow--icon" />
+      {variant === "purple" ? (
+        <GlowIcon3D aria-hidden="true" className="glow--icon glow--icon-3d" />
+      ) : (
+        <GlowIcon aria-hidden="true" className="glow--icon" />
+      )}
       <span className="glow--sign-in-button-text">Sign in with Glow</span>
     </button>
   );
