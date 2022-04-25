@@ -20,8 +20,10 @@ body {
   --glow--gray-dark: #505050;
   --glow--gray-light: #e2e2e2;
   --glow--gray-regular: #a4a4a4;
-  --glow--purple-gradient-end: #a126d1;
-  --glow--purple-gradient-start: #d140dd;
+  --glow--puprple-gradient-end-rgb: 161, 38, 209;
+  --glow--puprple-gradient-start-rgb: 209, 64, 221;
+  --glow--purple-gradient-end: rgb(var(--glow--puprple-gradient-end-rgb));
+  --glow--purple-gradient-start: rgb(var(--glow--puprple-gradient-start-rgb));
   --glow--white: #ffffff;
 
   --glow--font: "SF Pro", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
@@ -85,7 +87,8 @@ body {
     min-width: 14.375rem;
     padding: 11px 14px;
 
-    &.glow--variant-purple, &.glow--variant-white-outline {
+    &.glow--variant-purple,
+    &.glow--variant-white-outline {
       padding: 10px 14px;
     }
 
@@ -193,15 +196,14 @@ body {
       }
 
       &.glow--variant-purple {
-        --glow--white-50: rgba(255, 255, 255, 0.5);
-
         background: linear-gradient(
             93deg,
-            rgba(209, 64, 221, 0.7) 1.51%,
-            rgba(161, 38, 209, 0.7) 99.28%
+            rgba(var(--glow--puprple-gradient-start-rgb), 0.7) 1.51%,
+            rgba(var(--glow--puprple-gradient-end-rgb), 0.7) 99.28%
           ),
           #ffffff;
-        box-shadow: inset 0 0 44.9123px var(--glow--white-50);
+        box-shadow: inset 0 0 44.9123px
+          rgba(var(--glow--puprple-gradient-end-rgb), 0.7);
       }
 
       &.glow--variant-white-naked {
