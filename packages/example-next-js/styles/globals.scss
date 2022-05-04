@@ -38,6 +38,13 @@ body {
   flex-direction: row;
   justify-content: center;
   transition: 200ms all;
+  position: relative;
+
+  .glow--button-content {
+    align-items: center;
+    display: flex;
+    position: absolute;
+  }
 
   .glow--sign-in-button-text {
     font-family: var(--glow--font);
@@ -46,7 +53,7 @@ body {
 
   .glow--icon-3d {
     // Optical alignment. The svg has some px in the bottom for the shadow.
-    --shadow-size: 5px;
+    --shadow-size: 8px;
     margin-bottom: calc(var(--shadow-size) / -2);
   }
 
@@ -55,15 +62,7 @@ body {
 
   &.glow--size-lg {
     min-width: 16.5rem;
-    padding: 14.5px 20px;
-
-    &.glow--variant-purple {
-      padding: 13.75px 20px;
-    }
-
-    &.glow--variant-white-outline {
-      padding: 13.5px 20px;
-    }
+    min-height: 3.125rem;
 
     .glow--icon {
       margin-right: 0.625rem;
@@ -85,12 +84,7 @@ body {
 
   &.glow--size-md {
     min-width: 14.375rem;
-    padding: 11px 14px;
-
-    &.glow--variant-purple,
-    &.glow--variant-white-outline {
-      padding: 10px 14px;
-    }
+    min-height: 2.5rem;
 
     .glow--icon {
       margin-right: 0.625rem;
@@ -112,11 +106,7 @@ body {
 
   &.glow--size-sm {
     min-width: 11.5rem;
-    padding: 7px 12px;
-
-    &.glow--variant-white-outline {
-      padding: 6px 12px;
-    }
+    min-height: 2rem;
 
     .glow--icon {
       margin-right: 0.625rem;
@@ -139,20 +129,24 @@ body {
   // SHAPES
   // ======
 
-  &.glow--shape-squared {
+  &.glow--shape-squared,
+  &::before {
     border-radius: 0.5rem;
   }
 
   &.glow--shape-rounded {
-    &.glow--size-lg {
+    &.glow--size-lg,
+    &.glow--size-lg::before {
       border-radius: 1.5625rem;
     }
 
-    &.glow--size-md {
+    &.glow--size-md,
+    &.glow--size-md::before {
       border-radius: 1.25rem;
     }
 
-    &.glow--size-sm {
+    &.glow--size-sm,
+    &.glow--size-sm::before {
       border-radius: 1rem;
     }
   }
@@ -171,6 +165,26 @@ body {
       var(--glow--purple-gradient-start) 1.51%,
       var(--glow--purple-gradient-end) 99.28%
     );
+
+    &::before {
+      background: linear-gradient(
+          93deg,
+          rgba(var(--glow--puprple-gradient-start-rgb), 0.7) 1.51%,
+          rgba(var(--glow--puprple-gradient-end-rgb), 0.7) 99.28%
+        ),
+        #ffffff;
+      box-shadow: inset 0 0 44.9123px
+        rgba(var(--glow--puprple-gradient-end-rgb), 0.7);
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 200ms;
+    }
+
     color: var(--glow--white);
   }
 
@@ -196,14 +210,9 @@ body {
       }
 
       &.glow--variant-purple {
-        background: linear-gradient(
-            93deg,
-            rgba(var(--glow--puprple-gradient-start-rgb), 0.7) 1.51%,
-            rgba(var(--glow--puprple-gradient-end-rgb), 0.7) 99.28%
-          ),
-          #ffffff;
-        box-shadow: inset 0 0 44.9123px
-          rgba(var(--glow--puprple-gradient-end-rgb), 0.7);
+        &::before {
+          opacity: 1;
+        }
       }
 
       &.glow--variant-white-naked {

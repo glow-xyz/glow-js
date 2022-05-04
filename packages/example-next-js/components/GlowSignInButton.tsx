@@ -38,12 +38,14 @@ export const GlowSignInButton = ({
       type="button"
       {...props}
     >
-      {variant === "purple" ? (
-        <GlowIcon3D aria-hidden="true" className="glow--icon glow--icon-3d" />
-      ) : (
-        <GlowIcon aria-hidden="true" className="glow--icon" />
-      )}
-      <span className="glow--sign-in-button-text">Sign in with Glow</span>
+      <div className="glow--button-content">
+        {variant === "purple" ? (
+          <GlowIcon3D aria-hidden="true" className="glow--icon glow--icon-3d" />
+        ) : (
+          <GlowIcon aria-hidden="true" className="glow--icon" />
+        )}
+        <span className="glow--sign-in-button-text">Sign in with Glow</span>
+      </div>
     </button>
   );
 };
