@@ -1,0 +1,231 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  --glow--black: #151516;
+  --glow--gray-dark: #505050;
+  --glow--gray-light: #e2e2e2;
+  --glow--gray-regular: #a4a4a4;
+  --glow--puprple-gradient-end-rgb: 161, 38, 209;
+  --glow--puprple-gradient-start-rgb: 209, 64, 221;
+  --glow--purple-gradient-end: rgb(var(--glow--puprple-gradient-end-rgb));
+  --glow--purple-gradient-start: rgb(var(--glow--puprple-gradient-start-rgb));
+  --glow--white: #ffffff;
+
+  --glow--font: "SF Pro", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.glow--sign-in-button {
+  align-items: center;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  transition: 200ms all;
+  position: relative;
+
+  .glow--button-content {
+    align-items: center;
+    display: flex;
+    position: absolute;
+  }
+
+  .glow--sign-in-button-text {
+    font-family: var(--glow--font);
+    letter-spacing: -0.02em;
+  }
+
+  .glow--icon-3d {
+    // Optical alignment. The svg has some px in the bottom for the shadow.
+    --shadow-size: 8px;
+    margin-bottom: calc(var(--shadow-size) / -2);
+  }
+
+  // SIZES
+  // =====
+
+  &.glow--size-lg {
+    min-width: 16.5rem;
+    min-height: 3.125rem;
+
+    .glow--icon {
+      margin-right: 0.625rem;
+      width: 1.25rem;
+      height: 1.25rem;
+
+      &.glow--icon-3d {
+        width: 1.5625rem;
+        height: 1.5625rem;
+      }
+    }
+
+    .glow--sign-in-button-text {
+      font-size: 18px;
+      font-weight: 590;
+      line-height: 21px;
+    }
+  }
+
+  &.glow--size-md {
+    min-width: 14.375rem;
+    min-height: 2.5rem;
+
+    .glow--icon {
+      margin-right: 0.625rem;
+      width: 1.125rem;
+      height: 1.125rem;
+
+      &.glow--icon-3d {
+        width: 22.5px;
+        height: 22.5px;
+      }
+    }
+
+    .glow--sign-in-button-text {
+      font-size: 15px;
+      font-weight: 590;
+      line-height: 18px;
+    }
+  }
+
+  &.glow--size-sm {
+    min-width: 11.5rem;
+    min-height: 2rem;
+
+    .glow--icon {
+      margin-right: 0.625rem;
+      width: 0.875rem;
+      height: 0.875rem;
+
+      &.glow--icon-3d {
+        width: 17.5px;
+        height: 17.5px;
+      }
+    }
+
+    .glow--sign-in-button-text {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 18px;
+    }
+  }
+
+  // SHAPES
+  // ======
+
+  &.glow--shape-squared,
+  &::before {
+    border-radius: 0.5rem;
+  }
+
+  &.glow--shape-rounded {
+    &.glow--size-lg,
+    &.glow--size-lg::before {
+      border-radius: 1.5625rem;
+    }
+
+    &.glow--size-md,
+    &.glow--size-md::before {
+      border-radius: 1.25rem;
+    }
+
+    &.glow--size-sm,
+    &.glow--size-sm::before {
+      border-radius: 1rem;
+    }
+  }
+
+  // VARIANTS
+  // ========
+
+  &.glow--variant-black {
+    background: var(--glow--black);
+    color: var(--glow--white);
+  }
+
+  &.glow--variant-purple {
+    background: linear-gradient(
+      93deg,
+      var(--glow--purple-gradient-start) 1.51%,
+      var(--glow--purple-gradient-end) 99.28%
+    );
+
+    &::before {
+      background: linear-gradient(
+          93deg,
+          rgba(var(--glow--puprple-gradient-start-rgb), 0.7) 1.51%,
+          rgba(var(--glow--puprple-gradient-end-rgb), 0.7) 99.28%
+        ),
+        #ffffff;
+      box-shadow: inset 0 0 44.9123px
+        rgba(var(--glow--puprple-gradient-end-rgb), 0.7);
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 200ms;
+    }
+
+    color: var(--glow--white);
+  }
+
+  &.glow--variant-white-naked {
+    background: var(--glow--white);
+    color: var(--glow--black);
+  }
+
+  &.glow--variant-white-outline {
+    background: var(--glow--white);
+    border: 1px solid var(--glow--black);
+    color: var(--glow--black);
+  }
+
+  // STATES
+  // ======
+
+  &:not(:disabled) {
+    &:hover,
+    &:active {
+      &.glow--variant-black {
+        background: var(--glow--gray-dark);
+      }
+
+      &.glow--variant-purple {
+        &::before {
+          opacity: 1;
+        }
+      }
+
+      &.glow--variant-white-naked {
+        background: var(--glow--gray-light);
+      }
+
+      &.glow--variant-white-outline {
+        border-color: var(--glow--gray-regular);
+      }
+    }
+  }
+
+  &:disabled {
+    cursor: initial;
+  }
+}
