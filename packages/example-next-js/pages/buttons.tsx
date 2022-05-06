@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import type { NextPage } from "next";
-import { GlowSignInButton } from "../components/GlowSignInButton";
+import { GlowSignInButton } from "@glow-app/glow-react";
 import styles from "../styles/Buttons.module.scss";
 
 const ButtonsExample: NextPage = () => {

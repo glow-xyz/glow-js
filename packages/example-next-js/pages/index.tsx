@@ -1,9 +1,8 @@
-import { useGlowContext } from "@glow-app/glow-react";
+import { GlowSignInButton, useGlowContext } from "@glow-app/glow-react";
 import "bootstrap/dist/css/bootstrap.css";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { GlowSignInButton } from "../components/GlowSignInButton";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {

@@ -70,20 +70,28 @@ importers:
     specifiers:
       '@glow-app/glow-client': latest
       '@solana/web3.js': ~1.35.1
+      '@types/react': 18.0.8
+      '@types/react-dom': 18.0.3
+      classnames: ^2.3.1
       esbuild: ^0.14.30
       esbuild-register: ^3.3.2
       prettier: ^2.6.2
       react: ^18.0.0
       react-dom: ^18.0.0
+      sass: ^1.50.1
     dependencies:
       '@glow-app/glow-client': link:../glow-client
+      classnames: 2.3.1
       react: 18.0.0
       react-dom: 18.0.0_react@18.0.0
     devDependencies:
       '@solana/web3.js': 1.35.1
+      '@types/react': 18.0.8
+      '@types/react-dom': 18.0.3
       esbuild: 0.14.38
       esbuild-register: 3.3.2_esbuild@0.14.38
       prettier: 2.6.2
+      sass: 1.50.1
 
 packages:
 
@@ -384,8 +392,22 @@ packages:
       '@types/react': 18.0.3
     dev: true
 
+  /@types/react-dom/18.0.3:
+    resolution: {integrity: sha512-1RRW9kst+67gveJRYPxGmVy8eVJ05O43hg77G2j5m76/RFJtMbcfAs2viQ2UNsvvDg8F7OfQZx8qQcl6ymygaQ==}
+    dependencies:
+      '@types/react': 18.0.8
+    dev: true
+
   /@types/react/18.0.3:
     resolution: {integrity: sha512-P8QUaMW4k+kH9aKNPl9b3XWcKMSSALYprLL8xpAMJOLUn3Pl6B+6nKC4F7dsk9oJPwkiRx+qlwhG/Zc1LxFVuQ==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.2
+      csstype: 3.0.11
+    dev: true
+
+  /@types/react/18.0.8:
+    resolution: {integrity: sha512-+j2hk9BzCOrrOSJASi5XiOyBbERk9jG5O73Ya4M0env5Ixi6vUNli4qy994AINcEF+1IEHISYFfIT4zwr++LKw==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
