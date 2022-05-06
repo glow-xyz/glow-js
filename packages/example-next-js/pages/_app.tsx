@@ -1,4 +1,4 @@
-import "../styles/globals.scss";
+import "@glow-app/glow-react/dist/styles.css";
 import { GlowProvider } from "@glow-app/glow-react";
 import type { AppProps } from "next/app";
 

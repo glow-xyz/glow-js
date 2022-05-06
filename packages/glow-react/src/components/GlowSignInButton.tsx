@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React from "react";
-import { useGlowContext } from "@glow-app/glow-react";
+import { useGlowContext } from "../GlowContext";
 import { GlowIcon } from "../assets/GlowIcon";
 import { GlowIcon3D } from "../assets/GlowIcon3D";
 

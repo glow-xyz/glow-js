@@ -19,7 +19,8 @@ pnpm install @glow-app/glow-react
 
 ```tsx
 // Top level app component
-import { GlowProvider } from "@glow-app/glow-react";
+import { GlowSignInButton, GlowProvider } from "@glow-app/glow-react";
+import "@glow-app/glow-react/dist/styles.css";
 
 const App = ({children}) => {
   return (
@@ -38,7 +39,7 @@ const Home = () => {
       {user ? (
         <div>Signed in as {user.address}</div>
       ) : (
-        <div>Not signed in.</div>
+        <GlowSignInButton />
       )}
     </div>
   )
