@@ -12,7 +12,7 @@
     "build": "npm run build:js && npm run build:css",
     "build:js": "tsc",
     "build:css": "sass src/styles/index.scss:dist/styles.css",
-    "release": "tsc && yarn version && npm publish --access public"
+    "release": "npm run build && yarn version && npm publish --access public"
   },
   "dependencies": {
     "@glow-app/glow-client": "latest",
