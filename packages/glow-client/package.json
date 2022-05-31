@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/glow-client",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.cjs.js",
@@ -11,18 +11,18 @@
   ],
   "scripts": {
     "build": "tsc",
-    "release": "tsc && yarn version && npm publish --access public"
+    "release": "pnpm build && pnpm version minor && pnpm publish --access public"
   },
   "dependencies": {
-    "buffer": "^6.0.3",
-    "eventemitter3": "^4.0.7",
-    "zod": "^3.14.3"
+    "buffer": "6.0.3",
+    "eventemitter3": "4.0.7",
+    "zod": "3.14.3"
   },
   "devDependencies": {
-    "@solana/web3.js": "~1.35.1",
-    "esbuild": "^0.14.30",
-    "esbuild-register": "^3.3.2",
-    "prettier": "^2.6.2"
+    "@solana/web3.js": "1.43.4",
+    "esbuild": "0.14.30",
+    "esbuild-register": "3.3.2",
+    "prettier": "2.6.2"
   },
   "private": false,
   "license": "ISC"

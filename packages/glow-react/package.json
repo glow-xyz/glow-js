@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/glow-react",
-  "version": "0.0.12",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/index.cjs.js",
   "typings": "dist/index.d.ts",
@@ -12,22 +12,22 @@
     "build": "npm run build:js && npm run build:css",
     "build:js": "tsc",
     "build:css": "sass src/styles/index.scss:dist/styles.css",
-    "release": "npm run build && yarn version && npm publish --access public"
+    "release": "pnpm build && pnpm version minor && pnpm publish --access public"
   },
   "dependencies": {
     "@glow-app/glow-client": "latest",
-    "classnames": "^2.3.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "classnames": "2.3.1",
+    "react": "18.0.0",
+    "react-dom": "18.0.0"
   },
   "devDependencies": {
-    "@solana/web3.js": "~1.35.1",
+    "@solana/web3.js": "1.43.4",
     "@types/react": "18.0.8",
     "@types/react-dom": "18.0.3",
-    "esbuild": "^0.14.30",
-    "esbuild-register": "^3.3.2",
-    "prettier": "^2.6.2",
-    "sass": "^1.50.1"
+    "esbuild": "0.14.30",
+    "esbuild-register": "3.3.2",
+    "prettier": "2.6.2",
+    "sass": "1.50.1"
   },
   "private": false
 }
