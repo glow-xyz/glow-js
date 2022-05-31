@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/glow-client",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.cjs.js",
@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "release": "tsc && yarn version && npm publish --access public"
+    "release": "pnpm build && pnpm version minor && pnpm publish --access public"
   },
   "dependencies": {
     "buffer": "6.0.3",
