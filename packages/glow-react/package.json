@@ -25,7 +25,9 @@
     "esbuild": "0.14.30",
     "esbuild-register": "3.3.2",
     "prettier": "2.6.2",
-    "sass": "1.50.1"
+    "sass": "1.50.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "peerDependencies": {
     "react": "^18.0.0",

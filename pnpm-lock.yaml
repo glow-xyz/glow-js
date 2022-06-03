@@ -76,6 +76,8 @@ importers:
       esbuild: 0.14.30
       esbuild-register: 3.3.2
       prettier: 2.6.2
+      react: ^18.0.0
+      react-dom: ^18.0.0
       sass: 1.50.1
     dependencies:
       '@glow-app/glow-client': link:../glow-client
@@ -87,6 +89,8 @@ importers:
       esbuild: 0.14.30
       esbuild-register: 3.3.2_esbuild@0.14.30
       prettier: 2.6.2
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
       sass: 1.50.1
 
 packages:
@@ -2186,7 +2190,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.0.0
       scheduler: 0.21.0
-    dev: false
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -2197,7 +2200,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /readdirp/3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
@@ -2293,7 +2295,6 @@ packages:
     resolution: {integrity: sha512-1r87x5fz9MXqswA2ERLo0EbOAU74DpIUO090gIasYTqlVoJeMcl+Z1Rg7WHz+qtPujhS/hGIt9kxZOYBV3faRQ==}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /secp256k1/4.0.3:
     resolution: {integrity: sha512-NLZVf+ROMxwtEj3Xa562qgv2BK5e2WNmXPiOdVIPLgs6lyTzMvBq0aWTYMI5XCP9jZMVKOcqZLw/Wc4vDkuxhA==}
