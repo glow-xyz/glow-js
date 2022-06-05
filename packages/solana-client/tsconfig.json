@@ -2,22 +2,23 @@
   "compilerOptions": {
     "allowJs": true,
     "baseUrl": ".",
-    "declaration": false,
-    "declarationDir": null,
     "esModuleInterop": true,
     "incremental": false,
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "commonjs",
+    "module": "nodenext",
     "moduleResolution": "node",
     "noImplicitReturns": true,
+    "outDir": "dist/",
+    "declaration": true,
     "noUnusedLocals": true,
-    "outDir": "dist/cjs/",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext"
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src/**/*.ts*"]
+  "include": [
+    "src/**/*.ts*"
+  ]
 }
