@@ -1,7 +1,7 @@
 import axios from "axios";
 import BigNumber from "bignumber.js";
 import { Buffer } from "buffer";
-import chunk from "lodash/chunk";
+import { chunk } from "lodash-es";
 import { DateTime, Duration } from "luxon";
 import pLimit from "p-limit";
 import { z } from "zod";

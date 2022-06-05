@@ -1,4 +1,4 @@
-import defaults from "lodash/defaults";
+import { defaults } from "lodash-es";
 
 export interface IGlowErrorOptions {
   code?: string;

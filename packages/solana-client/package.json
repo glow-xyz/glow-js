@@ -2,14 +2,14 @@
   "name": "@glow-app/solana-client",
   "version": "0.1.1",
   "description": "",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/types/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
   },
-  "main": "./dist/index.cjs",
+  "module": "./dist/esm/index.js",
+  "main": "./dist/cjs/index.js",
+  "sideEffects": false,
   "type": "module",
   "files": [
     "dist/**/*",
@@ -18,7 +18,7 @@
   "scripts": {
     "lint": "eslint . --ext ts --ext tsx --quiet",
     "tsc": "tsc --noEmit",
-    "build": "tsup src/index.ts --format cjs,esm",
+    "build": "rimraf dist && tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
     "release": "pnpm build && release-it"
   },
   "publishConfig": {
@@ -32,14 +32,14 @@
     "bs58": "5.0.0",
     "buffer": "6.0.3",
     "js-sha256": "0.9.0",
-    "lodash": "4.17.21",
+    "lodash-es": "^4.17.21",
     "luxon": "2.4.0",
     "p-limit": "3.1.0",
     "zod": "3.17.3"
   },
   "devDependencies": {
     "@types/bn.js": "5.1.0",
-    "@types/lodash": "4.14.182",
+    "@types/lodash-es": "4.17.6",
     "@types/luxon": "2.3.2",
     "@typescript-eslint/parser": "5.27.0",
     "esbuild": "0.14.42",
@@ -48,6 +48,7 @@
     "eslint-plugin-lodash": "7.4.0",
     "prettier": "2.6.2",
     "release-it": "^15.0.0",
+    "rimraf": "3.0.2",
     "tsup": "6.1.0",
     "typescript": "4.7.3"
   },
