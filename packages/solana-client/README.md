@@ -15,11 +15,11 @@ There are a few differences between this client and `@solana/web3.js`:
 
 ```sh
 # npm
-npm install @glow-app/glow-client
+npm install @glow-app/solana-client
 
 # yarn
-yarn add @glow-app/glow-client
+yarn add @glow-app/solana-client
 
 # pnpm
-pnpm install @glow-app/glow-client
+pnpm install @glow-app/solana-client
 ```

@@ -109,7 +109,6 @@ importers:
       lodash: 4.17.21
       luxon: 2.4.0
       p-limit: 3.1.0
-      pi: 2.0.4
       prettier: 2.6.2
       release-it: ^15.0.0
       typescript: 4.7.3
@@ -135,7 +134,6 @@ importers:
       esbuild-register: 3.3.3_esbuild@0.14.42
       eslint: 8.17.0
       eslint-plugin-lodash: 7.4.0_eslint@8.17.0
-      pi: 2.0.4
       prettier: 2.6.2
       release-it: 15.0.0
       typescript: 4.7.3
@@ -3647,18 +3645,6 @@ packages:
   /path-type/4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
-    dev: true
-
-  /pi-decimals/2.0.3:
-    resolution: {integrity: sha512-2IP4BhJvadut9hUIhOEi/yQSB1MJ7Sj6fhsZsELmCWEWuh7548igVMKKJm1fAuha+EbLTl1l/1R14ayMCxNRRA==}
-    requiresBuild: true
-    dev: true
-
-  /pi/2.0.4:
-    resolution: {integrity: sha512-XJclIZFY4tSfCGC7zcQU6W45GvISrKWyWB3KMrQSE1vFyAAL/mPtuer4dPB2WH12OZiwnmIyRMxkUB+s5s3C4g==}
-    hasBin: true
-    dependencies:
-      pi-decimals: 2.0.3
     dev: true
 
   /picocolors/1.0.0:
