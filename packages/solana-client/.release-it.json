@@ -1,0 +1,8 @@
+{
+  "git": {
+    "commitMessage": "[solana-client]: Release v${version}"
+  },
+  "github": {
+    "release": true
+  }
+}
