@@ -1,0 +1,13 @@
+{
+  "git": {
+    "commitMessage": "[solana-client]: Release v${version}",
+    "tagName": "solana-client-v${version}"
+  },
+  "github": {
+    "release": true,
+    "releaseName": "`@glow-app/solana-client` v${version}`"
+  },
+  "npm": {
+    "access": "public"
+  }
+}

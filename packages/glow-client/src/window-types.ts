@@ -64,7 +64,7 @@ export interface GlowAdapter {
     signatureBase64: string;
     message: string;
   }>;
-  connect: () => Promise<{ publicKey: PublicKey }>;
+  connect: () => Promise<{ publicKey: PublicKey; address: Address }>;
   signOut: () => Promise<null>;
   signMessage: (params: {
     messageBase64: string;
