@@ -3,10 +3,10 @@
     "allowJs": true,
     "baseUrl": ".",
     "esModuleInterop": true,
-    "incremental": true,
+    "incremental": false,
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "node16",
+    "module": "nodenext",
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "outDir": "dist/",
@@ -15,7 +15,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2020"
+    "target": "ESNext"
   },
   "exclude": ["node_modules", "dist"],
   "include": [
