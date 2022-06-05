@@ -1,6 +1,7 @@
 {
   "git": {
-    "commitMessage": "[solana-client]: Release v${version}"
+    "commitMessage": "[solana-client]: Release v${version}",
+    "tagName": "solana-client-v${version}"
   },
   "github": {
     "release": true
