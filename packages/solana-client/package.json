@@ -15,6 +15,9 @@
     "build": "tsc",
     "release": "pnpm build && release-it"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@metaplex-foundation/beet": "0.2.0",
     "axios": "0.27.2",
