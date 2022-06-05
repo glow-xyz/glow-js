@@ -2,15 +2,13 @@
   "name": "@glow-app/solana-client",
   "version": "0.1.1",
   "description": "",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/types/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
   },
-  "main": "./dist/index.cjs",
-  "type": "module",
+  "module": "./dist/esm/index.js",
+  "main": "./dist/cjs/index.js",
   "files": [
     "dist/**/*",
     "src/**/*"
@@ -18,7 +16,7 @@
   "scripts": {
     "lint": "eslint . --ext ts --ext tsx --quiet",
     "tsc": "tsc --noEmit",
-    "build": "tsup src/index.ts --format cjs,esm",
+    "build": "rimraf dist && tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
     "release": "pnpm build && release-it"
   },
   "publishConfig": {
@@ -35,6 +33,7 @@
     "lodash": "4.17.21",
     "luxon": "2.4.0",
     "p-limit": "3.1.0",
+    "rimraf": "3.0.2",
     "zod": "3.17.3"
   },
   "devDependencies": {
@@ -48,7 +47,6 @@
     "eslint-plugin-lodash": "7.4.0",
     "prettier": "2.6.2",
     "release-it": "^15.0.0",
-    "tsup": "6.1.0",
     "typescript": "4.7.3"
   },
   "private": false,
