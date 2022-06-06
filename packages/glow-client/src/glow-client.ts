@@ -1,11 +1,11 @@
-import type { Transaction } from "@solana/web3.js";
 import { Buffer } from "buffer";
 import EventEmitter from "eventemitter3";
-import { Address, Network, PhantomAdapter, SolanaWindow } from "./window-types";
+import { verifySignIn } from "./utils";
+import { Address, GlowAdapter, Network, SolanaWindow } from "./window-types";
 
 export class GlowClient extends EventEmitter {
-  private _address: Address | null;
-  private _wallet: PhantomAdapter | null;
+  public _address: Address | null;
+  public _wallet: GlowAdapter | null;
 
   public eventNames() {
     return ["update"] as any;
@@ -62,20 +62,25 @@ export class GlowClient extends EventEmitter {
 
     const onGlowLoaded = async () => {
       const _window = window as unknown as SolanaWindow;
-      if (_window.glowSolana) {
+      if (_window.glow) {
         clearInterval(glowLoadedInterval);
 
-        this._wallet = _window.glowSolana;
+        this._wallet = _window.glow;
         this.registerEventHandlers();
 
-        const { publicKey } = await this._wallet.connect({
-          onlyIfTrusted: true,
-        });
+        try {
+          const { address, name, avatarUrl } = await this._wallet.connect({
+            onlyIfTrusted: true,
+          });
+          console.log({ name, avatarUrl });
 
-        if (publicKey) {
-          this._address = publicKey.toBase58();
+          this._address = address;
+        } catch {
+          // We ignore this error since it's likely that the wallet isn't connected yet and isn't
+          // worth throwing a runtime error.
+        } finally {
+          this.emitUpdate("loaded");
         }
-        this.emitUpdate("loaded");
       }
     };
 
@@ -94,23 +99,43 @@ export class GlowClient extends EventEmitter {
     return this._address;
   }
 
-  async connect(): Promise<{ address: Address }> {
-    // TODO: check if glowSolana exists otherwise we can throw
+  async signIn(): Promise<{
+    address: Address;
+    name: string;
+    avatarUrl: string;
+    message: string;
+    signature: string;
+  }> {
     if (!this._wallet) {
       throw new Error("Not loaded.");
     }
 
-    const { publicKey } = await this._wallet.connect();
-    if (!publicKey) {
+    const { address, message, signatureBase64, name, avatarUrl } =
+      await this._wallet.signIn();
+
+    this._address = address;
+
+    verifySignIn({
+      message,
+      expectedAddress: address,
+      expectedDomain: window.location.hostname,
+      signature: signatureBase64,
+    });
+
+    return { address, name, avatarUrl, signature: signatureBase64, message };
+  }
+
+  async connect(): Promise<{ address: Address }> {
+    console.log("cponnecting");
+    if (!this._wallet) {
       throw new Error("Not loaded.");
     }
 
-    const address = publicKey.toBase58();
+    const { address } = await this._wallet.connect();
     this._address = address;
 
     return { address };
   }
-  // TODO: we will need to listen to some events
 
   async disconnect(): Promise<void> {
     await this._wallet?.disconnect();
@@ -118,46 +143,47 @@ export class GlowClient extends EventEmitter {
   }
 
   async signTransaction({
-    transaction,
+    transactionBase64,
     network,
   }: {
-    transaction: Transaction;
+    transactionBase64: string;
     network: Network;
-  }): Promise<{ transaction: Transaction }> {
+  }): Promise<{ signedTransactionBase64: string }> {
     if (!this._wallet) {
       throw new Error("Not connected.");
     }
 
     const wallet = this._wallet;
 
-    const signedTransaction = await wallet.signTransaction(
-      transaction,
-      network
-    );
-    return { transaction: signedTransaction };
+    const { signedTransactionBase64 } = await wallet.signTransaction({
+      transactionBase64,
+      network,
+    });
+    return { signedTransactionBase64 };
   }
 
   async signAllTransactions({
-    transactions,
+    transactionsBase64,
     network,
   }: {
-    transactions: Transaction[];
+    transactionsBase64: string[];
     network: Network;
   }): Promise<{
-    transactions: Transaction[];
+    signedTransactionsBase64: string[];
   }> {
     if (!this._wallet) {
       throw new Error("Not connected.");
     }
 
-    const signedTransactions = await this._wallet.signAllTransactions(
-      transactions,
-      network
+    const { signedTransactionsBase64 } = await this._wallet.signAllTransactions(
+      {
+        transactionsBase64,
+        network,
+      }
     );
-    return { transactions: signedTransactions };
+    return { signedTransactionsBase64 };
   }
 
-  // TODO: take in different types of messages
   async signMessage(
     params:
       | {
@@ -172,34 +198,30 @@ export class GlowClient extends EventEmitter {
       | {
           messageBuffer: Buffer;
         }
-  ): Promise<{ signature_base64: string }> {
+  ): Promise<{ signatureBase64: string }> {
     if (!this._wallet) {
       throw new Error("Not connected.");
     }
 
-    let messageUint8: Uint8Array;
+    let messageBase64: string;
     if ("messageHex" in params) {
-      messageUint8 = new Uint8Array(Buffer.from(params.messageHex, "hex"));
+      messageBase64 = Buffer.from(params.messageHex, "hex").toString("base64");
     } else if ("messageBase64" in params) {
-      messageUint8 = new Uint8Array(
-        Buffer.from(params.messageBase64, "base64")
-      );
+      messageBase64 = params.messageBase64;
     } else if ("messageBuffer" in params) {
-      messageUint8 = new Uint8Array(params.messageBuffer);
+      messageBase64 = Buffer.from(params.messageBuffer).toString("base64");
     } else if ("messageUint8" in params) {
-      messageUint8 = params.messageUint8;
+      messageBase64 = Buffer.from(params.messageUint8).toString("base64");
     } else {
       throw new Error("No message passed in.");
     }
 
-    const { signature } = await this._wallet.signMessage(messageUint8);
-    if (!signature) {
-      throw new Error("No signature");
-    }
+    const { signedMessageBase64 } = await this._wallet.signMessage({
+      messageBase64,
+    });
 
-    const signatureBuffer = Buffer.from(signature);
     return {
-      signature_base64: signatureBuffer.toString("base64"),
+      signatureBase64: signedMessageBase64,
     };
   }
 }

@@ -9,19 +9,29 @@
     "src/**/*"
   ],
   "scripts": {
-    "build": "tsc",
-    "release": "pnpm build && pnpm version minor && pnpm publish --access public"
+    "lint": "eslint . --ext ts --ext tsx --quiet",
+    "tsc": "tsc --noEmit",
+    "build": "rimraf dist && tsc",
+    "release": "pnpm build && release-it"
   },
   "dependencies": {
+    "@types/luxon": "2.3.2",
+    "bs58": "5.0.0",
     "buffer": "6.0.3",
     "eventemitter3": "4.0.7",
+    "luxon": "2.4.0",
+    "tweetnacl": "1.0.3",
     "zod": "3.17.3"
   },
   "devDependencies": {
     "@solana/web3.js": "1.43.4",
+    "@typescript-eslint/parser": "5.27.0",
     "esbuild": "0.14.42",
     "esbuild-register": "3.3.3",
-    "prettier": "2.6.2"
+    "eslint": "8.17.0",
+    "eslint-plugin-lodash": "7.4.0",
+    "prettier": "2.6.2",
+    "rimraf": "3.0.2"
   },
   "private": false,
   "license": "ISC"

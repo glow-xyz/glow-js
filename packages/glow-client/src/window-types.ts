@@ -1,4 +1,4 @@
-import { PublicKey, Transaction } from "@solana/web3.js";
+import type { PublicKey, Transaction } from "@solana/web3.js";
 import EventEmitter from "eventemitter3";
 import { z } from "zod";
 
@@ -58,13 +58,23 @@ export interface PhantomAdapter extends EventEmitter<PhantomWalletEvents> {
   ): Promise<Transaction[]>;
 }
 
-export interface GlowAdapter {
+export interface GlowAdapter extends EventEmitter<PhantomWalletEvents> {
   signIn: () => Promise<{
     address: Address;
     signatureBase64: string;
     message: string;
+    name: string;
+    avatarUrl: string;
   }>;
-  connect: () => Promise<{ publicKey: PublicKey; address: Address }>;
+  connect: (params?: {
+    onlyIfTrusted: true;
+  }) => Promise<{
+    publicKey: PublicKey;
+    address: Address;
+    name: string;
+    avatarUrl: string;
+  }>;
+  disconnect: () => Promise<void>;
   signOut: () => Promise<null>;
   signMessage: (params: {
     messageBase64: string;
@@ -78,6 +88,10 @@ export interface GlowAdapter {
     transactionBase64: string;
     network: Network;
   }) => Promise<{ signature: string; signedTransactionBase64: string }>;
+  signAllTransactions: (params: {
+    transactionsBase64: string[];
+    network: Network;
+  }) => Promise<{ signedTransactionsBase64: string[] }>;
 }
 
 export interface SolanaWindow extends Window {

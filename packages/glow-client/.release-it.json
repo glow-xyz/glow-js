@@ -1,0 +1,13 @@
+{
+  "git": {
+    "commitMessage": "[glow-client]: Release v${version}",
+    "tagName": "glow-client-v${version}"
+  },
+  "github": {
+    "release": true,
+    "releaseName": "`@glow-app/glow-client` v${version}`"
+  },
+  "npm": {
+    "access": "public"
+  }
+}
