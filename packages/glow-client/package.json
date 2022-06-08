@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@solana/web3.js": "1.43.4",
-    "esbuild": "0.14.42",
+    "esbuild": "0.14.43",
     "esbuild-register": "3.3.3",
     "prettier": "2.6.2"
   },
