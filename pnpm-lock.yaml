@@ -108,7 +108,7 @@ importers:
       js-sha256: 0.9.0
       lodash: 4.17.21
       luxon: 2.4.0
-      p-limit: 3.1.0
+      p-limit: 4.0.0
       prettier: 2.6.2
       release-it: ^15.0.0
       rimraf: 3.0.2
@@ -124,7 +124,7 @@ importers:
       js-sha256: 0.9.0
       lodash: 4.17.21
       luxon: 2.4.0
-      p-limit: 3.1.0
+      p-limit: 4.0.0
       rimraf: 3.0.2
       zod: 3.17.3
     devDependencies:
@@ -3521,11 +3521,11 @@ packages:
       p-try: 1.0.0
     dev: true
 
-  /p-limit/3.1.0:
-    resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
-    engines: {node: '>=10'}
+  /p-limit/4.0.0:
+    resolution: {integrity: sha512-5b0R4txpzjPWVw/cXXUResoD4hb6U/x9BH08L7nw+GN1sezDzPdxeRvpc9c433fZhBan/wusjbCsqwqm4EIBIQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
-      yocto-queue: 0.1.0
+      yocto-queue: 1.0.0
     dev: false
 
   /p-locate/2.0.0:
@@ -4743,9 +4743,9 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /yocto-queue/0.1.0:
-    resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
-    engines: {node: '>=10'}
+  /yocto-queue/1.0.0:
+    resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
+    engines: {node: '>=12.20'}
     dev: false
 
   /zod/3.17.3:
