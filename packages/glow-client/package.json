@@ -18,7 +18,7 @@
     "zod": "3.17.3"
   },
   "devDependencies": {
-    "@solana/web3.js": "1.43.4",
+    "@solana/web3.js": "1.43.6",
     "esbuild": "0.14.42",
     "esbuild-register": "3.3.3",
     "prettier": "2.6.2"

@@ -49,7 +49,7 @@ importers:
 
   packages/glow-client:
     specifiers:
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.43.6
       buffer: 6.0.3
       esbuild: 0.14.42
       esbuild-register: 3.3.3
@@ -61,7 +61,7 @@ importers:
       eventemitter3: 4.0.7
       zod: 3.17.3
     devDependencies:
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.43.6
       esbuild: 0.14.42
       esbuild-register: 3.3.3_esbuild@0.14.42
       prettier: 2.6.2
@@ -69,7 +69,7 @@ importers:
   packages/glow-react:
     specifiers:
       '@glow-app/glow-client': latest
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.43.6
       '@types/react': 18.0.11
       '@types/react-dom': 18.0.5
       classnames: 2.3.1
@@ -81,7 +81,7 @@ importers:
       '@glow-app/glow-client': link:../glow-client
       classnames: 2.3.1
     devDependencies:
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.43.6
       '@types/react': 18.0.11
       '@types/react-dom': 18.0.5
       esbuild: 0.14.42
@@ -500,8 +500,8 @@ packages:
       buffer: 6.0.3
     dev: true
 
-  /@solana/web3.js/1.43.4:
-    resolution: {integrity: sha512-9+c965R3vjIRIfUFQtKfaG8BM4tVoo/fp4DvmqHAGLTaeHilVsRdyXszW6+Ues5KczgBejlp62k2SeUcbOibUg==}
+  /@solana/web3.js/1.43.6:
+    resolution: {integrity: sha512-F1Q7EOnLi5X+Ap5bAEi5PTwwXPZR+GTfIyOuWpWJfgm3GoawdP/x5lxJolDzzV5S99bNEU/rSTdxcW9EFzIiEw==}
     engines: {node: '>=12.20.0'}
     dependencies:
       '@babel/runtime': 7.18.3
@@ -563,13 +563,13 @@ packages:
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 17.0.23
+      '@types/node': 17.0.40
     dev: true
 
   /@types/express-serve-static-core/4.17.28:
     resolution: {integrity: sha512-P1BJAEAW3E2DJUlkgq4tOL3RyMunoWXqbSCygWo5ZIWTjUgN1YnaXWW4VWl/oc8vs/XoYibEGBKP0uZyF4AHig==}
     dependencies:
-      '@types/node': 17.0.23
+      '@types/node': 17.0.40
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
     dev: true
@@ -655,7 +655,7 @@ packages:
   /@types/ws/7.4.7:
     resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}
     dependencies:
-      '@types/node': 17.0.23
+      '@types/node': 17.0.40
     dev: true
 
   /@typescript-eslint/parser/5.27.0_ud6rd4xtew5bv4yhvkvu24pzm4:
