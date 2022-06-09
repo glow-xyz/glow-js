@@ -27,7 +27,7 @@ importers:
       next: 12.1.6
       react: 18.1.0
       react-dom: 18.1.0
-      sass: 1.52.2
+      sass: 1.52.3
       typescript: 4.7.3
     dependencies:
       '@glow-app/glow-client': link:../glow-client
@@ -35,7 +35,7 @@ importers:
       '@popperjs/core': 2.11.5
       bootstrap: 5.1.3_@popperjs+core@2.11.5
       classnames: 2.3.1
-      next: 12.1.6_4cbhpxftn776lqv6vk34lzjmlm
+      next: 12.1.6_xab2ksyqfwgnu3ykyybaqku6vm
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
     devDependencies:
@@ -44,7 +44,7 @@ importers:
       '@types/react-dom': 18.0.5
       eslint: 8.17.0
       eslint-config-next: 12.1.6_qwqcuvhue6diaz4jqbkm5dp3pa
-      sass: 1.52.2
+      sass: 1.52.3
       typescript: 4.7.3
 
   packages/glow-client:
@@ -76,7 +76,7 @@ importers:
       esbuild: 0.14.43
       esbuild-register: 3.3.3
       prettier: 2.6.2
-      sass: 1.52.2
+      sass: 1.52.3
     dependencies:
       '@glow-app/glow-client': link:../glow-client
       classnames: 2.3.1
@@ -87,7 +87,7 @@ importers:
       esbuild: 0.14.43
       esbuild-register: 3.3.3_esbuild@0.14.43
       prettier: 2.6.2
-      sass: 1.52.2
+      sass: 1.52.3
 
   packages/solana-client:
     specifiers:
@@ -1888,7 +1888,7 @@ packages:
       eslint-plugin-jsx-a11y: 6.5.1_eslint@8.17.0
       eslint-plugin-react: 7.30.0_eslint@8.17.0
       eslint-plugin-react-hooks: 4.5.0_eslint@8.17.0
-      next: 12.1.6_4cbhpxftn776lqv6vk34lzjmlm
+      next: 12.1.6_xab2ksyqfwgnu3ykyybaqku6vm
       typescript: 4.7.3
     transitivePeerDependencies:
       - eslint-import-resolver-webpack
@@ -3322,7 +3322,7 @@ packages:
       type-fest: 2.13.0
     dev: true
 
-  /next/12.1.6_4cbhpxftn776lqv6vk34lzjmlm:
+  /next/12.1.6_xab2ksyqfwgnu3ykyybaqku6vm:
     resolution: {integrity: sha512-cebwKxL3/DhNKfg9tPZDQmbRKjueqykHHbgaoG4VBRH3AHQJ2HO0dbKFiS1hPhe1/qgc2d/hFeadsbPicmLD+A==}
     engines: {node: '>=12.22.0'}
     hasBin: true
@@ -3345,7 +3345,7 @@ packages:
       postcss: 8.4.5
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
-      sass: 1.52.2
+      sass: 1.52.3
       styled-jsx: 5.0.2_react@18.1.0
     optionalDependencies:
       '@next/swc-android-arm-eabi': 12.1.6
@@ -4070,8 +4070,8 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
 
-  /sass/1.52.2:
-    resolution: {integrity: sha512-mfHB2VSeFS7sZlPv9YohB9GB7yWIgQNTGniQwfQ04EoQN0wsQEv7SwpCwy/x48Af+Z3vDeFXz+iuXM3HK/phZQ==}
+  /sass/1.52.3:
+    resolution: {integrity: sha512-LNNPJ9lafx+j1ArtA7GyEJm9eawXN8KlA1+5dF6IZyoONg1Tyo/g+muOsENWJH/2Q1FHbbV4UwliU0cXMa/VIA==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
