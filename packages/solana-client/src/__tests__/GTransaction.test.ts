@@ -212,7 +212,7 @@ describe("GTransaction", () => {
     );
   });
 
-  test("addSignature", async () => {
+  test("sign", async () => {
     // Prepare a simple transfer transaction
     const from = Keypair.generate();
     const to = Keypair.generate();
@@ -244,7 +244,7 @@ describe("GTransaction", () => {
     transaction.partialSign(from);
     gTransaction = GTransaction.sign({
       gtransaction: gTransaction,
-      secretKey: from.secretKey,
+      secretKey: from.secretKey
     });
 
     // Verify that serialized transactions with more signatures are equal too
