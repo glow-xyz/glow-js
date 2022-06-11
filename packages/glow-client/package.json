@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/glow-client",
-  "version": "0.1.0",
+  "version": "0.2.0-beta",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -9,19 +9,34 @@
     "src/**/*"
   ],
   "scripts": {
-    "build": "tsc",
-    "release": "pnpm build && pnpm version minor && pnpm publish --access public"
+    "lint": "eslint . --ext ts --ext tsx --quiet",
+    "tsc": "tsc --noEmit",
+    "test": "jest",
+    "build": "rimraf dist && tsc",
+    "release": "pnpm build && release-it"
   },
   "dependencies": {
+    "bs58": "5.0.0",
     "buffer": "6.0.3",
     "eventemitter3": "4.0.7",
+    "luxon": "2.4.0",
+    "tweetnacl": "1.0.3",
     "zod": "3.17.3"
   },
   "devDependencies": {
     "@solana/web3.js": "1.43.4",
+    "@types/jest": "28.1.1",
+    "@types/luxon": "2.3.2",
+    "@typescript-eslint/parser": "5.27.0",
     "esbuild": "0.14.43",
     "esbuild-register": "3.3.3",
-    "prettier": "2.6.2"
+    "eslint": "8.17.0",
+    "eslint-plugin-lodash": "7.4.0",
+    "jest": "28.1.1",
+    "prettier": "2.6.2",
+    "rimraf": "3.0.2",
+    "ts-jest": "28.0.4",
+    "typescript": "4.7.3"
   },
   "private": false,
   "license": "ISC"

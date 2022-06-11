@@ -1,0 +1,27 @@
+name: Glow Client
+
+on:
+  pull_request:
+    paths:
+      - "packages/glow-client/**"
+
+jobs:
+  js_tests:
+    name: JS Tests
+    runs-on: ubuntu-20.04
+    container: node:18.3.0-alpine3.14
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: Install PNPM and dependencies
+        uses: ./.github/actions/pnpm-install
+        with:
+          package-name: "@glow-app/glow-client"
+      - name: Lint
+        run: pnpm --filter @glow-app/glow-client run lint
+      - name: TSC
+        run: pnpm --filter @glow-app/glow-client run tsc
+      - name: Test
+        run: pnpm --filter @glow-app/glow-client run test
