@@ -1,9 +1,4 @@
-import {
-  Keypair,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-} from "@solana/web3.js";
+import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import bs58 from "bs58";
 import { randomBytes } from "node:crypto";
 import { Base64 } from "../base-types";
