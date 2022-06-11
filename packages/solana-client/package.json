@@ -16,6 +16,7 @@
   "scripts": {
     "lint": "eslint . --ext ts --ext tsx --quiet",
     "tsc": "tsc --noEmit",
+    "test": "jest",
     "build": "rimraf dist && tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
     "release": "pnpm build && release-it"
   },
@@ -24,6 +25,7 @@
   },
   "dependencies": {
     "@metaplex-foundation/beet": "0.2.0",
+    "@solana/web3.js": "1.43.4",
     "axios": "0.27.2",
     "bignumber.js": "9.0.2",
     "bn.js": "5.2.1",
