@@ -69,10 +69,9 @@ export class GlowClient extends EventEmitter {
         this.registerEventHandlers();
 
         try {
-          const { address, name, avatarUrl } = await this._wallet.connect({
+          const { address } = await this._wallet.connect({
             onlyIfTrusted: true,
           });
-          console.log({ name, avatarUrl });
 
           this._address = address;
         } catch {
@@ -101,8 +100,6 @@ export class GlowClient extends EventEmitter {
 
   async signIn(): Promise<{
     address: Address;
-    name: string;
-    avatarUrl: string;
     message: string;
     signature: string;
   }> {
@@ -110,8 +107,7 @@ export class GlowClient extends EventEmitter {
       throw new Error("Not loaded.");
     }
 
-    const { address, message, signatureBase64, name, avatarUrl } =
-      await this._wallet.signIn();
+    const { address, message, signatureBase64 } = await this._wallet.signIn();
 
     this._address = address;
 
@@ -122,11 +118,10 @@ export class GlowClient extends EventEmitter {
       signature: signatureBase64,
     });
 
-    return { address, name, avatarUrl, signature: signatureBase64, message };
+    return { address, signature: signatureBase64, message };
   }
 
   async connect(): Promise<{ address: Address }> {
-    console.log("cponnecting");
     if (!this._wallet) {
       throw new Error("Not loaded.");
     }

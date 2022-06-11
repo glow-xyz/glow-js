@@ -63,16 +63,12 @@ export interface GlowAdapter extends EventEmitter<PhantomWalletEvents> {
     address: Address;
     signatureBase64: string;
     message: string;
-    name: string;
-    avatarUrl: string;
   }>;
   connect: (params?: {
     onlyIfTrusted: true;
   }) => Promise<{
     publicKey: PublicKey;
     address: Address;
-    name: string;
-    avatarUrl: string;
   }>;
   disconnect: () => Promise<void>;
   signOut: () => Promise<null>;
