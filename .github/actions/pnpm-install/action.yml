@@ -1,0 +1,33 @@
+name: "pnpm Install"
+description: "Install pnpm for a particular folder in a workspace and use a cache. Intended to be run in a Node Docker container."
+inputs:
+  package-name: # @lux/sass, next, etc
+    description: "This is the package in our workspace that we want to install."
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: pnpm/action-setup@v2.2.2
+      name: Install pnpm
+      with:
+        version: 7
+        run_install: false
+
+    - name: Get pnpm store directory
+      id: pnpm-cache
+      shell: sh
+      run: |
+        echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+    - uses: actions/cache@v3
+      name: Setup pnpm cache
+      with:
+        path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+        key: ${{ runner.os }}-pnpm-store-${{ inputs.package-name}}-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install dependencies
+      shell: sh
+      run: |
+        pnpm install --filter ${{ inputs.package-name }}
