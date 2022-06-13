@@ -43,7 +43,7 @@
     "@types/jest": "28.1.1",
     "@types/lodash": "4.14.182",
     "@types/luxon": "2.3.2",
-    "@typescript-eslint/parser": "5.27.1",
+    "@typescript-eslint/parser": "5.28.0",
     "esbuild": "0.14.43",
     "esbuild-register": "3.3.3",
     "eslint": "8.17.0",
