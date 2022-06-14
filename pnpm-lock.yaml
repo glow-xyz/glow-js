@@ -115,7 +115,7 @@ importers:
 
   packages/solana-client:
     specifiers:
-      '@metaplex-foundation/beet': 0.2.0
+      '@metaplex-foundation/beet': 0.3.0
       '@solana/web3.js': 1.43.4
       '@types/bn.js': 5.1.0
       '@types/jest': 28.1.1
@@ -143,7 +143,7 @@ importers:
       typescript: 4.7.3
       zod: 3.17.3
     dependencies:
-      '@metaplex-foundation/beet': 0.2.0
+      '@metaplex-foundation/beet': 0.3.0
       '@solana/web3.js': 1.43.4
       axios: 0.27.2
       bignumber.js: 9.0.2
@@ -838,8 +838,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.13
     dev: true
 
-  /@metaplex-foundation/beet/0.2.0:
-    resolution: {integrity: sha512-H570hkJxmx/FxET1OggPPLkPL7psYQa71rNI9NJjYRM8WXdrEvmI/IRIEUW2KR6RqwWWN3FvlRHnKoQUV/lQtA==}
+  /@metaplex-foundation/beet/0.3.0:
+    resolution: {integrity: sha512-G/rNFbgK8py0PZe5oTHFNKzJTcPC859T4nV2ntDPQe8MHHlOv9SKjVShnYa0BH7uddJ9PYI+5mU8jX2G0mcxyw==}
     dependencies:
       ansicolors: 0.3.2
       bn.js: 5.2.1
