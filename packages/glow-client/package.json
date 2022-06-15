@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/glow-client",
-  "version": "0.2.0-beta",
+  "version": "0.3.0",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
