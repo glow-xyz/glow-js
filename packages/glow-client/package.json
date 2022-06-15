@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/glow-client",
-  "version": "0.2.0-beta",
+  "version": "0.3.0",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -20,6 +20,7 @@
     "buffer": "6.0.3",
     "eventemitter3": "4.0.7",
     "luxon": "2.4.0",
+    "release-it": "15.0.0",
     "tweetnacl": "1.0.3",
     "zod": "3.17.3"
   },
