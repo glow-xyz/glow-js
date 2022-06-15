@@ -170,7 +170,7 @@ describe("GTransaction", () => {
     }
   });
 
-  test("signing", async () => {
+  test("addSignature", async () => {
     // Prepare a simple transfer transaction
     const from = Keypair.generate();
     const to = Keypair.generate();
@@ -204,6 +204,47 @@ describe("GTransaction", () => {
       gtransaction: gTransaction,
       address: from.publicKey.toBase58(),
       signature: transaction.signature!,
+    });
+
+    // Verify that serialized transactions with more signatures are equal too
+    expect(transaction.serialize()).toEqual(
+      GTransaction.toBuffer({ gtransaction: gTransaction })
+    );
+  });
+
+  test("sign", async () => {
+    // Prepare a simple transfer transaction
+    const from = Keypair.generate();
+    const to = Keypair.generate();
+    const transaction = new Transaction({
+      feePayer: from.publicKey,
+      recentBlockhash: GPublicKey.default.toBase58(),
+    });
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: from.publicKey,
+        toPubkey: to.publicKey,
+        lamports: 5_000 * 1.5,
+      })
+    );
+    const transactionBuffer = transaction.serialize({
+      requireAllSignatures: false,
+    });
+
+    let gTransaction = GTransaction.parse({
+      buffer: transactionBuffer,
+    });
+
+    // Sanity check - verify that serialized versions are equal
+    expect(transactionBuffer).toEqual(
+      GTransaction.toBuffer({ gtransaction: gTransaction })
+    );
+
+    // Add a new signature
+    transaction.partialSign(from);
+    gTransaction = GTransaction.sign({
+      gtransaction: gTransaction,
+      secretKey: from.secretKey
     });
 
     // Verify that serialized transactions with more signatures are equal too

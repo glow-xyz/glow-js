@@ -2,6 +2,7 @@ import * as beet from "@metaplex-foundation/beet";
 import { FixableBeet, FixedSizeBeet } from "@metaplex-foundation/beet";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
+import nacl from "tweetnacl";
 import { z } from "zod";
 import { Base58, Solana } from "./base-types";
 import { GlowBorsh } from "./borsh/base";
@@ -48,6 +49,32 @@ export namespace GTransaction {
     messageBase64: z.string(),
   });
   export type GTransaction = z.infer<typeof GTransactionZ>;
+
+  export const sign = ({
+    secretKey,
+    gtransaction,
+  }: {
+    gtransaction: GTransaction;
+    secretKey: Buffer | Uint8Array;
+  }): GTransaction => {
+    const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
+    const address = bs58.encode(keypair.publicKey);
+
+    if (gtransaction.signatures.every((sig) => sig.address !== address)) {
+      throw new Error(
+        `This transaction does not require a signature from: ${address}`
+      );
+    }
+
+    const message = Buffer.from(gtransaction.messageBase64, "base64");
+    const signatureUint = nacl.sign.detached(message, secretKey);
+
+    return GTransaction.addSignature({
+      gtransaction,
+      address,
+      signature: Buffer.from(signatureUint),
+    });
+  };
 
   export const parse = ({ buffer }: { buffer: Buffer }): GTransaction => {
     let offset = 0;
@@ -186,9 +213,13 @@ export namespace GTransaction {
     const accountIndex = gtransaction.accounts.findIndex(
       (account) => account.address === address
     );
+
     if (accountIndex < 0) {
-      throw new Error(`Unknown signer: ${address}`);
+      throw new Error(
+        `This transaction does not require a signature from: ${address}`
+      );
     }
+
     // Copy signatures map not to mutate original transaction
     const signatures = gtransaction.signatures.map((sig, index) => {
       return {
@@ -197,6 +228,7 @@ export namespace GTransaction {
           index === accountIndex ? bs58.encode(signature) : sig.signature,
       };
     });
+
     return {
       ...gtransaction,
       signatures,

@@ -36,6 +36,7 @@
     "luxon": "2.4.0",
     "p-limit": "3.1.0",
     "rimraf": "3.0.2",
+    "tweetnacl": "1.0.3",
     "zod": "3.17.3"
   },
   "devDependencies": {
