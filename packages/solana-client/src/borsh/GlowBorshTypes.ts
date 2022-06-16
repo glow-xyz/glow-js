@@ -1,9 +1,9 @@
 import * as beet from "@metaplex-foundation/beet";
 import { FixableBeet, FixedSizeBeet } from "@metaplex-foundation/beet";
 import bs58 from "bs58";
+import { Buffer } from "buffer";
 import { Base58 } from "../base-types";
-
-import { CompactArray } from "./CompactArray";
+import { FixableGlowBorsh } from "./base";
 
 export namespace GlowBorshTypes {
   // Specifically for transaction signatures
@@ -24,66 +24,32 @@ export namespace GlowBorshTypes {
     },
   };
 
-  /**
-   * De/Serializes an array of signatures. Buffer consists of
-   * - {@link CompactArray} length of variable size
-   * - array of {@link GlowBorshTypes.signature}s
-   */
-  const fixedSizeSignaturesArray: (
-    length: number
-  ) => FixedSizeBeet<string[], string[]> = (length: number) => {
-    const prefixByteSize = CompactArray.encodeLength({
-      value: length,
-    }).byteSize;
+  export const signatureNullable: FixedSizeBeet<Base58 | null, Base58 | null> =
+    {
+      byteSize: 64,
+      description: "SignatureNullable",
+      read: function (buffer, offset) {
+        const signatureLength = 64;
+        const signatureBeet = beet.fixedSizeUint8Array(signatureLength);
 
-    return {
-      byteSize: prefixByteSize + length * GlowBorshTypes.signature.byteSize,
-      description: `TransactionSignaturesSection(${length})`,
-      elementByteSize: GlowBorshTypes.signature.byteSize,
-      lenPrefixByteSize: prefixByteSize,
-      length,
-      read: (buf: Buffer, offset: number) => {
-        const lengthBorsh = CompactArray.Borsh.toFixedFromData(buf, offset);
-        const length = lengthBorsh.read(buf, offset);
-        const cursor = offset + lengthBorsh.byteSize;
-        return beet
-          .uniformFixedSizeArray(GlowBorshTypes.signature, length, false)
-          .read(buf, cursor);
+        const signatureArray = signatureBeet.read(buffer, offset);
+        if (signatureArray.every((byte) => byte === 0)) {
+          return null;
+        }
+        return bs58.encode(signatureArray);
       },
-      write: (buf: Buffer, offset: number, signatures: string[]) => {
-        const lengthBorsh = CompactArray.Borsh.toFixedFromValue(
-          signatures.length
+      write: function (buffer, offset, value) {
+        const signatureLength = 64;
+        const signatureBeet = beet.fixedSizeUint8Array(signatureLength);
+
+        signatureBeet.write(
+          buffer,
+          offset,
+          value ? bs58.decode(value) : Buffer.alloc(64)
         );
-        lengthBorsh.write(buf, offset, signatures.length);
-        const signaturesStartCursor = offset + lengthBorsh.byteSize;
-        beet
-          .uniformFixedSizeArray(GlowBorshTypes.signature, length, false)
-          .write(buf, signaturesStartCursor, signatures);
       },
     };
-  };
 
-  /**
-   * De/Serializes section of signatures in transaction header.
-   * Uses {@link fixedSizeSignaturesArray} underneath.
-   */
-  export const transactionSignaturesSection: FixableBeet<string[], string[]> = {
-    toFixedFromData(
-      buf: Buffer,
-      offset: number
-    ): FixedSizeBeet<string[], string[]> {
-      const { value: length } = CompactArray.decodeLength({
-        buffer: buf,
-        offset,
-      });
-
-      return fixedSizeSignaturesArray(length);
-    },
-
-    toFixedFromValue(signatures: string[]): FixedSizeBeet<string[], string[]> {
-      return fixedSizeSignaturesArray(signatures.length);
-    },
-
-    description: `TransactionSignaturesSection`,
-  };
+  export const transactionSignaturesSection: FixableBeet<string[], string[]> =
+    FixableGlowBorsh.compactArray({ itemCoder: GlowBorshTypes.signature });
 }

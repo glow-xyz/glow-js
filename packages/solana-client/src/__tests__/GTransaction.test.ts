@@ -1,8 +1,15 @@
-import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Keypair,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import bs58 from "bs58";
+import { Buffer } from "buffer";
 import { randomBytes } from "node:crypto";
 import { Base64 } from "../base-types";
 import { GlowBorshTypes } from "../borsh/GlowBorshTypes";
+import { GKeypair } from "../GKeypair";
 import { GPublicKey } from "../GPublicKey";
 import { GTransaction } from "../GTransaction";
 
@@ -94,6 +101,7 @@ describe("GTransaction", () => {
     for (const txBase64 of TXS_BASE64) {
       const originalTxBuffer = Buffer.from(txBase64, "base64");
       const reshuffledTx = Transaction.from(originalTxBuffer);
+      // We serialize before passing to GTransaction since web3 can shuffle things around
       const reshuffledTxBuffer = reshuffledTx.serialize({
         requireAllSignatures: false,
         verifySignatures: false,
@@ -172,16 +180,16 @@ describe("GTransaction", () => {
 
   test("addSignature", async () => {
     // Prepare a simple transfer transaction
-    const from = Keypair.generate();
-    const to = Keypair.generate();
+    const from = GKeypair.generate();
+    const to = GKeypair.generate();
     const transaction = new Transaction({
-      feePayer: from.publicKey,
+      feePayer: from.publicKey as unknown as PublicKey,
       recentBlockhash: GPublicKey.default.toBase58(),
     });
     transaction.add(
       SystemProgram.transfer({
-        fromPubkey: from.publicKey,
-        toPubkey: to.publicKey,
+        fromPubkey: from.publicKey as unknown as PublicKey,
+        toPubkey: to.publicKey as unknown as PublicKey,
         lamports: 5_000 * 1.5,
       })
     );
@@ -199,7 +207,7 @@ describe("GTransaction", () => {
     );
 
     // Add a new signature
-    transaction.partialSign(from);
+    transaction.partialSign(from as unknown as Keypair);
     gTransaction = GTransaction.addSignature({
       gtransaction: gTransaction,
       address: from.publicKey.toBase58(),
@@ -214,16 +222,16 @@ describe("GTransaction", () => {
 
   test("sign", async () => {
     // Prepare a simple transfer transaction
-    const from = Keypair.generate();
-    const to = Keypair.generate();
+    const from = GKeypair.generate();
+    const to = GKeypair.generate();
     const transaction = new Transaction({
-      feePayer: from.publicKey,
+      feePayer: from.publicKey as unknown as PublicKey,
       recentBlockhash: GPublicKey.default.toBase58(),
     });
     transaction.add(
       SystemProgram.transfer({
-        fromPubkey: from.publicKey,
-        toPubkey: to.publicKey,
+        fromPubkey: from.publicKey as unknown as PublicKey,
+        toPubkey: to.publicKey as unknown as PublicKey,
         lamports: 5_000 * 1.5,
       })
     );
@@ -241,15 +249,52 @@ describe("GTransaction", () => {
     );
 
     // Add a new signature
-    transaction.partialSign(from);
+    transaction.partialSign(from as unknown as Keypair);
     gTransaction = GTransaction.sign({
       gtransaction: gTransaction,
-      secretKey: from.secretKey
+      secretKey: from.secretKey,
     });
 
     // Verify that serialized transactions with more signatures are equal too
     expect(transaction.serialize()).toEqual(
       GTransaction.toBuffer({ gtransaction: gTransaction })
     );
+  });
+
+  test("create a transfer transaction", () => {
+    const payer = GKeypair.generate();
+    const recentBlockhash = "636Lq2zGQDYZ3i6hahVcFWJkY6Jejndy5Qe4gBdukXDi";
+
+    const ix = SystemProgram.transfer({
+      fromPubkey: new PublicKey(payer.publicKey),
+      toPubkey: new PublicKey("3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm"),
+      lamports: 100,
+    });
+
+    const tx = new Transaction({
+      recentBlockhash,
+      feePayer: payer.publicKey as unknown as PublicKey,
+    });
+    tx.add(ix);
+    const txBuffer = tx.serialize({ verifySignatures: false });
+
+    const gtransaction = GTransaction.create({
+      feePayer: payer.publicKey.toBase58(),
+      recentBlockhash,
+      instructions: [
+        {
+          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
+            address: pubkey.toString(),
+            signer: isSigner,
+            writable: isWritable,
+          })),
+          data_base64: ix.data.toString("base64"),
+          program: ix.programId.toString(),
+        },
+      ],
+    });
+
+    const gBuffer = GTransaction.toBuffer({ gtransaction });
+    expect(gBuffer.toString("hex")).toEqual(txBuffer.toString("hex"));
   });
 });

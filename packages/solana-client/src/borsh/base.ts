@@ -1,4 +1,6 @@
 import * as beet from "@metaplex-foundation/beet";
+import sum from "lodash/sum";
+import range from "lodash/range";
 import {
   BeetField,
   BeetStruct,
@@ -16,6 +18,7 @@ import { DateTime } from "luxon";
 import { Solana } from "../base-types";
 import { GlowError } from "../error";
 import { GPublicKey } from "../GPublicKey";
+import { CompactArray } from "./CompactArray";
 
 /**
  * `new GlowBorsh(...)` is the equivalent of `new beet.BeetArgsStruct(...)`
@@ -417,5 +420,189 @@ export class FixableGlowBorsh<InOut> extends FixableBeetStruct<InOut, InOut> {
     },
 
     description: `Utf8String`,
+  };
+
+  /**
+   * This encodes an array of fixed size items with the length of the array a compact length
+   * encoded number. This is used in Solana Transactions.
+   */
+  static compactArray = <Item>({
+    itemCoder,
+  }: {
+    itemCoder: FixedSizeBeet<Item, Item>;
+  }): FixableBeet<Item[], Item[]> => {
+    return {
+      description: "CompactArray",
+      toFixedFromValue(val: Item[]): FixedSizeBeet<Item[], Item[]> {
+        const compactArrayLength = CompactArray.Borsh.toFixedFromValue(
+          val.length
+        );
+        const byteSize =
+          compactArrayLength.byteSize + itemCoder.byteSize * val.length;
+
+        return {
+          description: "CompactArray",
+          write: function (buf: Buffer, offset: number, items: Item[]): void {
+            compactArrayLength.write(buf, offset, items.length);
+
+            let cursor = offset + compactArrayLength.byteSize;
+            for (const item of items) {
+              itemCoder.write(buf, cursor, item);
+              cursor += itemCoder.byteSize;
+            }
+          },
+
+          read: function (buf: Buffer, offset: number): Item[] {
+            let cursor = offset + compactArrayLength.byteSize;
+
+            const output: Item[] = [];
+            for (let i = 0; i < val.length; i++) {
+              output.push(itemCoder.read(buf, cursor));
+              cursor += itemCoder.byteSize;
+            }
+
+            return output;
+          },
+          byteSize,
+        };
+      },
+      toFixedFromData(
+        buff: Buffer,
+        offset: number
+      ): FixedSizeBeet<Item[], Item[]> {
+        const compactArrayLength = CompactArray.Borsh.toFixedFromData(
+          buff,
+          offset
+        );
+        const length = compactArrayLength.read(buff, offset);
+        const byteSize =
+          compactArrayLength.byteSize + itemCoder.byteSize * length;
+
+        return {
+          description: "CompactArray",
+          write: function (buf: Buffer, offset: number, items: Item[]): void {
+            compactArrayLength.write(buf, offset, items.length);
+
+            let cursor = offset + compactArrayLength.byteSize;
+            for (const item of items) {
+              itemCoder.write(buf, cursor, item);
+              cursor += itemCoder.byteSize;
+            }
+          },
+
+          read: function (buf: Buffer, offset: number): Item[] {
+            let cursor = offset + compactArrayLength.byteSize;
+
+            const output: Item[] = [];
+            for (let i = 0; i < length; i++) {
+              output.push(itemCoder.read(buf, cursor));
+              cursor += itemCoder.byteSize;
+            }
+
+            return output;
+          },
+          byteSize,
+        };
+      },
+    };
+  };
+
+  /**
+   * This encodes an array of fixable size items.
+   */
+  static compactArrayFixable = <Item>({
+    elemCoder,
+  }: {
+    elemCoder: FixableBeet<Item, Item>;
+  }): FixableBeet<Item[], Item[]> => {
+    return {
+      description: "CompactArrayFixable",
+      toFixedFromValue(items: Item[]): FixedSizeBeet<Item[], Item[]> {
+        const compactArrayLength = CompactArray.Borsh.toFixedFromValue(
+          items.length
+        );
+        const itemCoders = items.map((item) =>
+          elemCoder.toFixedFromValue(item)
+        );
+        const itemsByteSize = sum(itemCoders.map((ic) => ic.byteSize));
+        const byteSize = compactArrayLength.byteSize + itemsByteSize;
+
+        return {
+          description: "CompactArrayFixable",
+          write: function (buf: Buffer, offset: number, items: Item[]): void {
+            compactArrayLength.write(buf, offset, items.length);
+
+            let cursor = offset + compactArrayLength.byteSize;
+            for (const [idx, item] of items.entries()) {
+              const itemCoder = itemCoders[idx];
+              itemCoder.write(buf, cursor, item);
+              cursor += itemCoder.byteSize;
+            }
+          },
+
+          read: function (buf: Buffer, offset: number): Item[] {
+            let cursor = offset + compactArrayLength.byteSize;
+
+            const output: Item[] = [];
+            for (let i = 0; i < items.length; i++) {
+              const itemCoder = itemCoders[i];
+              output.push(itemCoder.read(buf, cursor));
+              cursor += itemCoder.byteSize;
+            }
+
+            return output;
+          },
+          byteSize,
+        };
+      },
+      toFixedFromData(
+        buff: Buffer,
+        offset: number
+      ): FixedSizeBeet<Item[], Item[]> {
+        const compactArrayLength = CompactArray.Borsh.toFixedFromData(
+          buff,
+          offset
+        );
+        let cursor = offset + compactArrayLength.byteSize;
+        const length = compactArrayLength.read(buff, offset);
+
+        const itemCoders: FixedSizeBeet<Item>[] = [];
+        for (const _idx of range(length)) {
+          const itemCoder = elemCoder.toFixedFromData(buff, cursor);
+          itemCoders.push(itemCoder);
+          cursor += itemCoder.byteSize;
+        }
+
+        const itemsByteSize = sum(itemCoders.map((ic) => ic.byteSize));
+        const byteSize = compactArrayLength.byteSize + itemsByteSize;
+
+        return {
+          description: "CompactArrayFixable",
+          write: function (buf: Buffer, offset: number, items: Item[]): void {
+            compactArrayLength.write(buf, offset, items.length);
+
+            let cursor = offset + compactArrayLength.byteSize;
+            for (const [idx, item] of items.entries()) {
+              const itemCoder = itemCoders[idx];
+              itemCoder.write(buf, cursor, item);
+              cursor += itemCoder.byteSize;
+            }
+          },
+
+          read: function (buf: Buffer, offset: number): Item[] {
+            let cursor = offset + compactArrayLength.byteSize;
+
+            const output: Item[] = [];
+            for (const itemCoder of itemCoders) {
+              output.push(itemCoder.read(buf, cursor));
+              cursor += itemCoder.byteSize;
+            }
+
+            return output;
+          },
+          byteSize,
+        };
+      },
+    };
   };
 }
