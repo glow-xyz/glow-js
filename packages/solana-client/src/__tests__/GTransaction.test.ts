@@ -1,4 +1,9 @@
-import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
+import {
+  Keypair,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
 import { randomBytes } from "node:crypto";
@@ -253,5 +258,39 @@ describe("GTransaction", () => {
     expect(transaction.serialize()).toEqual(
       GTransaction.toBuffer({ gtransaction: gTransaction })
     );
+  });
+
+  test("create a transfer transaction", () => {
+    const payer = Keypair.generate();
+    const recentBlockhash = "636Lq2zGQDYZ3i6hahVcFWJkY6Jejndy5Qe4gBdukXDi";
+
+    const ix = SystemProgram.transfer({
+      fromPubkey: new PublicKey(payer.publicKey),
+      toPubkey: new PublicKey("3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm"),
+      lamports: 100,
+    });
+
+    const tx = new Transaction({ recentBlockhash, feePayer: payer.publicKey });
+    tx.add(ix);
+    const txBuffer = tx.serialize({ verifySignatures: false });
+
+    const gtransaction = GTransaction.create({
+      feePayer: payer.publicKey.toBase58(),
+      recentBlockhash,
+      instructions: [
+        {
+          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
+            address: pubkey.toString(),
+            signer: isSigner,
+            writable: isWritable,
+          })),
+          data_base64: ix.data.toString("base64"),
+          program: ix.programId.toString(),
+        },
+      ],
+    });
+
+    const gBuffer = GTransaction.toBuffer({ gtransaction });
+    expect(gBuffer.toString('hex')).toEqual(txBuffer.toString('hex'));
   });
 });

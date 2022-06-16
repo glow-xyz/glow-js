@@ -37,7 +37,7 @@ const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
         accountsCoder.write(buff, cursor, ix.accountIdxs);
         cursor += accountsCoder.byteSize;
 
-        dataCoder.write(buff, cursor, ix.accountIdxs);
+        dataCoder.write(buff, cursor, Array.from(ix.data));
       },
 
       read: function (buff: Buffer, offset: number): InstructionRaw {
@@ -83,7 +83,7 @@ const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
         accountsCoder.write(buff, cursor, ix.accountIdxs);
         cursor += accountsCoder.byteSize;
 
-        dataCoder.write(buff, cursor, ix.accountIdxs);
+        dataCoder.write(buff, cursor, Array.from(ix.data));
       },
 
       read: function (buf: Buffer, offset: number): InstructionRaw {

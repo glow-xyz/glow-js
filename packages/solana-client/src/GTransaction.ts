@@ -81,7 +81,13 @@ export namespace GTransaction {
       { writable: boolean; signer: boolean }
     > = {};
 
-    for (const { accounts } of instructions) {
+    for (const { accounts, program } of instructions) {
+      const currentProgramVal = accountMap[program];
+      accountMap[program] = {
+        signer: Boolean(currentProgramVal?.signer),
+        writable: Boolean(currentProgramVal?.writable),
+      };
+
       for (const { signer, writable, address } of accounts) {
         const currentVal = accountMap[address];
         accountMap[address] = {
@@ -293,7 +299,7 @@ const constructMessageBase64 = ({
   recentBlockhash: string;
 }): string => {
   const numRequiredSigs = accounts.filter((a) => a.signer).length;
-  const numReadonly = accounts.filter((a) => !a.writable).length;
+  const numReadOnlySigs = accounts.filter((a) => !a.writable && a.signer).length;
   const numReadonlyUnsigned = accounts.filter(
     (a) => !a.writable && !a.signer
   ).length;
@@ -309,16 +315,17 @@ const constructMessageBase64 = ({
     ({ program, accounts, data_base64 }) => {
       const { idx: programIdx } = accountToInfo[program];
       const accountIdxs = accounts.map((a) => accountToInfo[a.address].idx);
+      const data = Buffer.from(data_base64, "base64");
       return {
         programIdx,
         accountIdxs,
-        data: Buffer.from(data_base64, "base64"),
+        data,
       };
     }
   );
 
   const messageBuffer = TRANSACTION_MESSAGE.toBuffer({
-    numReadonlySigned: numReadonly,
+    numReadonlySigned: numReadOnlySigs,
     recentBlockhash,
     numReadonlyUnsigned,
     numRequiredSigs,
