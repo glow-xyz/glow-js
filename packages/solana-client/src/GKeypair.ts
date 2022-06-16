@@ -2,7 +2,6 @@ import nacl from "tweetnacl";
 import { Solana } from "./base-types";
 import { GPublicKey } from "./GPublicKey";
 
-
 interface Ed25519Keypair {
   publicKey: Uint8Array;
   secretKey: Uint8Array;
@@ -39,23 +38,15 @@ export class GKeypair {
    * generated secret key. Generating keypairs from a random seed should be done
    * with the {@link Keypair.fromSeed} method.
    *
-   * @throws error if the provided secret key is invalid and validation is not skipped.
-   *
-   * @param secretKey secret key byte array
-   * @param options: skip secret key validation
+   * @throws error if the provided secret key is invalid
    */
-  static fromSecretKey(
-    secretKey: Uint8Array,
-    options?: { skipValidation?: boolean }
-  ): GKeypair {
+  static fromSecretKey(secretKey: Uint8Array): GKeypair {
     const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
-    if (!options || !options.skipValidation) {
-      const encoder = new TextEncoder();
-      const signData = encoder.encode("@glow-app/solana-client-validation-v1");
-      const signature = nacl.sign.detached(signData, keypair.secretKey);
-      if (!nacl.sign.detached.verify(signData, signature, keypair.publicKey)) {
-        throw new Error("provided secretKey is invalid");
-      }
+    const encoder = new TextEncoder();
+    const signData = encoder.encode("@glow-app/solana-client-validation-v1");
+    const signature = nacl.sign.detached(signData, keypair.secretKey);
+    if (!nacl.sign.detached.verify(signData, signature, keypair.publicKey)) {
+      throw new Error("provided secretKey is invalid");
     }
     return new GKeypair(keypair);
   }
