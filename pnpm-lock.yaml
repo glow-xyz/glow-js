@@ -4,11 +4,11 @@ importers:
 
   .:
     specifiers:
-      prettier: 2.6.2
+      prettier: 2.7.1
       turbo: 1.2.16
       typescript: 4.7.3
     devDependencies:
-      prettier: 2.6.2
+      prettier: 2.7.1
       turbo: 1.2.16
       typescript: 4.7.3
 
@@ -30,7 +30,7 @@ importers:
       sass: 1.52.2
       typescript: 4.7.3
     dependencies:
-      '@glow-app/glow-client': link:../glow-client
+      '@glow-app/glow-client': 0.3.1
       '@glow-app/glow-react': link:../glow-react
       '@popperjs/core': 2.11.5
       bootstrap: 5.1.3_@popperjs+core@2.11.5
@@ -62,7 +62,7 @@ importers:
       eventemitter3: 4.0.7
       jest: 28.1.1
       luxon: 2.4.0
-      prettier: 2.6.2
+      prettier: 2.7.1
       release-it: 15.0.0
       rimraf: 3.0.2
       ts-jest: 28.0.4
@@ -87,7 +87,7 @@ importers:
       eslint: 8.17.0
       eslint-plugin-lodash: 7.4.0_eslint@8.17.0
       jest: 28.1.1
-      prettier: 2.6.2
+      prettier: 2.7.1
       rimraf: 3.0.2
       ts-jest: 28.0.4_hhjivpbef6nbltei64cv7t7zz4
       typescript: 4.7.3
@@ -101,10 +101,10 @@ importers:
       classnames: 2.3.1
       esbuild: 0.14.43
       esbuild-register: 3.3.3
-      prettier: 2.6.2
+      prettier: 2.7.1
       sass: 1.52.2
     dependencies:
-      '@glow-app/glow-client': link:../glow-client
+      '@glow-app/glow-client': 0.3.1
       classnames: 2.3.1
     devDependencies:
       '@solana/web3.js': 1.43.4
@@ -112,7 +112,7 @@ importers:
       '@types/react-dom': 18.0.5
       esbuild: 0.14.43
       esbuild-register: 3.3.3_esbuild@0.14.43
-      prettier: 2.6.2
+      prettier: 2.7.1
       sass: 1.52.2
 
   packages/solana-client:
@@ -138,7 +138,7 @@ importers:
       lodash: 4.17.21
       luxon: 2.4.0
       p-limit: 3.1.0
-      prettier: 2.6.2
+      prettier: 2.7.1
       release-it: 15.0.0
       rimraf: 3.0.2
       ts-jest: 28.0.4
@@ -171,7 +171,7 @@ importers:
       eslint: 8.17.0
       eslint-plugin-lodash: 7.4.0_eslint@8.17.0
       jest: 28.1.1
-      prettier: 2.6.2
+      prettier: 2.7.1
       release-it: 15.0.0
       ts-jest: 28.0.4_hhjivpbef6nbltei64cv7t7zz4
       typescript: 4.7.3
@@ -543,6 +543,17 @@ packages:
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/logger': 5.6.0
       hash.js: 1.1.7
+
+  /@glow-app/glow-client/0.3.1:
+    resolution: {integrity: sha512-EDp+cQitiEUt90D/jRXH6ME5GreI+6jb3xo5XKls+I6Vw+09HQVcEGRkCetAG1WS1oZJ7pxVqCL17KGjKGyedg==}
+    dependencies:
+      bs58: 5.0.0
+      buffer: 6.0.3
+      eventemitter3: 4.0.7
+      luxon: 2.4.0
+      tweetnacl: 1.0.3
+      zod: 3.17.3
+    dev: false
 
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
@@ -4992,8 +5003,8 @@ packages:
     resolution: {integrity: sha512-ravE6m9Atw9Z/jjttRUZ+clIXogdghyZAuWJ3qEzjT+jI/dL1ifAqhZeC5VHzQp1MSt1+jxKkFNemj/iO7tVUA==}
     engines: {node: '>=4'}
 
-  /prettier/2.6.2:
-    resolution: {integrity: sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==}
+  /prettier/2.7.1:
+    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
