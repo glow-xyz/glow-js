@@ -28,8 +28,8 @@ export class GKeypair {
     }
   }
 
-  static generate(): Keypair {
-    return new Keypair(nacl.sign.keyPair());
+  static generate(): GKeypair {
+    return new GKeypair(nacl.sign.keyPair());
   }
 
   /**
@@ -47,7 +47,7 @@ export class GKeypair {
   static fromSecretKey(
     secretKey: Uint8Array,
     options?: { skipValidation?: boolean }
-  ): Keypair {
+  ): GKeypair {
     const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
     if (!options || !options.skipValidation) {
       const encoder = new TextEncoder();
@@ -57,11 +57,11 @@ export class GKeypair {
         throw new Error("provided secretKey is invalid");
       }
     }
-    return new Keypair(keypair);
+    return new GKeypair(keypair);
   }
 
-  static fromSeed(seed: Uint8Array): Keypair {
-    return new Keypair(nacl.sign.keyPair.fromSeed(seed));
+  static fromSeed(seed: Uint8Array): GKeypair {
+    return new GKeypair(nacl.sign.keyPair.fromSeed(seed));
   }
 
   get publicKey(): GPublicKey {
