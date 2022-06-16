@@ -1,4 +1,3 @@
-import * as beet from "@metaplex-foundation/beet";
 import { FixableBeet, FixedSizeBeet } from "@metaplex-foundation/beet";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
@@ -6,7 +5,7 @@ import sortBy from "lodash/sortBy";
 import nacl from "tweetnacl";
 import { z } from "zod";
 import { Base58, Solana } from "./base-types";
-import { FixableGlowBorsh, GlowBorsh } from "./borsh/base";
+import { FixableGlowBorsh } from "./borsh/base";
 
 import { CompactArray } from "./borsh/CompactArray";
 import { GlowBorshTypes } from "./borsh/GlowBorshTypes";
@@ -203,29 +202,40 @@ export namespace GTransaction {
       sigs.push(sig);
     }
 
-    const messageBase64 = buffer.slice(offset).toString("base64");
+    const messageBuffer = buffer.slice(offset);
+    const {
+      numReadonlySigned,
+      numReadonlyUnsigned,
+      numRequiredSigs,
+      recentBlockhash,
+      instructions: rawInstructions,
+      addresses,
+    } = TRANSACTION_MESSAGE.parse({ buffer: messageBuffer })!;
 
-    const numRequiredSignatures = consume({ parser: beet.u8 });
-    const numReadonlySignedAccounts = consume({ parser: beet.u8 });
-    const numReadonlyUnsignedAccounts = consume({ parser: beet.u8 });
+    const numAccounts = addresses.length;
 
-    const numAccounts = consumeFixable({
-      fixable: CompactArray.Borsh,
-    });
-
-    const addresses: Solana.Address[] = [];
-    for (let i = 0; i < numAccounts; i++) {
-      const address = consume({ parser: GlowBorsh.address });
-      addresses.push(address);
-    }
     const accounts = addresses.map((address, idx) => ({
       address,
-      signer: idx < numRequiredSignatures,
+      signer: idx < numRequiredSigs,
       writable:
-        idx < numRequiredSignatures - numReadonlySignedAccounts ||
-        (idx >= numRequiredSignatures &&
-          idx < addresses.length - numReadonlyUnsignedAccounts),
+        idx < numRequiredSigs - numReadonlySigned ||
+        (idx >= numRequiredSigs &&
+          idx < addresses.length - numReadonlyUnsigned),
     }));
+
+    const instructions: z.infer<typeof InstructionZ>[] = [];
+    for (const { programIdx, accountIdxs, data } of rawInstructions) {
+      instructions.push({
+        program: addresses[programIdx],
+        accounts: accountIdxs.map((idx) => {
+          if (idx >= numAccounts) {
+            throw new Error("Account not found.");
+          }
+          return addresses[idx];
+        }),
+        data_base64: data.toString("base64"),
+      });
+    }
 
     const signatures: Array<{
       signature: Base58;
@@ -235,62 +245,13 @@ export namespace GTransaction {
       address: addresses[idx],
     }));
 
-    const expectedSignaturesLength = accounts.filter(
-      ({ signer }) => signer
-    ).length;
-    if (signatures.length !== expectedSignaturesLength) {
-      throw new Error(
-        `Invalid number of signatures, expected ${expectedSignaturesLength}, got ${signatures.length}`
-      );
-    }
-
-    const recentBlockhash = consume({ parser: GlowBorsh.address });
-
-    const instructionCount = consumeFixable({
-      fixable: CompactArray.Borsh,
-    });
-
-    const instructions: z.infer<typeof InstructionZ>[] = [];
-    for (let i = 0; i < instructionCount; i++) {
-      const programIdx = consume({ parser: beet.u8 });
-      const program = addresses[programIdx];
-      if (!program) {
-        throw new Error("Program not found.");
-      }
-
-      const accountCount = consumeFixable({
-        fixable: CompactArray.Borsh,
-      });
-
-      const accountIdxs = consume({
-        parser: beet.uniformFixedSizeArray(beet.u8, accountCount, false),
-      });
-
-      const dataLength = consumeFixable({
-        fixable: CompactArray.Borsh,
-      });
-      const dataSlice = consume({
-        parser: beet.fixedSizeUint8Array(dataLength),
-      });
-      instructions.push({
-        program,
-        accounts: accountIdxs.map((idx) => {
-          if (idx >= numAccounts) {
-            throw new Error("Account not found.");
-          }
-          return addresses[idx];
-        }),
-        data_base64: Buffer.from(dataSlice).toString("base64"),
-      });
-    }
-
     return GTransactionZ.parse({
       signature: signatures[0].signature,
       signatures,
       recentBlockhash,
       instructions,
       accounts,
-      messageBase64,
+      messageBase64: messageBuffer.toString("base64"),
     });
   };
 
@@ -390,7 +351,7 @@ const constructMessageBase64 = ({
   );
 
   const messageBuffer = TRANSACTION_MESSAGE.toBuffer({
-    numReadonly,
+    numReadonlySigned: numReadonly,
     recentBlockhash,
     numReadonlyUnsigned,
     numRequiredSigs,

@@ -104,7 +104,7 @@ const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
 
 export const TRANSACTION_MESSAGE = new FixableGlowBorsh<{
   numRequiredSigs: number;
-  numReadonly: number;
+  numReadonlySigned: number;
   numReadonlyUnsigned: number;
   addresses: Solana.Address[];
   recentBlockhash: string;
@@ -112,7 +112,7 @@ export const TRANSACTION_MESSAGE = new FixableGlowBorsh<{
 }>({
   fields: [
     ["numRequiredSigs", beet.u8],
-    ["numReadonly", beet.u8],
+    ["numReadonlySigned", beet.u8],
     ["numReadonlyUnsigned", beet.u8],
     [
       "addresses",
