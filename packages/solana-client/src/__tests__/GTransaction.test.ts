@@ -1,4 +1,5 @@
 import {
+  Keypair,
   PublicKey,
   SystemProgram,
   Transaction,
@@ -182,13 +183,13 @@ describe("GTransaction", () => {
     const from = GKeypair.generate();
     const to = GKeypair.generate();
     const transaction = new Transaction({
-      feePayer: from.publicKey,
+      feePayer: from.publicKey as unknown as PublicKey,
       recentBlockhash: GPublicKey.default.toBase58(),
     });
     transaction.add(
       SystemProgram.transfer({
-        fromPubkey: from.publicKey,
-        toPubkey: to.publicKey,
+        fromPubkey: from.publicKey as unknown as PublicKey,
+        toPubkey: to.publicKey as unknown as PublicKey,
         lamports: 5_000 * 1.5,
       })
     );
@@ -206,7 +207,7 @@ describe("GTransaction", () => {
     );
 
     // Add a new signature
-    transaction.partialSign(from);
+    transaction.partialSign(from as unknown as Keypair);
     gTransaction = GTransaction.addSignature({
       gtransaction: gTransaction,
       address: from.publicKey.toBase58(),
@@ -224,13 +225,13 @@ describe("GTransaction", () => {
     const from = GKeypair.generate();
     const to = GKeypair.generate();
     const transaction = new Transaction({
-      feePayer: from.publicKey,
+      feePayer: from.publicKey as unknown as PublicKey,
       recentBlockhash: GPublicKey.default.toBase58(),
     });
     transaction.add(
       SystemProgram.transfer({
-        fromPubkey: from.publicKey,
-        toPubkey: to.publicKey,
+        fromPubkey: from.publicKey as unknown as PublicKey,
+        toPubkey: to.publicKey as unknown as PublicKey,
         lamports: 5_000 * 1.5,
       })
     );
@@ -248,7 +249,7 @@ describe("GTransaction", () => {
     );
 
     // Add a new signature
-    transaction.partialSign(from);
+    transaction.partialSign(from as unknown as Keypair);
     gTransaction = GTransaction.sign({
       gtransaction: gTransaction,
       secretKey: from.secretKey,
@@ -270,7 +271,10 @@ describe("GTransaction", () => {
       lamports: 100,
     });
 
-    const tx = new Transaction({ recentBlockhash, feePayer: payer.publicKey });
+    const tx = new Transaction({
+      recentBlockhash,
+      feePayer: payer.publicKey as unknown as PublicKey,
+    });
     tx.add(ix);
     const txBuffer = tx.serialize({ verifySignatures: false });
 
@@ -291,6 +295,6 @@ describe("GTransaction", () => {
     });
 
     const gBuffer = GTransaction.toBuffer({ gtransaction });
-    expect(gBuffer.toString('hex')).toEqual(txBuffer.toString('hex'));
+    expect(gBuffer.toString("hex")).toEqual(txBuffer.toString("hex"));
   });
 });
