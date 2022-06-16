@@ -1,4 +1,3 @@
-import { FixableBeet, FixedSizeBeet } from "@metaplex-foundation/beet";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
 import sortBy from "lodash/sortBy";
@@ -6,8 +5,6 @@ import nacl from "tweetnacl";
 import { z } from "zod";
 import { Base58, Solana } from "./base-types";
 import { FixableGlowBorsh } from "./borsh/base";
-
-import { CompactArray } from "./borsh/CompactArray";
 import { GlowBorshTypes } from "./borsh/GlowBorshTypes";
 import { TRANSACTION_MESSAGE } from "./borsh/transaction-borsh";
 
@@ -169,40 +166,11 @@ export namespace GTransaction {
   };
 
   export const parse = ({ buffer }: { buffer: Buffer }): GTransaction => {
-    let offset = 0;
+    const signaturesCoder =
+      GlowBorshTypes.transactionSignaturesSection.toFixedFromData(buffer, 0);
+    const sigs = signaturesCoder.read(buffer, 0);
 
-    const consume = <Output>({
-      parser,
-    }: {
-      parser: FixedSizeBeet<Output, Partial<Output>>;
-    }): Output => {
-      const parsed = parser.read(buffer, offset);
-      offset += parser.byteSize;
-      return parsed;
-    };
-    const consumeFixable = <Output>({
-      fixable,
-    }: {
-      fixable: FixableBeet<Output, Partial<Output>>;
-    }): Output => {
-      const _parser = fixable.toFixedFromData(buffer, offset);
-      const parsed = _parser.read(buffer, offset);
-      offset += _parser.byteSize;
-      return parsed;
-    };
-
-    const numSignatures = consumeFixable({
-      fixable: CompactArray.Borsh,
-    });
-
-    const sigs: Base58[] = [];
-
-    for (let i = 0; i < numSignatures; i++) {
-      const sig = consume({ parser: GlowBorshTypes.signature });
-      sigs.push(sig);
-    }
-
-    const messageBuffer = buffer.slice(offset);
+    const messageBuffer = buffer.slice(signaturesCoder.byteSize);
     const {
       numReadonlySigned,
       numReadonlyUnsigned,
@@ -223,9 +191,8 @@ export namespace GTransaction {
           idx < addresses.length - numReadonlyUnsigned),
     }));
 
-    const instructions: z.infer<typeof InstructionZ>[] = [];
-    for (const { programIdx, accountIdxs, data } of rawInstructions) {
-      instructions.push({
+    const instructions: z.infer<typeof InstructionZ>[] = rawInstructions.map(
+      ({ programIdx, accountIdxs, data }) => ({
         program: addresses[programIdx],
         accounts: accountIdxs.map((idx) => {
           if (idx >= numAccounts) {
@@ -234,8 +201,8 @@ export namespace GTransaction {
           return addresses[idx];
         }),
         data_base64: data.toString("base64"),
-      });
-    }
+      })
+    );
 
     const signatures: Array<{
       signature: Base58;
