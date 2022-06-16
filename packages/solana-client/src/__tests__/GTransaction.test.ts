@@ -1,5 +1,6 @@
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import bs58 from "bs58";
+import { Buffer } from "buffer";
 import { randomBytes } from "node:crypto";
 import { Base64 } from "../base-types";
 import { GlowBorshTypes } from "../borsh/GlowBorshTypes";
@@ -94,6 +95,7 @@ describe("GTransaction", () => {
     for (const txBase64 of TXS_BASE64) {
       const originalTxBuffer = Buffer.from(txBase64, "base64");
       const reshuffledTx = Transaction.from(originalTxBuffer);
+      // We serialize before passing to GTransaction since web3 can shuffle things around
       const reshuffledTxBuffer = reshuffledTx.serialize({
         requireAllSignatures: false,
         verifySignatures: false,
@@ -244,7 +246,7 @@ describe("GTransaction", () => {
     transaction.partialSign(from);
     gTransaction = GTransaction.sign({
       gtransaction: gTransaction,
-      secretKey: from.secretKey
+      secretKey: from.secretKey,
     });
 
     // Verify that serialized transactions with more signatures are equal too

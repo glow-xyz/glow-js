@@ -1,6 +1,7 @@
 import * as beet from "@metaplex-foundation/beet";
 import { FixableBeet, FixedSizeBeet } from "@metaplex-foundation/beet";
 import bs58 from "bs58";
+import { Buffer } from "buffer";
 import { Base58 } from "../base-types";
 
 import { CompactArray } from "./CompactArray";
@@ -23,6 +24,32 @@ export namespace GlowBorshTypes {
       signatureBeet.write(buffer, offset, bs58.decode(value));
     },
   };
+
+  export const signatureNullable: FixedSizeBeet<Base58 | null, Base58 | null> =
+    {
+      byteSize: 64,
+      description: "SignatureNullable",
+      read: function (buffer, offset) {
+        const signatureLength = 64;
+        const signatureBeet = beet.fixedSizeUint8Array(signatureLength);
+
+        const signatureArray = signatureBeet.read(buffer, offset);
+        if (signatureArray.every((byte) => byte === 0)) {
+          return null;
+        }
+        return bs58.encode(signatureArray);
+      },
+      write: function (buffer, offset, value) {
+        const signatureLength = 64;
+        const signatureBeet = beet.fixedSizeUint8Array(signatureLength);
+
+        signatureBeet.write(
+          buffer,
+          offset,
+          value ? bs58.decode(value) : Buffer.alloc(64)
+        );
+      },
+    };
 
   /**
    * De/Serializes an array of signatures. Buffer consists of

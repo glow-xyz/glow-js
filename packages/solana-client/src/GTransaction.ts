@@ -2,13 +2,15 @@ import * as beet from "@metaplex-foundation/beet";
 import { FixableBeet, FixedSizeBeet } from "@metaplex-foundation/beet";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
+import sortBy from "lodash/sortBy";
 import nacl from "tweetnacl";
 import { z } from "zod";
 import { Base58, Solana } from "./base-types";
-import { GlowBorsh } from "./borsh/base";
+import { FixableGlowBorsh, GlowBorsh } from "./borsh/base";
 
 import { CompactArray } from "./borsh/CompactArray";
 import { GlowBorshTypes } from "./borsh/GlowBorshTypes";
+import { TRANSACTION_MESSAGE } from "./borsh/transaction-borsh";
 
 /**
  * This is useful for manipulating existing transactions for a few reasons:
@@ -23,7 +25,7 @@ import { GlowBorshTypes } from "./borsh/GlowBorshTypes";
  */
 export namespace GTransaction {
   const SignatureZ = z.object({
-    signature: z.string(), // base58
+    signature: z.string().nullable(), // base58
     address: Solana.AddressZ,
   });
 
@@ -40,8 +42,26 @@ export namespace GTransaction {
   });
   export type Instruction = z.infer<typeof InstructionZ>;
 
+  // This is useful when creating a Transaction from instructions. Each instruction
+  // requests that an account should be writable or a signer. But when we serialize the transaction
+  // we just store information for an account if it's a signer or writable on *any* instruction.
+  // Solana txs don't store information about which instruction requested the account to be a
+  // signer or writable.
+  const InstructionFactoryZ = z.object({
+    accounts: z.array(
+      z.object({
+        address: Solana.AddressZ,
+        writable: z.boolean().optional(),
+        signer: z.boolean().optional(),
+      })
+    ),
+    program: Solana.AddressZ,
+    data_base64: z.string(),
+  });
+  export type InstructionFactory = z.infer<typeof InstructionFactoryZ>;
+
   export const GTransactionZ = z.object({
-    signature: z.string(),
+    signature: z.string().nullable(),
     signatures: z.array(SignatureZ),
     accounts: z.array(AccountZ),
     recentBlockhash: z.string(), // Base58
@@ -49,6 +69,79 @@ export namespace GTransaction {
     messageBase64: z.string(),
   });
   export type GTransaction = z.infer<typeof GTransactionZ>;
+
+  export const create = ({
+    instructions,
+    recentBlockhash,
+    feePayer,
+  }: {
+    instructions: InstructionFactory[];
+    recentBlockhash: string;
+    feePayer?: string;
+  }): GTransaction => {
+    // TODO: what is the sorting we need to apply to the accounts?
+    const accountMap: Record<
+      Solana.Address,
+      { writable: boolean; signer: boolean }
+    > = {};
+
+    for (const { accounts } of instructions) {
+      for (const { signer, writable, address } of accounts) {
+        const currentVal = accountMap[address];
+        accountMap[address] = {
+          signer: Boolean(currentVal?.signer || signer),
+          writable: Boolean(currentVal?.writable || writable),
+        };
+      }
+    }
+
+    const unsortedAccounts = Object.entries(accountMap).map(
+      ([address, { writable, signer }]) => ({ writable, signer, address })
+    );
+
+    const accounts = sortBy(
+      unsortedAccounts,
+      ({ signer, address, writable }) => {
+        if (address === feePayer) {
+          return [0, address];
+        }
+        if (signer && writable) {
+          return [2, address];
+        }
+        if (signer) {
+          return [3, address];
+        }
+        if (writable) {
+          return [4, address];
+        }
+        return [5, address];
+      }
+    );
+    const signerAccounts = accounts.filter((a) => a.signer);
+    const signatures = signerAccounts.map((a) => ({
+      address: a.address,
+      signature: null,
+    }));
+
+    const messageBase64 = constructMessageBase64({
+      instructions,
+      accounts,
+      recentBlockhash,
+    });
+
+    return {
+      signature: null,
+      signatures,
+      accounts,
+      recentBlockhash,
+      messageBase64,
+      instructions: instructions.map(({ accounts, program, data_base64 }) => ({
+        program,
+        data_base64,
+        accounts: accounts.map((a) => a.address),
+      })),
+    };
+  };
 
   export const sign = ({
     secretKey,
@@ -242,10 +335,11 @@ export namespace GTransaction {
     gtransaction: GTransaction;
   }): Buffer => {
     const messageBuffer = Buffer.from(gtransaction.messageBase64, "base64");
-    const signaturesFixedBeet =
-      GlowBorshTypes.transactionSignaturesSection.toFixedFromValue(
-        gtransaction.signatures.map(({ signature }) => signature)
-      );
+    const signaturesFixedBeet = FixableGlowBorsh.compactArray({
+      itemCoder: GlowBorshTypes.signatureNullable,
+    }).toFixedFromValue(
+      gtransaction.signatures.map(({ signature }) => signature)
+    );
     const txBufferSize =
       signaturesFixedBeet.byteSize + messageBuffer.byteLength;
 
@@ -260,3 +354,49 @@ export namespace GTransaction {
     return txBuffer;
   };
 }
+
+const constructMessageBase64 = ({
+  instructions,
+  accounts,
+  recentBlockhash,
+}: {
+  instructions: GTransaction.InstructionFactory[];
+  accounts: GTransaction.GTransaction["accounts"];
+  recentBlockhash: string;
+}): string => {
+  const numRequiredSigs = accounts.filter((a) => a.signer).length;
+  const numReadonly = accounts.filter((a) => !a.writable).length;
+  const numReadonlyUnsigned = accounts.filter(
+    (a) => !a.writable && !a.signer
+  ).length;
+
+  const accountToInfo = Object.fromEntries(
+    accounts.map(({ address, signer, writable }, idx) => {
+      return [address, { signer, writable, idx }];
+    })
+  );
+  const addresses = accounts.map((a) => a.address);
+
+  const compiledInstructions = instructions.map(
+    ({ program, accounts, data_base64 }) => {
+      const { idx: programIdx } = accountToInfo[program];
+      const accountIdxs = accounts.map((a) => accountToInfo[a.address].idx);
+      return {
+        programIdx,
+        accountIdxs,
+        data: Buffer.from(data_base64, "base64"),
+      };
+    }
+  );
+
+  const messageBuffer = TRANSACTION_MESSAGE.toBuffer({
+    numReadonly,
+    recentBlockhash,
+    numReadonlyUnsigned,
+    numRequiredSigs,
+    instructions: compiledInstructions,
+    addresses,
+  });
+
+  return messageBuffer.toString("base64");
+};
