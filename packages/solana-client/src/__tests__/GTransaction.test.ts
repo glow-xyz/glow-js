@@ -1,5 +1,4 @@
 import {
-  Keypair,
   PublicKey,
   SystemProgram,
   Transaction,
@@ -9,6 +8,7 @@ import { Buffer } from "buffer";
 import { randomBytes } from "node:crypto";
 import { Base64 } from "../base-types";
 import { GlowBorshTypes } from "../borsh/GlowBorshTypes";
+import { GKeypair } from "../GKeypair";
 import { GPublicKey } from "../GPublicKey";
 import { GTransaction } from "../GTransaction";
 
@@ -179,8 +179,8 @@ describe("GTransaction", () => {
 
   test("addSignature", async () => {
     // Prepare a simple transfer transaction
-    const from = Keypair.generate();
-    const to = Keypair.generate();
+    const from = GKeypair.generate();
+    const to = GKeypair.generate();
     const transaction = new Transaction({
       feePayer: from.publicKey,
       recentBlockhash: GPublicKey.default.toBase58(),
@@ -221,8 +221,8 @@ describe("GTransaction", () => {
 
   test("sign", async () => {
     // Prepare a simple transfer transaction
-    const from = Keypair.generate();
-    const to = Keypair.generate();
+    const from = GKeypair.generate();
+    const to = GKeypair.generate();
     const transaction = new Transaction({
       feePayer: from.publicKey,
       recentBlockhash: GPublicKey.default.toBase58(),
@@ -261,7 +261,7 @@ describe("GTransaction", () => {
   });
 
   test("create a transfer transaction", () => {
-    const payer = Keypair.generate();
+    const payer = GKeypair.generate();
     const recentBlockhash = "636Lq2zGQDYZ3i6hahVcFWJkY6Jejndy5Qe4gBdukXDi";
 
     const ix = SystemProgram.transfer({
