@@ -75,7 +75,6 @@ export namespace GTransaction {
     recentBlockhash: string;
     feePayer?: string;
   }): GTransaction => {
-    // TODO: what is the sorting we need to apply to the accounts?
     const accountMap: Record<
       Solana.Address,
       { writable: boolean; signer: boolean }
