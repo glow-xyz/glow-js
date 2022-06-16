@@ -29,7 +29,7 @@
     "@types/jest": "28.1.1",
     "@types/luxon": "2.3.2",
     "@typescript-eslint/parser": "5.27.0",
-    "esbuild": "0.14.43",
+    "esbuild": "0.14.44",
     "esbuild-register": "3.3.3",
     "eslint": "8.17.0",
     "eslint-plugin-lodash": "7.4.0",
