@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@glow-app/glow-client": "latest",
+    "@glow-app/glow-client": "workspace:^0.3.2",
     "@glow-app/glow-react": "latest",
     "@popperjs/core": "2.11.5",
     "bootstrap": "5.1.3",

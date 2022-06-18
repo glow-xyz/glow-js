@@ -16,7 +16,7 @@ importers:
 
   packages/example-next-js:
     specifiers:
-      '@glow-app/glow-client': latest
+      '@glow-app/glow-client': workspace:^0.3.2
       '@glow-app/glow-react': latest
       '@popperjs/core': 2.11.5
       '@types/node': 18.0.0
@@ -32,7 +32,7 @@ importers:
       sass: 1.52.3
       typescript: 4.7.4
     dependencies:
-      '@glow-app/glow-client': 0.3.1
+      '@glow-app/glow-client': link:../glow-client
       '@glow-app/glow-react': link:../glow-react
       '@popperjs/core': 2.11.5
       bootstrap: 5.1.3_@popperjs+core@2.11.5
@@ -94,7 +94,7 @@ importers:
 
   packages/glow-react:
     specifiers:
-      '@glow-app/glow-client': latest
+      '@glow-app/glow-client': workspace:^0.3.2
       '@solana/web3.js': 1.44.1
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.5
@@ -104,7 +104,7 @@ importers:
       prettier: 2.7.1
       sass: 1.52.3
     dependencies:
-      '@glow-app/glow-client': 0.3.1
+      '@glow-app/glow-client': link:../glow-client
       classnames: 2.3.1
     devDependencies:
       '@solana/web3.js': 1.44.1
@@ -544,17 +544,6 @@ packages:
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/logger': 5.6.0
       hash.js: 1.1.7
-
-  /@glow-app/glow-client/0.3.1:
-    resolution: {integrity: sha512-EDp+cQitiEUt90D/jRXH6ME5GreI+6jb3xo5XKls+I6Vw+09HQVcEGRkCetAG1WS1oZJ7pxVqCL17KGjKGyedg==}
-    dependencies:
-      bs58: 5.0.0
-      buffer: 6.0.3
-      eventemitter3: 4.0.7
-      luxon: 2.4.0
-      tweetnacl: 1.0.3
-      zod: 3.17.3
-    dev: false
 
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
