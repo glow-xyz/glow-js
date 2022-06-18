@@ -30,7 +30,7 @@ importers:
       sass: 1.52.2
       typescript: 4.7.3
     dependencies:
-      '@glow-app/glow-client': link:../glow-client
+      '@glow-app/glow-client': 0.3.1
       '@glow-app/glow-react': link:../glow-react
       '@popperjs/core': 2.11.5
       bootstrap: 5.1.3_@popperjs+core@2.11.5
@@ -49,7 +49,7 @@ importers:
 
   packages/glow-client:
     specifiers:
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.44.1
       '@types/jest': 28.1.1
       '@types/luxon': 2.3.2
       '@typescript-eslint/parser': 5.27.0
@@ -78,7 +78,7 @@ importers:
       tweetnacl: 1.0.3
       zod: 3.17.3
     devDependencies:
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.44.1
       '@types/jest': 28.1.1
       '@types/luxon': 2.3.2
       '@typescript-eslint/parser': 5.27.0_ud6rd4xtew5bv4yhvkvu24pzm4
@@ -95,7 +95,7 @@ importers:
   packages/glow-react:
     specifiers:
       '@glow-app/glow-client': latest
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.44.1
       '@types/react': 18.0.12
       '@types/react-dom': 18.0.5
       classnames: 2.3.1
@@ -104,10 +104,10 @@ importers:
       prettier: 2.6.2
       sass: 1.52.2
     dependencies:
-      '@glow-app/glow-client': link:../glow-client
+      '@glow-app/glow-client': 0.3.1
       classnames: 2.3.1
     devDependencies:
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.44.1
       '@types/react': 18.0.12
       '@types/react-dom': 18.0.5
       esbuild: 0.14.43
@@ -118,7 +118,7 @@ importers:
   packages/solana-client:
     specifiers:
       '@metaplex-foundation/beet': 0.2.0
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.44.1
       '@types/bn.js': 5.1.0
       '@types/jest': 28.1.1
       '@types/lodash': 4.14.182
@@ -147,7 +147,7 @@ importers:
       zod: 3.17.3
     dependencies:
       '@metaplex-foundation/beet': 0.2.0
-      '@solana/web3.js': 1.43.4
+      '@solana/web3.js': 1.44.1
       axios: 0.27.2
       bignumber.js: 9.0.2
       bn.js: 5.2.1
@@ -543,6 +543,17 @@ packages:
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/logger': 5.6.0
       hash.js: 1.1.7
+
+  /@glow-app/glow-client/0.3.1:
+    resolution: {integrity: sha512-EDp+cQitiEUt90D/jRXH6ME5GreI+6jb3xo5XKls+I6Vw+09HQVcEGRkCetAG1WS1oZJ7pxVqCL17KGjKGyedg==}
+    dependencies:
+      bs58: 5.0.0
+      buffer: 6.0.3
+      eventemitter3: 4.0.7
+      luxon: 2.4.0
+      tweetnacl: 1.0.3
+      zod: 3.17.3
+    dev: false
 
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
@@ -1096,10 +1107,9 @@ packages:
     dependencies:
       buffer: 6.0.3
 
-  /@solana/web3.js/1.43.4:
-    resolution: {integrity: sha512-9+c965R3vjIRIfUFQtKfaG8BM4tVoo/fp4DvmqHAGLTaeHilVsRdyXszW6+Ues5KczgBejlp62k2SeUcbOibUg==}
+  /@solana/web3.js/1.44.1:
+    resolution: {integrity: sha512-s9nJdNAfmQKvn7K+pGcDZyJXhVN0Dy4yX0DzO+8yHSju1dF/RGJCR5TAUaAb3sZJgM+zxgyPu/P16Ji5HkdNOQ==}
     engines: {node: '>=12.20.0'}
-    deprecated: This version introduced a bug that could cause certain transactions to fail signature verification when used with certain wallets.
     dependencies:
       '@babel/runtime': 7.18.3
       '@ethersproject/sha2': 5.6.1
@@ -6036,10 +6046,10 @@ packages:
       defaults: 1.0.3
 
   /webidl-conversions/3.0.1:
-    resolution: {integrity: sha1-JFNCdeKnvGvnvIZhHMFq4KVlSHE=}
+    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
   /whatwg-url/5.0.0:
-    resolution: {integrity: sha1-lmRU6HZUYuN2RNNib2dCzotwll0=}
+    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
