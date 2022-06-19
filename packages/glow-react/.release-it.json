@@ -1,0 +1,13 @@
+{
+  "git": {
+    "commitMessage": "[glow-react]: Release v${version}",
+    "tagName": "glow-react-v${version}"
+  },
+  "github": {
+    "release": true,
+    "releaseName": "`@glow-app/glow-react` v${version}`"
+  },
+  "npm": {
+    "access": "public"
+  }
+}
