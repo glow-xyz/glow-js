@@ -94,7 +94,8 @@ importers:
 
   packages/glow-react:
     specifiers:
-      '@glow-app/glow-client': workspace:^0.3.2
+      '@glow-app/glow-client': 0.3.2
+      '@glow-app/solana-client': workspace:0.5.2
       '@solana/web3.js': 1.44.1
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.5
@@ -105,6 +106,7 @@ importers:
       sass: 1.52.3
     dependencies:
       '@glow-app/glow-client': link:../glow-client
+      '@glow-app/solana-client': link:../solana-client
       classnames: 2.3.1
     devDependencies:
       '@solana/web3.js': 1.44.1

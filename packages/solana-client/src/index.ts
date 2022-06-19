@@ -1,8 +1,9 @@
-export { GTransaction } from "./GTransaction";
-export { GPublicKey } from "./GPublicKey";
-export { GKeypair } from "./GKeypair";
-export * from "./client/solana-client";
+export * from "./base-types";
+export * from "./borsh/index";
 export * from "./client/client-types";
 export * from "./client/error-codes";
 export * from "./client/rpc-types";
-export * from "./borsh/index";
+export * from "./client/solana-client";
+export * from "./GKeypair";
+export * from "./GPublicKey";
+export * from "./GTransaction";
