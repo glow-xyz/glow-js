@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/glow-react",
-  "version": "0.1.1",
+  "version": "0.6.0",
   "main": "dist/index.js",
   "module": "dist/index.cjs.js",
   "typings": "dist/index.d.ts",
@@ -12,10 +12,11 @@
     "build": "npm run build:js && npm run build:css",
     "build:js": "tsc",
     "build:css": "sass src/styles/index.scss:dist/styles.css",
-    "release": "pnpm build && pnpm version minor && pnpm publish --access public"
+    "release": "pnpm build && release-it"
   },
   "dependencies": {
-    "@glow-app/glow-client": "workspace:^0.3.2",
+    "@glow-app/glow-client": "0.6.0",
+    "@glow-app/solana-client": "0.6.0",
     "classnames": "2.3.1"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 import { GlowClient } from "@glow-app/glow-client";
+import { Solana } from "@glow-app/solana-client";
 import { useOnMount } from "./hooks/useOnMount";
 import { usePolling } from "./hooks/usePolling";
 import React, { createContext, useCallback, useContext, useState } from "react";
@@ -9,10 +10,14 @@ type GlowUser = { address: Address };
 type GlowContext = {
   user: GlowUser | null;
 
-  signIn: () => Promise<void>;
+  signIn: () => Promise<{
+    wallet: Solana.Address;
+    signatureBase64: string;
+    message: string;
+  }>;
   signOut: () => Promise<void>;
 
-  canSignIn: boolean;
+  glowDetected: boolean;
 
   client: GlowClient;
 };
@@ -31,32 +36,33 @@ declare global {
 
 export const GlowProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<GlowUser | null>(null);
-  const [canSignIn, setCanSignIn] = useState(false);
+  const [glowDetected, setGlowDetected] = useState(false);
 
   usePolling(
     () => {
       if (window.glow || window.solana) {
-        setCanSignIn(true);
+        setGlowDetected(true);
       }
     },
-    canSignIn ? null : 250,
+    glowDetected ? null : 250,
     { runOnMount: true }
   );
 
   useOnMount(() => {
     glowClient.on("loaded", () => {
-      setCanSignIn(true);
+      setGlowDetected(true);
     });
     glowClient.on("update", () => {
       setUser(glowClient.address ? { address: glowClient.address } : null);
-      setCanSignIn(true);
+      setGlowDetected(true);
     });
   });
 
   const signIn = useCallback(async () => {
     try {
-      const { address } = await glowClient.connect();
+      const { address, signature, message } = await glowClient.signIn();
       setUser({ address });
+      return { wallet: address, signatureBase64: signature, message };
     } catch (e) {
       console.error("Connecting Glow failed.");
       throw e;
@@ -72,7 +78,7 @@ export const GlowProvider = ({ children }: { children: React.ReactNode }) => {
     <GlowContext.Provider
       value={{
         user,
-        canSignIn,
+        glowDetected,
         signIn,
         signOut,
         client: glowClient,

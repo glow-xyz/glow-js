@@ -1,22 +1,51 @@
+import { Solana } from "@glow-app/solana-client";
 import classNames from "classnames";
 import React from "react";
 import { useGlowContext } from "../GlowContext";
 import { GlowIcon } from "../assets/GlowIcon";
 import { GlowIcon3D } from "../assets/GlowIcon3D";
 
-export const GlowSignInButton = ({
+type Props = StyledProps | RenderProps;
+
+type RenderProps = {
+  render: (props: {
+    glowDetected: boolean;
+    signIn: () => Promise<{
+      wallet: Solana.Address;
+      signatureBase64: string;
+      message: string;
+    }>;
+  }) => React.ReactNode;
+};
+
+type StyledProps = {
+  size?: "lg" | "md" | "sm";
+  shape?: "squared" | "rounded";
+  variant?: "black" | "purple" | "white-naked" | "white-outline";
+} & Omit<React.HTMLProps<HTMLButtonElement>, "onClick" | "type" | "size">;
+
+export const GlowSignInButton = (props: Props) => {
+  if ("render" in props) {
+    return <CustomGlowSignInButton {...props} />;
+  }
+
+  return <StyledGlowSignInButton {...props} />;
+};
+
+const CustomGlowSignInButton = ({ render }: RenderProps) => {
+  const { glowDetected, signIn } = useGlowContext();
+  return <>{render({ glowDetected, signIn })}</>;
+};
+
+const StyledGlowSignInButton = ({
   className,
   disabled: _disabled,
   size = "md",
   shape = "squared",
   variant = "black",
   ...props
-}: {
-  size?: "lg" | "md" | "sm";
-  shape?: "squared" | "rounded";
-  variant?: "black" | "purple" | "white-naked" | "white-outline";
-} & Omit<React.HTMLProps<HTMLButtonElement>, "onClick" | "type" | "size">) => {
-  const { canSignIn, signIn } = useGlowContext();
+}: StyledProps) => {
+  const { glowDetected, signIn } = useGlowContext();
 
   return (
     <button
@@ -31,9 +60,9 @@ export const GlowSignInButton = ({
         "glow--variant-white-naked": variant === "white-naked",
         "glow--variant-white-outline": variant === "white-outline",
       })}
-      disabled={_disabled || !canSignIn}
-      onClick={() => {
-        signIn();
+      disabled={_disabled || !glowDetected}
+      onClick={async () => {
+        await signIn();
       }}
       type="button"
       {...props}
