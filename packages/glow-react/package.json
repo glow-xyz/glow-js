@@ -22,7 +22,7 @@
     "@solana/web3.js": "1.44.1",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
-    "esbuild": "0.14.45",
+    "esbuild": "0.14.46",
     "esbuild-register": "3.3.3",
     "prettier": "2.7.1",
     "sass": "1.52.3"
