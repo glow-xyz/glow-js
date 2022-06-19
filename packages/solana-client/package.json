@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/solana-client",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "",
   "typings": "dist/types/index.d.ts",
   "exports": {
