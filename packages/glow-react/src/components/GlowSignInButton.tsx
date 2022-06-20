@@ -73,7 +73,7 @@ const StyledGlowSignInButton = ({
         ) : (
           <GlowIcon aria-hidden="true" className="glow--icon" />
         )}
-        <span className="glow--sign-in-button-text">Sign in with Glow</span>
+        <span className="glow--sign-in-button-text">Sign In with Glow</span>
       </div>
     </button>
   );

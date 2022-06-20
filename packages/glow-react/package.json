@@ -1,6 +1,6 @@
 {
   "name": "@glow-app/glow-react",
-  "version": "0.6.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "module": "dist/index.cjs.js",
   "typings": "dist/index.d.ts",
@@ -15,8 +15,8 @@
     "release": "pnpm build && release-it"
   },
   "dependencies": {
-    "@glow-app/glow-client": "0.6.0",
-    "@glow-app/solana-client": "0.6.0",
+    "@glow-app/glow-client": "1.0.0",
+    "@glow-app/solana-client": "1.0.1",
     "classnames": "2.3.1"
   },
   "devDependencies": {
