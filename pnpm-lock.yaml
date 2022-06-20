@@ -95,7 +95,7 @@ importers:
   packages/glow-react:
     specifiers:
       '@glow-app/glow-client': 1.0.0
-      '@glow-app/solana-client': 1.0.0
+      '@glow-app/solana-client': 1.0.1
       '@solana/web3.js': 1.44.1
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.5
@@ -139,7 +139,7 @@ importers:
       js-sha256: 0.9.0
       lodash: 4.17.21
       luxon: 2.4.0
-      p-limit: 4.0.0
+      p-limit: 3.0.1
       prettier: 2.7.1
       rimraf: 3.0.2
       ts-jest: 28.0.5
@@ -157,7 +157,7 @@ importers:
       js-sha256: 0.9.0
       lodash: 4.17.21
       luxon: 2.4.0
-      p-limit: 4.0.0
+      p-limit: 3.0.1
       rimraf: 3.0.2
       tweetnacl: 1.0.3
       zod: 3.17.3
@@ -5057,11 +5057,11 @@ packages:
       p-try: 2.2.0
     dev: true
 
-  /p-limit/4.0.0:
-    resolution: {integrity: sha512-5b0R4txpzjPWVw/cXXUResoD4hb6U/x9BH08L7nw+GN1sezDzPdxeRvpc9c433fZhBan/wusjbCsqwqm4EIBIQ==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+  /p-limit/3.0.1:
+    resolution: {integrity: sha512-mw/p92EyOzl2MhauKodw54Rx5ZK4624rNfgNaBguFZkHzyUG9WsDzFF5/yQVEJinbJDdP4jEfMN+uBquiGnaLg==}
+    engines: {node: '>=10'}
     dependencies:
-      yocto-queue: 1.0.0
+      p-try: 2.2.0
     dev: false
 
   /p-locate/2.0.0:
@@ -5086,7 +5086,6 @@ packages:
   /p-try/2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
-    dev: true
 
   /pac-proxy-agent/5.0.0:
     resolution: {integrity: sha512-CcFG3ZtnxO8McDigozwE3AqAw15zDvGH+OjXO4kzf7IkEKkQ4gxQ+3sdF50WmhQ4P/bVusXcqNE2S3XrNURwzQ==}
@@ -6496,11 +6495,6 @@ packages:
       y18n: 5.0.8
       yargs-parser: 21.0.1
     dev: true
-
-  /yocto-queue/1.0.0:
-    resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
-    engines: {node: '>=12.20'}
-    dev: false
 
   /zod/3.17.3:
     resolution: {integrity: sha512-4oKP5zvG6GGbMlqBkI5FESOAweldEhSOZ6LI6cG+JzUT7ofj1ZOC0PJudpQOpT1iqOFpYYtX5Pw0+o403y4bcg==}
