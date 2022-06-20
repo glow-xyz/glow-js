@@ -94,8 +94,8 @@ importers:
 
   packages/glow-react:
     specifiers:
-      '@glow-app/glow-client': 0.6.0
-      '@glow-app/solana-client': 0.6.0
+      '@glow-app/glow-client': 1.0.0
+      '@glow-app/solana-client': 1.0.0
       '@solana/web3.js': 1.44.1
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.5
