@@ -11,7 +11,7 @@ export const verifySignIn = ({
   signature,
 }: {
   message: string;
-  expectedDomain: string;
+  expectedDomain: string | string[];
   expectedAddress: Address;
   signature: string; // base64
 }): {
@@ -53,8 +53,14 @@ export const verifySignIn = ({
   const nonce = _nonce;
   const requestedAt = DateTime.fromISO(_requestedAt).toUTC();
 
-  if (expectedDomain !== domain) {
-    throw new Error("Domain does not match expected domain.");
+  if (Array.isArray(expectedDomain)) {
+    if (expectedDomain.indexOf(domain) === -1) {
+      throw new Error("Domain does not match expected domain.");
+    }
+  } else {
+    if (expectedDomain !== domain) {
+      throw new Error("Domain does not match expected domain.");
+    }
   }
 
   if (expectedAddress !== address) {

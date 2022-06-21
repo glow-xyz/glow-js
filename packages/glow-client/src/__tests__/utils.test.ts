@@ -54,6 +54,13 @@ Nonce: 869`;
     expect(address).toEqual(expectedAddress);
     expect(nonce).toEqual("869");
     expect(requestedAt.toISO()).toEqual(_requestedAt);
+
+    verifySignIn({
+      signature: signMessage(message, keypair),
+      message,
+      expectedAddress,
+      expectedDomain: ["glow.xyz"],
+    });
   });
 
   test("rejects a missing address", () => {
@@ -149,6 +156,24 @@ Nonce: 869`;
         message,
         expectedAddress,
         expectedDomain: null as any,
+      });
+    }).toThrow();
+
+    expect(() => {
+      verifySignIn({
+        signature: signMessage(message, keypair),
+        message,
+        expectedAddress,
+        expectedDomain: ["glow.app"],
+      });
+    }).toThrow();
+
+    expect(() => {
+      verifySignIn({
+        signature: signMessage(message, keypair),
+        message,
+        expectedAddress,
+        expectedDomain: [],
       });
     }).toThrow();
   });
