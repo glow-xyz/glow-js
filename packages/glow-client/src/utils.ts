@@ -18,16 +18,20 @@ export const verifySignIn = ({
   appName: string;
   domain: string;
   address: Address;
-  nonce: number;
+  nonce: string;
   requestedAt: DateTime;
 } => {
+  if (!expectedAddress) {
+    throw new Error("Missing expected address.");
+  }
+
   const regexStr =
     `^(?<appName>.{0,100}) would like you to sign in with your Solana account:
         (?<address>[5KL1-9A-HJ-NP-Za-km-z]{32,44})
 
         Domain: (?<domain>[A-Za-z0-9.\\-]+)
         Requested At: (?<requestedAt>.+)
-        Nonce: (?<nonce>[A-Za-z0-9\-]+)$`
+        Nonce: (?<nonce>[A-Za-z0-9\-\.]+)$`
       .split("\n")
       .map((s) => s.trim())
       .join("\n");
@@ -46,14 +50,14 @@ export const verifySignIn = ({
     nonce: _nonce,
     requestedAt: _requestedAt,
   } = match.groups;
-  const nonce = parseInt(_nonce, 10);
-  const requestedAt = DateTime.fromISO(_requestedAt);
+  const nonce = _nonce;
+  const requestedAt = DateTime.fromISO(_requestedAt).toUTC();
 
   if (expectedDomain !== domain) {
     throw new Error("Domain does not match expected domain.");
   }
 
-  if (expectedAddress && expectedAddress !== expectedAddress) {
+  if (expectedAddress !== address) {
     throw new Error("Address does not match expected address.");
   }
 
