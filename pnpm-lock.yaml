@@ -94,8 +94,8 @@ importers:
 
   packages/glow-react:
     specifiers:
-      '@glow-app/glow-client': 1.0.0
-      '@glow-app/solana-client': 1.0.1
+      '@glow-app/glow-client': latest
+      '@glow-app/solana-client': latest
       '@solana/web3.js': 1.44.1
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.5
@@ -105,7 +105,7 @@ importers:
       prettier: 2.7.1
       sass: 1.52.3
     dependencies:
-      '@glow-app/glow-client': 1.0.0
+      '@glow-app/glow-client': link:../glow-client
       '@glow-app/solana-client': link:../solana-client
       classnames: 2.3.1
     devDependencies:
@@ -546,17 +546,6 @@ packages:
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/logger': 5.6.0
       hash.js: 1.1.7
-
-  /@glow-app/glow-client/1.0.0:
-    resolution: {integrity: sha512-lKOzZoDNGokwIEEqRdQJEq42L8BJTCwoXDWU3upi96sW82r/i8JEuhifLfCrwP2EKUg7rykFRxgkMgecoETcWA==}
-    dependencies:
-      bs58: 5.0.0
-      buffer: 6.0.3
-      eventemitter3: 4.0.7
-      luxon: 2.4.0
-      tweetnacl: 1.0.3
-      zod: 3.17.3
-    dev: false
 
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}

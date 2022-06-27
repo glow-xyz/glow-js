@@ -15,8 +15,8 @@
     "release": "pnpm build && release-it"
   },
   "dependencies": {
-    "@glow-app/glow-client": "1.0.0",
-    "@glow-app/solana-client": "1.0.1",
+    "@glow-app/glow-client": "latest",
+    "@glow-app/solana-client": "latest",
     "classnames": "2.3.1"
   },
   "devDependencies": {
