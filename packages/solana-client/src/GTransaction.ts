@@ -96,6 +96,13 @@ export namespace GTransaction {
       }
     }
 
+    // Fee payer needs to always be writable and a signer
+    // https://github.com/solana-labs/solana-web3.js/blob/2f80949da901e42d5f5565c44c3b3095ac024e67/src/transaction.ts#L428-L429
+    if (feePayer) {
+      accountMap[feePayer].signer = true;
+      accountMap[feePayer].writable = true;
+    }
+
     const unsortedAccounts = Object.entries(accountMap).map(
       ([address, { writable, signer }]) => ({ writable, signer, address })
     );
@@ -298,7 +305,9 @@ const constructMessageBase64 = ({
   recentBlockhash: string;
 }): string => {
   const numRequiredSigs = accounts.filter((a) => a.signer).length;
-  const numReadOnlySigs = accounts.filter((a) => !a.writable && a.signer).length;
+  const numReadOnlySigs = accounts.filter(
+    (a) => !a.writable && a.signer
+  ).length;
   const numReadonlyUnsigned = accounts.filter(
     (a) => !a.writable && !a.signer
   ).length;
