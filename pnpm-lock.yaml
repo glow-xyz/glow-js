@@ -106,7 +106,7 @@ importers:
       sass: 1.52.3
     dependencies:
       '@glow-app/glow-client': 1.0.0
-      '@glow-app/solana-client': link:../solana-client
+      '@glow-app/solana-client': 1.0.1
       classnames: 2.3.1
     devDependencies:
       '@solana/web3.js': 1.44.1
@@ -556,6 +556,31 @@ packages:
       luxon: 2.4.0
       tweetnacl: 1.0.3
       zod: 3.17.3
+    dev: false
+
+  /@glow-app/solana-client/1.0.1:
+    resolution: {integrity: sha512-GAWUnAg6dL539k4OJ4H3E3dlSNSGLO/s4yDl40PpYuOCvRKeFrUy5fG962k5voFTHepVg5lHiMlnnAZubDkmHg==}
+    dependencies:
+      '@metaplex-foundation/beet': 0.2.0
+      '@solana/web3.js': 1.44.1
+      axios: 0.27.2
+      bignumber.js: 9.0.2
+      bn.js: 5.2.1
+      bs58: 5.0.0
+      buffer: 6.0.3
+      js-sha256: 0.9.0
+      lodash: 4.17.21
+      luxon: 2.4.0
+      p-limit: 3.0.1
+      rimraf: 3.0.2
+      tweetnacl: 1.0.3
+      zod: 3.17.3
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - encoding
+      - supports-color
+      - utf-8-validate
     dev: false
 
   /@humanwhocodes/config-array/0.9.5:
