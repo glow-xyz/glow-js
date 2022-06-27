@@ -1,7 +1,9 @@
 import {
   Keypair,
   PublicKey,
+  StakeProgram,
   SystemProgram,
+  SYSVAR_CLOCK_PUBKEY,
   Transaction,
 } from "@solana/web3.js";
 import bs58 from "bs58";
@@ -296,5 +298,38 @@ describe("GTransaction", () => {
 
     const gBuffer = GTransaction.toBuffer({ gtransaction });
     expect(gBuffer.toString("hex")).toEqual(txBuffer.toString("hex"));
+  });
+
+  test("create a stake deactivate transaction", () => {
+    const payer = Keypair.generate();
+    const stake = Keypair.generate();
+    const recentBlockhash = "636Lq2zGQDYZ3i6hahVcFWJkY6Jejndy5Qe4gBdukXDi";
+
+    const tx = StakeProgram.deactivate({
+      authorizedPubkey: payer.publicKey,
+      stakePubkey: stake.publicKey,
+    });
+    tx.recentBlockhash = recentBlockhash;
+    tx.feePayer = payer.publicKey;
+    const txBuffer = tx.serialize({ verifySignatures: false });
+
+    const gtransaction = GTransaction.create({
+      feePayer: payer.publicKey.toBase58(),
+      recentBlockhash,
+      instructions: [
+        {
+          accounts: [
+            { address: stake.publicKey.toBase58(), writable: true },
+            { address: SYSVAR_CLOCK_PUBKEY.toBase58() },
+            { address: payer.publicKey.toBase58(), signer: true },
+          ],
+          program: StakeProgram.programId.toBase58(),
+          data_base64: "BQAAAA==",
+        },
+      ],
+    });
+    const gtxBuffer = GTransaction.toBuffer({ gtransaction });
+
+    expect(gtxBuffer.toString("hex")).toBe(txBuffer.toString("hex"));
   });
 });
