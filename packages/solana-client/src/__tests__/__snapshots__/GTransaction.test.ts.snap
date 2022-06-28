@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GTransaction create with signing with obsolete signers 1`] = `"This transaction does not require a signature from: ATBeZdCvKyCbBnk27Mnd5RfcoFUNE5XfQYRTjveiS1cW"`;
+
+exports[`GTransaction sign with obsolete signers 1`] = `"This transaction does not require a signature from: ATBeZdCvKyCbBnk27Mnd5RfcoFUNE5XfQYRTjveiS1cW"`;

@@ -8,6 +8,8 @@ import { FixableGlowBorsh } from "./borsh/base";
 import { GlowBorshTypes } from "./borsh/GlowBorshTypes";
 import { TRANSACTION_MESSAGE } from "./borsh/transaction-borsh";
 
+export type Signer = { secretKey: Buffer | Uint8Array };
+
 /**
  * This is useful for manipulating existing transactions for a few reasons:
  *
@@ -70,10 +72,14 @@ export namespace GTransaction {
     instructions,
     recentBlockhash,
     feePayer,
+    signers = [],
+    suppressInvalidSignerError,
   }: {
     instructions: InstructionFactory[];
     recentBlockhash: string;
     feePayer?: string;
+    signers?: Array<Signer>;
+    suppressInvalidSignerError?: boolean;
   }): GTransaction => {
     const accountMap: Record<
       Solana.Address,
@@ -137,7 +143,7 @@ export namespace GTransaction {
       recentBlockhash,
     });
 
-    return {
+    const gtransaction: GTransaction.GTransaction = {
       signature: null,
       signatures,
       accounts,
@@ -149,32 +155,52 @@ export namespace GTransaction {
         accounts: accounts.map((a) => a.address),
       })),
     };
+
+    return GTransaction.sign({
+      signers,
+      gtransaction,
+      suppressInvalidSignerError,
+    });
   };
 
   export const sign = ({
-    secretKey,
+    signers,
     gtransaction,
+    suppressInvalidSignerError = false,
   }: {
     gtransaction: GTransaction;
-    secretKey: Buffer | Uint8Array;
+    signers: Array<Signer>;
+    suppressInvalidSignerError?: boolean;
   }): GTransaction => {
-    const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
-    const address = bs58.encode(keypair.publicKey);
+    for (const { secretKey } of signers) {
+      const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
+      const address = bs58.encode(keypair.publicKey);
 
-    if (gtransaction.signatures.every((sig) => sig.address !== address)) {
-      throw new Error(
-        `This transaction does not require a signature from: ${address}`
-      );
+      if (gtransaction.signatures.every((sig) => sig.address !== address)) {
+        // Skip to next signer if suppressing unknown signer
+        if (suppressInvalidSignerError) {
+          console.log(
+            `Transaction did not require a signature from ${address}, skipping.`
+          );
+          continue;
+        }
+
+        throw new Error(
+          `This transaction does not require a signature from: ${address}`
+        );
+      }
+
+      const message = Buffer.from(gtransaction.messageBase64, "base64");
+      const signatureUint = nacl.sign.detached(message, secretKey);
+
+      gtransaction = GTransaction.addSignature({
+        gtransaction,
+        address,
+        signature: Buffer.from(signatureUint),
+      });
     }
 
-    const message = Buffer.from(gtransaction.messageBase64, "base64");
-    const signatureUint = nacl.sign.detached(message, secretKey);
-
-    return GTransaction.addSignature({
-      gtransaction,
-      address,
-      signature: Buffer.from(signatureUint),
-    });
+    return gtransaction;
   };
 
   export const parse = ({ buffer }: { buffer: Buffer }): GTransaction => {
