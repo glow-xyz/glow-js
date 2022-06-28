@@ -7,7 +7,8 @@ import { Base58, Solana } from "./base-types";
 import { FixableGlowBorsh } from "./borsh/base";
 import { GlowBorshTypes } from "./borsh/GlowBorshTypes";
 import { TRANSACTION_MESSAGE } from "./borsh/transaction-borsh";
-import { GKeypair } from "./GKeypair";
+
+export type Signer = { secretKey: Uint8Array };
 
 /**
  * This is useful for manipulating existing transactions for a few reasons:
@@ -76,7 +77,7 @@ export namespace GTransaction {
     instructions: InstructionFactory[];
     recentBlockhash: string;
     feePayer?: string;
-    signers?: Array<GKeypair>;
+    signers?: Array<Signer>;
   }): GTransaction => {
     const accountMap: Record<
       Solana.Address,
@@ -164,7 +165,7 @@ export namespace GTransaction {
     gtransaction,
   }: {
     gtransaction: GTransaction;
-    signers: Array<GKeypair>;
+    signers: Array<Signer>;
   }): GTransaction => {
     for (const { secretKey } of signers) {
       const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
