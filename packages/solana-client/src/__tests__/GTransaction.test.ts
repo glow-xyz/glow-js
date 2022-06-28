@@ -254,7 +254,7 @@ describe("GTransaction", () => {
     transaction.partialSign(from as unknown as Keypair);
     gTransaction = GTransaction.sign({
       gtransaction: gTransaction,
-      secretKey: from.secretKey,
+      signers: [from],
     });
 
     // Verify that serialized transactions with more signatures are equal too

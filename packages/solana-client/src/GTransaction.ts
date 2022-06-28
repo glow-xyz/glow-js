@@ -7,6 +7,7 @@ import { Base58, Solana } from "./base-types";
 import { FixableGlowBorsh } from "./borsh/base";
 import { GlowBorshTypes } from "./borsh/GlowBorshTypes";
 import { TRANSACTION_MESSAGE } from "./borsh/transaction-borsh";
+import { GKeypair } from "./GKeypair";
 
 /**
  * This is useful for manipulating existing transactions for a few reasons:
@@ -70,10 +71,12 @@ export namespace GTransaction {
     instructions,
     recentBlockhash,
     feePayer,
+    signers = [],
   }: {
     instructions: InstructionFactory[];
     recentBlockhash: string;
     feePayer?: string;
+    signers?: Array<GKeypair>;
   }): GTransaction => {
     const accountMap: Record<
       Solana.Address,
@@ -137,7 +140,7 @@ export namespace GTransaction {
       recentBlockhash,
     });
 
-    return {
+    const gtransaction: GTransaction.GTransaction = {
       signature: null,
       signatures,
       accounts,
@@ -149,32 +152,41 @@ export namespace GTransaction {
         accounts: accounts.map((a) => a.address),
       })),
     };
+
+    return GTransaction.sign({
+      signers,
+      gtransaction,
+    });
   };
 
   export const sign = ({
-    secretKey,
+    signers,
     gtransaction,
   }: {
     gtransaction: GTransaction;
-    secretKey: Buffer | Uint8Array;
+    signers: Array<GKeypair>;
   }): GTransaction => {
-    const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
-    const address = bs58.encode(keypair.publicKey);
+    for (const { secretKey } of signers) {
+      const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
+      const address = bs58.encode(keypair.publicKey);
 
-    if (gtransaction.signatures.every((sig) => sig.address !== address)) {
-      throw new Error(
-        `This transaction does not require a signature from: ${address}`
-      );
+      if (gtransaction.signatures.every((sig) => sig.address !== address)) {
+        throw new Error(
+          `This transaction does not require a signature from: ${address}`
+        );
+      }
+
+      const message = Buffer.from(gtransaction.messageBase64, "base64");
+      const signatureUint = nacl.sign.detached(message, secretKey);
+
+      gtransaction = GTransaction.addSignature({
+        gtransaction,
+        address,
+        signature: Buffer.from(signatureUint),
+      });
     }
 
-    const message = Buffer.from(gtransaction.messageBase64, "base64");
-    const signatureUint = nacl.sign.detached(message, secretKey);
-
-    return GTransaction.addSignature({
-      gtransaction,
-      address,
-      signature: Buffer.from(signatureUint),
-    });
+    return gtransaction;
   };
 
   export const parse = ({ buffer }: { buffer: Buffer }): GTransaction => {
