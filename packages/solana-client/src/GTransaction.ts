@@ -256,7 +256,7 @@ export namespace GTransaction {
     // Copy signatures map not to mutate original transaction
     const signatures = gtransaction.signatures.map((sig, index) => {
       return {
-        address,
+        address: sig.address,
         signature:
           index === accountIndex ? bs58.encode(signature) : sig.signature,
       };
