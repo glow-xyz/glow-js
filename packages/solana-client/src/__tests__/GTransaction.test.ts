@@ -263,6 +263,51 @@ describe("GTransaction", () => {
     );
   });
 
+  test("create with signing", async () => {
+    // Prepare a simple transfer transaction
+    const from = GKeypair.generate();
+    const to = GKeypair.generate();
+    const ix = SystemProgram.transfer({
+      fromPubkey: from.publicKey as unknown as PublicKey,
+      toPubkey: to.publicKey as unknown as PublicKey,
+      lamports: 5_000 * 1.5,
+    });
+
+    const transaction = new Transaction({
+      feePayer: from.publicKey as unknown as PublicKey,
+      recentBlockhash: GPublicKey.default.toBase58(),
+    });
+    transaction.add(ix);
+
+    const gtransaction = GTransaction.create({
+      recentBlockhash: GPublicKey.default.toBase58(),
+      feePayer: from.address,
+      instructions: [
+        {
+          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
+            address: pubkey.toBase58(),
+            signer: isSigner,
+            writable: isWritable,
+          })),
+          data_base64: ix.data.toString("base64"),
+          program: ix.programId.toBase58(),
+        },
+      ],
+      signers: [from],
+    });
+
+    // Sanity check - transaction without signatures shouldn't equal gtransaction with them
+    expect(transaction.serialize({ requireAllSignatures: false })).not.toEqual(
+      GTransaction.toBuffer({ gtransaction })
+    );
+
+    transaction.partialSign(from as unknown as Keypair);
+    // Verify that signed transactions are equal
+    expect(transaction.serialize()).toEqual(
+      GTransaction.toBuffer({ gtransaction })
+    );
+  });
+
   test("create a transfer transaction", () => {
     const payer = GKeypair.generate();
     const recentBlockhash = "636Lq2zGQDYZ3i6hahVcFWJkY6Jejndy5Qe4gBdukXDi";
