@@ -288,12 +288,193 @@ describe("GTransaction", () => {
     transaction.partialSign(from as unknown as Keypair);
     gTransaction = GTransaction.sign({
       gtransaction: gTransaction,
-      secretKey: from.secretKey,
+      signers: [from],
     });
 
     // Verify that serialized transactions with more signatures are equal too
     expect(transaction.serialize()).toEqual(
       GTransaction.toBuffer({ gtransaction: gTransaction })
+    );
+  });
+
+  test("create with signing", async () => {
+    // Prepare a simple transfer transaction
+    const from = GKeypair.generate();
+    const to = GKeypair.generate();
+    const ix = SystemProgram.transfer({
+      fromPubkey: from.publicKey as unknown as PublicKey,
+      toPubkey: to.publicKey as unknown as PublicKey,
+      lamports: 5_000 * 1.5,
+    });
+
+    const transaction = new Transaction({
+      feePayer: from.publicKey as unknown as PublicKey,
+      recentBlockhash: GPublicKey.default.toBase58(),
+    });
+    transaction.add(ix);
+
+    const gtransaction = GTransaction.create({
+      recentBlockhash: GPublicKey.default.toBase58(),
+      feePayer: from.address,
+      instructions: [
+        {
+          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
+            address: pubkey.toBase58(),
+            signer: isSigner,
+            writable: isWritable,
+          })),
+          data_base64: ix.data.toString("base64"),
+          program: ix.programId.toBase58(),
+        },
+      ],
+      signers: [from],
+    });
+
+    // Sanity check - transaction without signatures shouldn't equal gtransaction with them
+    expect(transaction.serialize({ requireAllSignatures: false })).not.toEqual(
+      GTransaction.toBuffer({ gtransaction })
+    );
+
+    transaction.partialSign(from as unknown as Keypair);
+    // Verify that signed transactions are equal
+    expect(transaction.serialize()).toEqual(
+      GTransaction.toBuffer({ gtransaction })
+    );
+  });
+
+  test("create with signing with obsolete signers", async () => {
+    // Prepare a simple transfer transaction
+    const from = GKeypair.generate();
+    // We need static to since we match error message against obsolete signer address
+    const to = GKeypair.fromSecretKey(
+      bs58.decode(
+        "2EhQ3g6KrXfPrK8ad5Aa4aCXxKWoGaFD5jRq8ADQxnZ6xr9PxaYj81KtJBseDGudomTPYvEPt2rn8bKpHtcYYtFc"
+      )
+    );
+    const ix = SystemProgram.transfer({
+      fromPubkey: from.publicKey as unknown as PublicKey,
+      toPubkey: to.publicKey as unknown as PublicKey,
+      lamports: 5_000 * 1.5,
+    });
+
+    const transaction = new Transaction({
+      feePayer: from.publicKey as unknown as PublicKey,
+      recentBlockhash: GPublicKey.default.toBase58(),
+    });
+    transaction.add(ix);
+
+    expect(() => {
+      GTransaction.create({
+        recentBlockhash: GPublicKey.default.toBase58(),
+        feePayer: from.address,
+        instructions: [
+          {
+            accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
+              address: pubkey.toBase58(),
+              signer: isSigner,
+              writable: isWritable,
+            })),
+            data_base64: ix.data.toString("base64"),
+            program: ix.programId.toBase58(),
+          },
+        ],
+        signers: [from, to],
+      });
+    }).toThrowErrorMatchingSnapshot();
+
+    const gtransaction = GTransaction.create({
+      recentBlockhash: GPublicKey.default.toBase58(),
+      feePayer: from.address,
+      instructions: [
+        {
+          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
+            address: pubkey.toBase58(),
+            signer: isSigner,
+            writable: isWritable,
+          })),
+          data_base64: ix.data.toString("base64"),
+          program: ix.programId.toBase58(),
+        },
+      ],
+      signers: [from, to],
+      suppressInvalidSignerError: true,
+    });
+
+    // Sanity check - transaction without signatures shouldn't equal gtransaction with them
+    expect(transaction.serialize({ requireAllSignatures: false })).not.toEqual(
+      GTransaction.toBuffer({ gtransaction })
+    );
+
+    transaction.partialSign(from as unknown as Keypair);
+    // Verify that signed transactions are equal
+    expect(transaction.serialize()).toEqual(
+      GTransaction.toBuffer({ gtransaction })
+    );
+  });
+
+  test("sign with obsolete signers", async () => {
+    // Prepare a simple transfer transaction
+    const from = GKeypair.generate();
+    // We need static to since we match error message against obsolete signer address
+    const to = GKeypair.fromSecretKey(
+      bs58.decode(
+        "2EhQ3g6KrXfPrK8ad5Aa4aCXxKWoGaFD5jRq8ADQxnZ6xr9PxaYj81KtJBseDGudomTPYvEPt2rn8bKpHtcYYtFc"
+      )
+    );
+    const ix = SystemProgram.transfer({
+      fromPubkey: from.publicKey as unknown as PublicKey,
+      toPubkey: to.publicKey as unknown as PublicKey,
+      lamports: 5_000 * 1.5,
+    });
+
+    const transaction = new Transaction({
+      feePayer: from.publicKey as unknown as PublicKey,
+      recentBlockhash: GPublicKey.default.toBase58(),
+    });
+    transaction.add(ix);
+
+    let gtransaction = GTransaction.create({
+      recentBlockhash: GPublicKey.default.toBase58(),
+      feePayer: from.address,
+      instructions: [
+        {
+          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
+            address: pubkey.toBase58(),
+            signer: isSigner,
+            writable: isWritable,
+          })),
+          data_base64: ix.data.toString("base64"),
+          program: ix.programId.toBase58(),
+        },
+      ],
+    });
+
+    expect(() => {
+      GTransaction.sign({
+        gtransaction,
+        signers: [from, to],
+      });
+    }).toThrowErrorMatchingSnapshot();
+
+    // Sanity check - verify that serialized versions are equal
+    expect(transaction.serialize({ requireAllSignatures: false })).toEqual(
+      GTransaction.toBuffer({ gtransaction })
+    );
+
+    expect(() => {
+      gtransaction = GTransaction.sign({
+        gtransaction,
+        signers: [from, to],
+        suppressInvalidSignerError: true,
+      });
+    }).not.toThrowError();
+
+    // Add a new signature
+    transaction.partialSign(from as unknown as Keypair);
+
+    // Verify that serialized transactions with more signatures are equal too
+    expect(transaction.serialize()).toEqual(
+      GTransaction.toBuffer({ gtransaction })
     );
   });
 
