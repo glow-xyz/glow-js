@@ -73,11 +73,13 @@ export namespace GTransaction {
     recentBlockhash,
     feePayer,
     signers = [],
+    suppressInvalidSignerError,
   }: {
     instructions: InstructionFactory[];
     recentBlockhash: string;
     feePayer?: string;
     signers?: Array<Signer>;
+    suppressInvalidSignerError?: boolean;
   }): GTransaction => {
     const accountMap: Record<
       Solana.Address,
@@ -157,21 +159,32 @@ export namespace GTransaction {
     return GTransaction.sign({
       signers,
       gtransaction,
+      suppressInvalidSignerError,
     });
   };
 
   export const sign = ({
     signers,
     gtransaction,
+    suppressInvalidSignerError = false,
   }: {
     gtransaction: GTransaction;
     signers: Array<Signer>;
+    suppressInvalidSignerError?: boolean;
   }): GTransaction => {
     for (const { secretKey } of signers) {
       const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
       const address = bs58.encode(keypair.publicKey);
 
       if (gtransaction.signatures.every((sig) => sig.address !== address)) {
+        // Skip to next signer if suppressing unknown signer
+        if (suppressInvalidSignerError) {
+          console.log(
+            `Transaction did not require a signature from ${address}, skipping.`
+          );
+          continue;
+        }
+
         throw new Error(
           `This transaction does not require a signature from: ${address}`
         );
