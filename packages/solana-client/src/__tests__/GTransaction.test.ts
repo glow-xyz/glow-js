@@ -222,6 +222,40 @@ describe("GTransaction", () => {
     );
   });
 
+  test("sign multiple signatures", async () => {
+    const signer1 = GKeypair.generate();
+    const signer2 = GKeypair.generate();
+    const recentBlockhash = "636Lq2zGQDYZ3i6hahVcFWJkY6Jejndy5Qe4gBdukXDi";
+
+    let gTransaction = GTransaction.create({
+      feePayer: signer1.publicKey.toBase58(),
+      recentBlockhash,
+      instructions: [
+        {
+          accounts: [
+            { address: signer1.publicKey.toBase58(), signer: true },
+            { address: signer2.publicKey.toBase58(), signer: true },
+          ],
+          program: GPublicKey.default.toBase58(),
+          data_base64: "BQAAAA==",
+        },
+      ],
+    });
+
+    gTransaction = GTransaction.sign({
+      gtransaction: gTransaction,
+      signers: [signer1],
+    });
+    gTransaction = GTransaction.sign({
+      gtransaction: gTransaction,
+      signers: [signer2],
+    });
+
+    expect(gTransaction.signatures).toHaveLength(2);
+    expect(gTransaction.signatures[0].address).toEqual(signer1.address);
+    expect(gTransaction.signatures[1].address).toEqual(signer2.address);
+  });
+
   test("sign", async () => {
     // Prepare a simple transfer transaction
     const from = GKeypair.generate();
