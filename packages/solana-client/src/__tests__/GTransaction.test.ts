@@ -239,21 +239,21 @@ describe("GTransaction", () => {
           program: GPublicKey.default.toBase58(),
           data_base64: "BQAAAA==",
         },
-      ]
+      ],
     });
 
     gTransaction = GTransaction.sign({
       gtransaction: gTransaction,
-      secretKey: signer1.secretKey,
+      signers: [signer1],
     });
     gTransaction = GTransaction.sign({
       gtransaction: gTransaction,
-      secretKey: signer2.secretKey,
+      signers: [signer2],
     });
 
-    expect(gTransaction.signatures).toHaveLength(2)
-    expect(gTransaction.signatures[0].address).toEqual(signer1.address)
-    expect(gTransaction.signatures[1].address).toEqual(signer2.address)
+    expect(gTransaction.signatures).toHaveLength(2);
+    expect(gTransaction.signatures[0].address).toEqual(signer1.address);
+    expect(gTransaction.signatures[1].address).toEqual(signer2.address);
   });
 
   test("sign", async () => {
