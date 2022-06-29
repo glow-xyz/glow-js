@@ -290,6 +290,37 @@ export class GlowBorsh<InOut> extends BeetStruct<InOut, InOut> {
   };
 
   /**
+   * This is a four bytes discriminator, used in system program.
+   * @param hex - discriminator must be exactly 8 characters long, e.g. "00000000"
+   */
+  static discriminatorU32 = (hex: string): FixedSizeBeet<null, null> => {
+    if (hex.length !== 8) {
+      throw new Error("u32 discriminator must be exactly 8 characters long.");
+    }
+    return {
+      write: function (buf: Buffer, offset: number) {
+        const stringBuf = Buffer.from(hex, "hex");
+        assert.equal(stringBuf.byteLength, 4, `"${hex}" has invalid byte size`);
+        stringBuf.copy(buf, offset, 0, 4);
+      },
+
+      read: function (buf: Buffer, offset: number): null {
+        const stringSlice: Buffer = buf.slice(offset, offset + 4);
+        const expected = stringSlice.toString("hex");
+        if (expected !== hex) {
+          throw new Error("Did not get expected value.");
+        }
+
+        return null;
+      },
+
+      length: 4,
+      byteSize: 4,
+      description: `DiscriminatorU32`,
+    };
+  };
+
+  /**
    * This is adapted from Anchor's `sighash` which creates a discriminator from
    * an instruction name.
    *
