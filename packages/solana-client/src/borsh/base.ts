@@ -1,4 +1,4 @@
-import * as beet from "@metaplex-foundation/beet";
+import * as beet from "@glow-xyz/beet";
 import sum from "lodash/sum";
 import range from "lodash/range";
 import {
@@ -9,8 +9,7 @@ import {
   FixedBeetField,
   FixedSizeBeet,
   i64,
-} from "@metaplex-foundation/beet";
-import { strict as assert } from "assert";
+} from "@glow-xyz/beet";
 import BN from "bn.js";
 import { Buffer } from "buffer";
 import { sha256 } from "js-sha256";
@@ -190,18 +189,18 @@ export class GlowBorsh<InOut> extends BeetStruct<InOut, InOut> {
       write: function (buf: Buffer, offset: number, value: string) {
         const stringBuf = Buffer.from(value, "utf-8");
 
-        assert.equal(
-          stringBuf.byteLength,
-          length,
-          `${value} has invalid byte size`
-        );
+        if (stringBuf.byteLength !== length) {
+          throw new Error(`${value} has invalid byte size`);
+        }
         beet.u32.write(buf, offset, length);
         stringBuf.copy(buf, offset + 4, 0, length);
       },
 
       read: function (buf: Buffer, offset: number): string {
         const size = beet.u32.read(buf, offset);
-        assert.equal(size, length, `invalid byte size`);
+        if (size !== length) {
+          return `invalid byte size`;
+        }
         const stringSlice = buf.slice(offset + 4, offset + 4 + length);
         return stringSlice.toString("utf8").replace(/\0/g, "");
       },
@@ -241,7 +240,9 @@ export class GlowBorsh<InOut> extends BeetStruct<InOut, InOut> {
     return {
       write: function (buf: Buffer, offset: number) {
         const stringBuf = Buffer.from(hex, "hex");
-        assert.equal(stringBuf.byteLength, 8, `${hex} has invalid byte size`);
+        if (stringBuf.byteLength === 8) {
+          throw new Error(`${hex} has invalid byte size`);
+        }
         stringBuf.copy(buf, offset, 0, 8);
       },
 

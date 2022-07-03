@@ -18,10 +18,10 @@ jobs:
       - name: Install PNPM and dependencies
         uses: ./.github/actions/pnpm-install
         with:
-          package-name: "@glow-app/solana-client"
+          package-name: "@glow-xyz/solana-client"
       - name: Lint
-        run: pnpm --filter @glow-app/solana-client run lint
+        run: pnpm --filter @glow-xyz/solana-client run lint
       - name: TSC
-        run: pnpm --filter @glow-app/solana-client run tsc
+        run: pnpm --filter @glow-xyz/solana-client run tsc
       - name: Test
-        run: pnpm --filter @glow-app/solana-client run test
+        run: pnpm --filter @glow-xyz/solana-client run test

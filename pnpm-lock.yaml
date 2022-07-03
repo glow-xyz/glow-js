@@ -16,8 +16,8 @@ importers:
 
   packages/example-next-js:
     specifiers:
-      '@glow-app/glow-client': workspace:*
-      '@glow-app/glow-react': workspace:*
+      '@glow-xyz/glow-client': workspace:*
+      '@glow-xyz/glow-react': workspace:*
       '@popperjs/core': 2.11.5
       '@types/node': 18.0.0
       '@types/react': 18.0.14
@@ -32,8 +32,8 @@ importers:
       sass: 1.52.3
       typescript: 4.7.4
     dependencies:
-      '@glow-app/glow-client': link:../glow-client
-      '@glow-app/glow-react': link:../glow-react
+      '@glow-xyz/glow-client': link:../glow-client
+      '@glow-xyz/glow-react': link:../glow-react
       '@popperjs/core': 2.11.5
       bootstrap: 5.1.3_@popperjs+core@2.11.5
       classnames: 2.3.1
@@ -94,8 +94,8 @@ importers:
 
   packages/glow-react:
     specifiers:
-      '@glow-app/glow-client': latest
-      '@glow-app/solana-client': latest
+      '@glow-xyz/glow-client': latest
+      '@glow-xyz/solana-client': latest
       '@solana/web3.js': 1.44.1
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.5
@@ -105,8 +105,8 @@ importers:
       prettier: 2.7.1
       sass: 1.52.3
     dependencies:
-      '@glow-app/glow-client': link:../glow-client
-      '@glow-app/solana-client': link:../solana-client
+      '@glow-xyz/glow-client': link:../glow-client
+      '@glow-xyz/solana-client': link:../solana-client
       classnames: 2.3.1
     devDependencies:
       '@solana/web3.js': 1.44.1
@@ -119,7 +119,7 @@ importers:
 
   packages/solana-client:
     specifiers:
-      '@metaplex-foundation/beet': 0.2.0
+      '@glow-xyz/beet': 0.3.0
       '@solana/web3.js': 1.44.1
       '@types/bn.js': 5.1.0
       '@types/jest': 28.1.2
@@ -147,7 +147,7 @@ importers:
       typescript: 4.7.4
       zod: 3.17.3
     dependencies:
-      '@metaplex-foundation/beet': 0.2.0
+      '@glow-xyz/beet': 0.3.0
       '@solana/web3.js': 1.44.1
       axios: 0.27.2
       bignumber.js: 9.0.2
@@ -547,6 +547,16 @@ packages:
       '@ethersproject/logger': 5.6.0
       hash.js: 1.1.7
 
+  /@glow-xyz/beet/0.3.0:
+    resolution: {integrity: sha512-Gdm0cEXLsXwDt8KevAaqd2AGNLX5fQKILVgK8ZprzIvtP7FWbR8iro/iu15U+W1BcCR2P4QdZq3B8vOxJTvIug==}
+    dependencies:
+      ansicolors: 0.3.2
+      bn.js: 5.2.1
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
     engines: {node: '>=10.10.0'}
@@ -833,16 +843,6 @@ packages:
       '@jridgewell/resolve-uri': 3.0.7
       '@jridgewell/sourcemap-codec': 1.4.13
     dev: true
-
-  /@metaplex-foundation/beet/0.2.0:
-    resolution: {integrity: sha512-H570hkJxmx/FxET1OggPPLkPL7psYQa71rNI9NJjYRM8WXdrEvmI/IRIEUW2KR6RqwWWN3FvlRHnKoQUV/lQtA==}
-    dependencies:
-      ansicolors: 0.3.2
-      bn.js: 5.2.1
-      debug: 4.3.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /@next/env/12.1.6:
     resolution: {integrity: sha512-Te/OBDXFSodPU6jlXYPAXpmZr/AkG6DCATAxttQxqOWaq6eDFX25Db3dK0120GZrSZmv4QCe9KsZmJKDbWs4OA==}

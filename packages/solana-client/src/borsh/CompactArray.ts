@@ -1,5 +1,5 @@
-import { FixedSizeBeet } from "@metaplex-foundation/beet";
-import { FixableBeet } from "@metaplex-foundation/beet";
+import { FixedSizeBeet } from "@glow-xyz/beet";
+import { FixableBeet } from "@glow-xyz/beet";
 import { Buffer } from "buffer";
 
 // https://github.com/solana-labs/solana/blob/master/web3.js/src/util/shortvec-encoding.ts

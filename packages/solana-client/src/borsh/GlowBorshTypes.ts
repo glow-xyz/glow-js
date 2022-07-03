@@ -1,5 +1,5 @@
-import * as beet from "@metaplex-foundation/beet";
-import { FixableBeet, FixedSizeBeet } from "@metaplex-foundation/beet";
+import * as beet from "@glow-xyz/beet";
+import { FixableBeet, FixedSizeBeet } from "@glow-xyz/beet";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
 import { Base58 } from "../base-types";

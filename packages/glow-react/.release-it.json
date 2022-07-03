@@ -5,7 +5,7 @@
   },
   "github": {
     "release": true,
-    "releaseName": "`@glow-app/glow-react` v${version}`"
+    "releaseName": "`@glow-xyz/glow-react` v${version}`"
   },
   "npm": {
     "access": "public"

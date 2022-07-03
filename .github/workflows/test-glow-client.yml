@@ -18,10 +18,10 @@ jobs:
       - name: Install PNPM and dependencies
         uses: ./.github/actions/pnpm-install
         with:
-          package-name: "@glow-app/glow-client"
+          package-name: "@glow-xyz/glow-client"
       - name: Lint
-        run: pnpm --filter @glow-app/glow-client run lint
+        run: pnpm --filter @glow-xyz/glow-client run lint
       - name: TSC
-        run: pnpm --filter @glow-app/glow-client run tsc
+        run: pnpm --filter @glow-xyz/glow-client run tsc
       - name: Test
-        run: pnpm --filter @glow-app/glow-client run test
+        run: pnpm --filter @glow-xyz/glow-client run test

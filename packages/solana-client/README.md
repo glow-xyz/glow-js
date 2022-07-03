@@ -1,6 +1,6 @@
-# `@glow-app/solana-client`
+# `@glow-xyz/solana-client`
 
-The `@glow-app/solana-client` gives you a client to interact with the [Solana JSON RPC API](https://docs.solana.com/developing/clients/jsonrpc-api).
+The `@glow-xyz/solana-client` gives you a client to interact with the [Solana JSON RPC API](https://docs.solana.com/developing/clients/jsonrpc-api).
 
 This is a replacement for the [`Connection` object](https://solana-labs.github.io/solana-web3.js/classes/Connection.html) in the `@solana/web3.js` library.
 
@@ -15,11 +15,11 @@ There are a few differences between this client and `@solana/web3.js`:
 
 ```sh
 # npm
-npm install @glow-app/solana-client
+npm install @glow-xyz/solana-client
 
 # yarn
-yarn add @glow-app/solana-client
+yarn add @glow-xyz/solana-client
 
 # pnpm
-pnpm install @glow-app/solana-client
+pnpm install @glow-xyz/solana-client
 ```

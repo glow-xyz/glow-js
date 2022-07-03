@@ -1,4 +1,4 @@
-import { GlowSignInButton, useGlowContext } from "@glow-app/glow-react";
+import { GlowSignInButton, useGlowContext } from "@glow-xyz/glow-react";
 import "bootstrap/dist/css/bootstrap.css";
 import type { NextPage } from "next";
 import Head from "next/head";

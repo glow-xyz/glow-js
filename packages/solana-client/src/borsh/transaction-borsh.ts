@@ -1,5 +1,5 @@
-import * as beet from "@metaplex-foundation/beet";
-import { FixableBeet, FixedSizeBeet } from "@metaplex-foundation/beet";
+import * as beet from "@glow-xyz/beet";
+import { FixableBeet, FixedSizeBeet } from "@glow-xyz/beet";
 import { Buffer } from "buffer";
 import { Solana } from "../base-types";
 import { FixableGlowBorsh, GlowBorsh } from "./base";
