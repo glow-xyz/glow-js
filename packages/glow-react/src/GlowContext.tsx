@@ -1,9 +1,9 @@
-import { GlowClient } from "@glow-app/glow-client";
-import { Solana } from "@glow-app/solana-client";
+import { GlowClient } from "@glow-xyz/glow-client";
+import { Solana } from "@glow-xyz/solana-client";
 import { useOnMount } from "./hooks/useOnMount";
 import { usePolling } from "./hooks/usePolling";
 import React, { createContext, useCallback, useContext, useState } from "react";
-import { GlowAdapter, PhantomAdapter, Address } from "@glow-app/glow-client";
+import { GlowAdapter, PhantomAdapter, Address } from "@glow-xyz/glow-client";
 
 type GlowUser = { address: Address };
 

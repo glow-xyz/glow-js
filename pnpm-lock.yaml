@@ -16,8 +16,8 @@ importers:
 
   packages/example-next-js:
     specifiers:
-      '@glow-app/glow-client': workspace:*
-      '@glow-app/glow-react': workspace:*
+      '@glow-xyz/glow-client': workspace:*
+      '@glow-xyz/glow-react': workspace:*
       '@popperjs/core': 2.11.5
       '@types/node': 18.0.0
       '@types/react': 18.0.14
@@ -32,8 +32,8 @@ importers:
       sass: 1.52.3
       typescript: 4.7.4
     dependencies:
-      '@glow-app/glow-client': link:../glow-client
-      '@glow-app/glow-react': link:../glow-react
+      '@glow-xyz/glow-client': link:../glow-client
+      '@glow-xyz/glow-react': link:../glow-react
       '@popperjs/core': 2.11.5
       bootstrap: 5.1.3_@popperjs+core@2.11.5
       classnames: 2.3.1
@@ -94,8 +94,8 @@ importers:
 
   packages/glow-react:
     specifiers:
-      '@glow-app/glow-client': latest
-      '@glow-app/solana-client': latest
+      '@glow-xyz/glow-client': latest
+      '@glow-xyz/solana-client': latest
       '@solana/web3.js': 1.44.1
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.5
@@ -105,8 +105,8 @@ importers:
       prettier: 2.7.1
       sass: 1.52.3
     dependencies:
-      '@glow-app/glow-client': link:../glow-client
-      '@glow-app/solana-client': link:../solana-client
+      '@glow-xyz/glow-client': link:../glow-client
+      '@glow-xyz/solana-client': link:../solana-client
       classnames: 2.3.1
     devDependencies:
       '@solana/web3.js': 1.44.1

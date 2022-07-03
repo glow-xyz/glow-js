@@ -1,26 +1,26 @@
-# `@glow-app/glow-react`
+# `@glow-xyz/glow-react`
 
-The `@glow-app/glow-react` gives you a React interface to hook up Glow with your dApp.
+The `@glow-xyz/glow-react` gives you a React interface to hook up Glow with your dApp.
 
 ## Installing
 
 ```sh
 # npm
-npm install @glow-app/glow-react
+npm install @glow-xyz/glow-react
 
 # yarn
-yarn add @glow-app/glow-react
+yarn add @glow-xyz/glow-react
 
 # pnpm
-pnpm install @glow-app/glow-react
+pnpm install @glow-xyz/glow-react
 ```
 
 ## Usage
 
 ```tsx
 // Top level app component
-import { GlowSignInButton, GlowProvider } from "@glow-app/glow-react";
-import "@glow-app/glow-react/dist/styles.css";
+import { GlowSignInButton, GlowProvider } from "@glow-xyz/glow-react";
+import "@glow-xyz/glow-react/dist/styles.css";
 
 const App = ({children}) => {
   return (

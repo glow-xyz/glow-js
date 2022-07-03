@@ -1,9 +1,9 @@
-# `@glow-app/glow-client`
+# `@glow-xyz/glow-client`
 
-The `@glow-app/glow-client` gives you a client to interact with the Glow Desktop and Safari Extension from your website or
+The `@glow-xyz/glow-client` gives you a client to interact with the Glow Desktop and Safari Extension from your website or
 dApp.
 
-If you're building a website that interacts with Solana, you can use the `@glow-app/glow-client` to ask the user to:
+If you're building a website that interacts with Solana, you can use the `@glow-xyz/glow-client` to ask the user to:
 
 - connect their Solana wallet
 - sign messages
@@ -14,19 +14,19 @@ If you're building a website that interacts with Solana, you can use the `@glow-
 
 ```sh
 # npm
-npm install @glow-app/glow-client
+npm install @glow-xyz/glow-client
 
 # yarn
-yarn add @glow-app/glow-client
+yarn add @glow-xyz/glow-client
 
 # pnpm
-pnpm install @glow-app/glow-client
+pnpm install @glow-xyz/glow-client
 ```
 
 ## Usage
 
 ```ts
-import { GlowClient } from "@glow-app/glow-client";
+import { GlowClient } from "@glow-xyz/glow-client";
 
 const glowClient = new GlowClient();
 

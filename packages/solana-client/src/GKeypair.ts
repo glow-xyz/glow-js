@@ -43,7 +43,7 @@ export class GKeypair {
   static fromSecretKey(secretKey: Uint8Array): GKeypair {
     const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
     const encoder = new TextEncoder();
-    const signData = encoder.encode("@glow-app/solana-client-validation-v1");
+    const signData = encoder.encode("@glow-xyz/solana-client-validation-v1");
     const signature = nacl.sign.detached(signData, keypair.secretKey);
     if (!nacl.sign.detached.verify(signData, signature, keypair.publicKey)) {
       throw new Error("provided secretKey is invalid");

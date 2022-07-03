@@ -5,7 +5,7 @@
   },
   "github": {
     "release": true,
-    "releaseName": "`@glow-app/solana-client` v${version}`"
+    "releaseName": "`@glow-xyz/solana-client` v${version}`"
   },
   "npm": {
     "access": "public"

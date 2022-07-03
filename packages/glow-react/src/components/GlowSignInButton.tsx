@@ -1,4 +1,4 @@
-import { Solana } from "@glow-app/solana-client";
+import { Solana } from "@glow-xyz/solana-client";
 import classNames from "classnames";
 import React from "react";
 import { useGlowContext } from "../GlowContext";
