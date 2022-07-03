@@ -8,6 +8,7 @@
     "dist/**/*",
     "src/**/*"
   ],
+  "sideEffects": false,
   "scripts": {
     "build": "npm run build:js && npm run build:css",
     "build:js": "tsc",
