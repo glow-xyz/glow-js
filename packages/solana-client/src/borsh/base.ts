@@ -1,4 +1,4 @@
-import * as beet from "@metaplex-foundation/beet";
+import * as beet from "@glow-xyz/beet";
 import sum from "lodash/sum";
 import range from "lodash/range";
 import {
@@ -9,7 +9,7 @@ import {
   FixedBeetField,
   FixedSizeBeet,
   i64,
-} from "@metaplex-foundation/beet";
+} from "@glow-xyz/beet";
 import { strict as assert } from "assert";
 import BN from "bn.js";
 import { Buffer } from "buffer";

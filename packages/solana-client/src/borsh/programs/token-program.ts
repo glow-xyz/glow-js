@@ -1,4 +1,4 @@
-import * as beet from "@metaplex-foundation/beet";
+import * as beet from "@glow-xyz/beet";
 import BN from "bn.js";
 import { Solana } from "../../base-types";
 import { GlowBorsh } from "../base";
