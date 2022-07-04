@@ -40,7 +40,7 @@ export const GlowProvider = ({ children }: { children: React.ReactNode }) => {
 
   usePolling(
     () => {
-      if (window.glow || window.solana) {
+      if (window.glow) {
         setGlowDetected(true);
       }
     },
