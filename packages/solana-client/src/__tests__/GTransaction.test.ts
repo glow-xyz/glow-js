@@ -588,4 +588,33 @@ describe("GTransaction", () => {
     const gtxBuffer = GTransaction.toBuffer({ gtransaction: gtransaction2 });
     expect(gtxBuffer.toString("hex")).toBe(web3TxBuffer.toString("hex"));
   });
+
+  test("error when modifying a gtransaction", () => {
+    const payer = Keypair.generate();
+    const ix = SystemProgram.transfer({
+      fromPubkey: new PublicKey(payer.publicKey),
+      toPubkey: new PublicKey("3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm"),
+      lamports: 100,
+    });
+    const gtransaction = GTransaction.create({
+      feePayer: payer.publicKey.toBase58(),
+      recentBlockhash: "CXk5NCtYva7h4BcGXg5BDBDtZDwgBuWZcwmWt5ReY1yA",
+      instructions: [
+        {
+          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
+            address: pubkey.toString(),
+            signer: isSigner,
+            writable: isWritable,
+          })),
+          data_base64: ix.data.toString("base64"),
+          program: ix.programId.toString(),
+        },
+      ],
+    });
+
+    // We freeze the `gTransaction` object so that we don't accidentally modify it improperly
+    expect(() => {
+      gtransaction.recentBlockhash = "x";
+    }).toThrow();
+  });
 });

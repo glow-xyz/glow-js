@@ -156,11 +156,11 @@ export namespace GTransaction {
       })),
     };
 
-    return GTransaction.sign({
+    return Object.freeze(GTransaction.sign({
       signers,
       gtransaction,
       suppressInvalidSignerError,
-    });
+    }));
   };
 
   export const sign = ({
