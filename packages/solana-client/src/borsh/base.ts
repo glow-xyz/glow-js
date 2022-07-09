@@ -240,7 +240,7 @@ export class GlowBorsh<InOut> extends BeetStruct<InOut, InOut> {
     return {
       write: function (buf: Buffer, offset: number) {
         const stringBuf = Buffer.from(hex, "hex");
-        if (stringBuf.byteLength === 8) {
+        if (stringBuf.byteLength !== 8) {
           throw new Error(`${hex} has invalid byte size`);
         }
         stringBuf.copy(buf, offset, 0, 8);
