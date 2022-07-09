@@ -31,6 +31,31 @@ describe("verifySignature", () => {
 });
 
 describe("verifySignIn", () => {
+  test("parses a localhost message", () => {
+    const keypair = nacl.sign.keyPair();
+    const expectedAddress = bs58.encode(keypair.publicKey);
+
+    const _requestedAt = DateTime.now().toUTC().toISO();
+    const message = `would like you to sign in with your Solana account:
+${expectedAddress}
+
+Domain: localhost
+Requested At: ${_requestedAt}
+Nonce: 825`;
+
+    const { appName, domain, address, nonce, requestedAt } = verifySignIn({
+      signature: signMessage(message, keypair),
+      message,
+      expectedAddress,
+      expectedDomain: "localhost",
+    });
+    expect(appName).toEqual("");
+    expect(domain).toEqual("localhost");
+    expect(address).toEqual(expectedAddress);
+    expect(nonce).toEqual("825");
+    expect(requestedAt.toISO()).toEqual(_requestedAt);
+  });
+
   test("approves a valid sign in", () => {
     const keypair = nacl.sign.keyPair();
     const expectedAddress = bs58.encode(keypair.publicKey);
