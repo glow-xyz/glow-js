@@ -26,7 +26,7 @@ export const verifySignIn = ({
   }
 
   const regexStr =
-    `^(?<appName>.{0,100}) would like you to sign in with your Solana account:
+    `^(?<appName>.{0,100}?)[ ]?would like you to sign in with your Solana account:
         (?<address>[5KL1-9A-HJ-NP-Za-km-z]{32,44})
 
         Domain: (?<domain>[A-Za-z0-9.\\-]+)
