@@ -547,4 +547,45 @@ describe("GTransaction", () => {
 
     expect(gtxBuffer.toString("hex")).toBe(txBuffer.toString("hex"));
   });
+
+  test("update blockhash", () => {
+    const payer = Keypair.generate();
+
+    const blockhash1 = "636Lq2zGQDYZ3i6hahVcFWJkY6Jejndy5Qe4gBdukXDi";
+    const blockhash2 = "CXk5NCtYva7h4BcGXg5BDBDtZDwgBuWZcwmWt5ReY1yA";
+
+    const ix = SystemProgram.transfer({
+      fromPubkey: new PublicKey(payer.publicKey),
+      toPubkey: new PublicKey("3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm"),
+      lamports: 100,
+    });
+    const web3Tx = new Transaction({
+      recentBlockhash: blockhash2,
+      feePayer: payer.publicKey as unknown as PublicKey,
+    });
+    web3Tx.add(ix);
+    const web3TxBuffer = web3Tx.serialize({ verifySignatures: false });
+
+    const gtransaction1 = GTransaction.create({
+      feePayer: payer.publicKey.toBase58(),
+      recentBlockhash: blockhash1,
+      instructions: [
+        {
+          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
+            address: pubkey.toString(),
+            signer: isSigner,
+            writable: isWritable,
+          })),
+          data_base64: ix.data.toString("base64"),
+          program: ix.programId.toString(),
+        },
+      ],
+    });
+    const gtransaction2 = GTransaction.updateBlockhash({
+      gtransaction: gtransaction1,
+      blockhash: blockhash2,
+    });
+    const gtxBuffer = GTransaction.toBuffer({ gtransaction: gtransaction2 });
+    expect(gtxBuffer.toString("hex")).toBe(web3TxBuffer.toString("hex"));
+  });
 });
