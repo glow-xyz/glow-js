@@ -66,7 +66,7 @@ export namespace GTransaction {
     instructions: z.array(InstructionZ),
     messageBase64: z.string(),
   });
-  export type GTransaction = z.infer<typeof GTransactionZ>;
+  export type GTransaction = Readonly<z.infer<typeof GTransactionZ>>;
 
   export const create = ({
     instructions,
@@ -156,11 +156,13 @@ export namespace GTransaction {
       })),
     };
 
-    return GTransaction.sign({
-      signers,
-      gtransaction,
-      suppressInvalidSignerError,
-    });
+    return Object.freeze(
+      GTransaction.sign({
+        signers,
+        gtransaction,
+        suppressInvalidSignerError,
+      })
+    );
   };
 
   export const sign = ({
@@ -250,14 +252,16 @@ export namespace GTransaction {
       address: addresses[idx],
     }));
 
-    return GTransactionZ.parse({
-      signature: signatures[0].signature,
-      signatures,
-      recentBlockhash,
-      instructions,
-      accounts,
-      messageBase64: messageBuffer.toString("base64"),
-    });
+    return Object.freeze(
+      GTransactionZ.parse({
+        signature: signatures[0].signature,
+        signatures,
+        recentBlockhash,
+        instructions,
+        accounts,
+        messageBase64: messageBuffer.toString("base64"),
+      })
+    );
   };
 
   export const addSignature = ({
@@ -288,11 +292,11 @@ export namespace GTransaction {
       };
     });
 
-    return {
+    return Object.freeze({
       ...gtransaction,
       signatures,
       signature: signatures[0].signature,
-    };
+    });
   };
 
   export const toBuffer = ({
@@ -318,6 +322,42 @@ export namespace GTransaction {
     messageBuffer.copy(txBuffer, signaturesFixedBeet.byteSize);
 
     return txBuffer;
+  };
+
+  export const updateBlockhash = ({
+    gtransaction,
+    blockhash,
+  }: {
+    gtransaction: GTransaction;
+    blockhash: string;
+  }): GTransaction => {
+    const {
+      signature,
+      signatures,
+      accounts,
+      instructions,
+      messageBase64: _messageBase64,
+    } = gtransaction;
+
+    const messageData = TRANSACTION_MESSAGE.parse({
+      base64: _messageBase64,
+    });
+
+    if (!messageData) {
+      throw new Error("Problem parsing existing message");
+    }
+
+    return Object.freeze({
+      signature,
+      signatures,
+      accounts,
+      instructions,
+      recentBlockhash: blockhash,
+      messageBase64: TRANSACTION_MESSAGE.toBuffer({
+        ...messageData,
+        recentBlockhash: blockhash,
+      }).toString("base64"),
+    });
   };
 }
 
