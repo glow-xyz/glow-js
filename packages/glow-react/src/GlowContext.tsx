@@ -56,6 +56,10 @@ export const GlowProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(glowClient.address ? { address: glowClient.address } : null);
       setGlowDetected(true);
     });
+    if (glowClient._wallet) {
+      setUser(glowClient.address ? { address: glowClient.address } : null);
+      setGlowDetected(true);
+    }
   });
 
   const signIn = useCallback(async () => {
