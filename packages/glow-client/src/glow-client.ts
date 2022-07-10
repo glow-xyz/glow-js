@@ -83,7 +83,7 @@ export class GlowClient extends EventEmitter {
       }
     };
 
-    // Poll for the window.glowSolana to be set since the extension loads
+    // Poll for the window.glow to be set since the extension loads
     // after the webpage loads.
     const glowLoadedInterval = setInterval(onGlowLoaded, 250);
 
