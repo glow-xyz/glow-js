@@ -370,12 +370,62 @@ export namespace SolanaClient {
   export const sendTransaction = async ({
     transactionBase64,
     rpcUrl,
-  }: RequestConfig & { transactionBase64: string }): Promise<string> => {
-    return await makeRpcRequest({
+    skipSimulation,
+    waitForConfirmation,
+  }: RequestConfig & {
+    transactionBase64: string;
+    skipSimulation?: boolean;
+    waitForConfirmation?: boolean;
+  }): Promise<string> => {
+    const signature = await makeRpcRequest({
       method: "sendTransaction",
       rpcUrl: rpcUrl,
-      params: [transactionBase64, { encoding: "base64" }],
+      params: [
+        transactionBase64,
+        {
+          encoding: "base64",
+          skipPreflight: skipSimulation,
+          preflightCommitment: skipSimulation ? undefined : "confirmed",
+        },
+      ],
       zod: z.string(),
+    });
+
+    if (waitForConfirmation) {
+      await confirmTransaction({ signature, rpcUrl });
+    }
+
+    return signature;
+  };
+
+  export const confirmTransaction = async ({
+    signature,
+    rpcUrl,
+    pollInterval = Duration.fromObject({ millisecond: 500 }),
+  }: RequestConfig & {
+    signature: string;
+    pollInterval?: Duration;
+  }): Promise<void> => {
+    const end = DateTime.now().plus({ minutes: 2 });
+
+    while (DateTime.now() < end) {
+      try {
+        const tx = await getTransaction({
+          rpcUrl,
+          signature,
+          commitment: "confirmed",
+        });
+
+        if (tx) {
+          return;
+        }
+      } catch (e) {}
+
+      await sleep(pollInterval);
+    }
+
+    throw new GlowError("Did not confirm transaction.", {
+      extraData: { signature },
     });
   };
 
@@ -721,11 +771,13 @@ export namespace SolanaClient {
     address,
     amount,
     timeout = Duration.fromObject({ minutes: 1 }),
+    waitForConfirmation,
     commitment = "confirmed",
     ...config
   }: {
     address: Solana.Address;
     amount: Solana.SolAmount;
+    waitForConfirmation?: boolean;
     commitment?: "finalized" | "confirmed";
   } & RequestConfig): Promise<{ signature: Base58 }> => {
     const signature = await makeRpcRequest({
@@ -739,6 +791,11 @@ export namespace SolanaClient {
       timeout,
       ...config,
     });
+
+    if (waitForConfirmation) {
+      await confirmTransaction({ signature, rpcUrl: config.rpcUrl });
+    }
+
     return { signature };
   };
 }
@@ -788,6 +845,8 @@ const makeRpcRequest = async <Response>({
     }
 
     if (data.error) {
+      console.error("RPC error", data.error);
+
       throw new GlowError("Solana RPC returned an error", {
         code: "rpc-error",
         statusCode: 400,
@@ -831,4 +890,10 @@ const makeRpcRequest = async <Response>({
     // event.add({ duration_ms });
     // event.send();
   }
+};
+
+const sleep = async (duration: Duration) => {
+  await new Promise((resolve) =>
+    setTimeout(resolve, duration.as("millisecond"))
+  );
 };
