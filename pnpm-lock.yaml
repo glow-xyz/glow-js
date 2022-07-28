@@ -106,7 +106,7 @@ importers:
       sass: 1.52.3
     dependencies:
       '@glow-xyz/glow-client': link:../glow-client
-      '@glow-xyz/solana-client': link:../solana-client
+      '@glow-xyz/solana-client': 1.0.11
       classnames: 2.3.1
     devDependencies:
       '@solana/web3.js': 1.44.1
@@ -119,7 +119,7 @@ importers:
 
   packages/solana-client:
     specifiers:
-      '@glow-xyz/beet': 0.4.0-beta.1
+      '@glow-xyz/beet': 0.4.0
       '@solana/web3.js': 1.44.1
       '@types/bn.js': 5.1.0
       '@types/jest': 28.1.2
@@ -147,7 +147,7 @@ importers:
       typescript: 4.7.4
       zod: 3.17.3
     dependencies:
-      '@glow-xyz/beet': 0.4.0-beta.1
+      '@glow-xyz/beet': 0.4.0
       '@solana/web3.js': 1.44.1
       axios: 0.27.2
       bignumber.js: 9.0.2
@@ -547,8 +547,18 @@ packages:
       '@ethersproject/logger': 5.6.0
       hash.js: 1.1.7
 
-  /@glow-xyz/beet/0.4.0-beta.1:
-    resolution: {integrity: sha512-VMt+3hXKzBvHhqMmHRorRfgYSN24T1NXB8foAK6rk9wfug4MldbVDtIc1ePmuxF8Le2EDsaqFlU0AxOp0ECNug==}
+  /@glow-xyz/beet/0.3.0:
+    resolution: {integrity: sha512-Gdm0cEXLsXwDt8KevAaqd2AGNLX5fQKILVgK8ZprzIvtP7FWbR8iro/iu15U+W1BcCR2P4QdZq3B8vOxJTvIug==}
+    dependencies:
+      ansicolors: 0.3.2
+      bn.js: 5.2.1
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@glow-xyz/beet/0.4.0:
+    resolution: {integrity: sha512-w2grD8M4Y9LU4UWy748GtF5RW503fzyIG/thhhQh2puXeM4/NqTVcMGzTPY2HOSCu6hRlf4SAJehCUvf+mXmNg==}
     dependencies:
       ansicolors: 0.3.2
       bn.js: 5.2.1
@@ -556,6 +566,31 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@glow-xyz/solana-client/1.0.11:
+    resolution: {integrity: sha512-HGRHZvP3Lqbp9y+XfWwaWN4OIJUSEM1EiHv6X7wwFvjMEsrddAm8K4FqoP1SBpQJNdXxPFGuTRNUTvAIPYo/FA==}
+    dependencies:
+      '@glow-xyz/beet': 0.3.0
+      '@solana/web3.js': 1.44.1
+      axios: 0.27.2
+      bignumber.js: 9.0.2
+      bn.js: 5.2.1
+      bs58: 5.0.0
+      buffer: 6.0.3
+      js-sha256: 0.9.0
+      lodash: 4.17.21
+      luxon: 2.4.0
+      p-limit: 3.0.1
+      rimraf: 3.0.2
+      tweetnacl: 1.0.3
+      zod: 3.17.3
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - encoding
+      - supports-color
+      - utf-8-validate
     dev: false
 
   /@humanwhocodes/config-array/0.9.5:
