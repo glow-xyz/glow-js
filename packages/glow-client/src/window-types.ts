@@ -63,10 +63,10 @@ export interface GlowAdapter extends EventEmitter<PhantomWalletEvents> {
     address: Address;
     signatureBase64: string;
     message: string;
+
+    signedTransactionBase64?: string; // This is useful for Ledger
   }>;
-  connect: (params?: {
-    onlyIfTrusted: true;
-  }) => Promise<{
+  connect: (params?: { onlyIfTrusted: true }) => Promise<{
     publicKey: PublicKey;
     address: Address;
   }>;
