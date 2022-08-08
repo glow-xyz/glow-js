@@ -35,9 +35,11 @@ export const verifySignIn = ({
 } & (
   | {
       signature: string; // base64
+      signed_transaction_base64?: string; // base64
     }
   | {
       signed_transaction_base64: string; // base64
+      signature?: string; // base64
     }
 )): {
   appName: string;
@@ -85,11 +87,12 @@ export const verifySignIn = ({
     throw new Error("Message is not recent.");
   }
 
-  if ("signature" in params) {
-    verifySignature({ signature: params.signature, message, signer: address });
-  } else {
+  if (
+    "signed_transaction_base64" in params &&
+    typeof params.signed_transaction_base64 === "string"
+  ) {
     const gtransaction = GTransaction.parse({
-      buffer: Buffer.from(params.signed_transaction_base64, "base64"),
+      buffer: Buffer.from(params.signed_transaction_base64!, "base64"),
     });
     const messageFromTx = Buffer.from(
       gtransaction.instructions[0].data_base64,
@@ -109,6 +112,8 @@ export const verifySignIn = ({
       messageBuffer: Buffer.from(gtransaction.messageBase64, "base64"),
       signer: address,
     });
+  } else {
+    verifySignature({ signature: params.signature!, message, signer: address });
   }
 
   return {

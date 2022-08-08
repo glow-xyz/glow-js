@@ -102,12 +102,14 @@ export class GlowClient extends EventEmitter {
     address: Address;
     message: string;
     signature: string;
+    signedTransactionBase64: string | null;
   }> {
     if (!this._wallet) {
       throw new Error("Not loaded.");
     }
 
-    const { address, message, signatureBase64 } = await this._wallet.signIn();
+    const { address, message, signatureBase64, signedTransactionBase64 } =
+      await this._wallet.signIn();
 
     this._address = address;
 
@@ -116,9 +118,15 @@ export class GlowClient extends EventEmitter {
       expectedAddress: address,
       expectedDomain: window.location.hostname,
       signature: signatureBase64,
+      signed_transaction_base64: signedTransactionBase64,
     });
 
-    return { address, signature: signatureBase64, message };
+    return {
+      address,
+      signature: signatureBase64,
+      message,
+      signedTransactionBase64: signedTransactionBase64 ?? null,
+    };
   }
 
   async connect(): Promise<{ address: Address }> {

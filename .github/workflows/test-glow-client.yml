@@ -19,6 +19,10 @@ jobs:
         uses: ./.github/actions/pnpm-install
         with:
           package-name: "@glow-xyz/glow-client"
+      - name: Install Solana Client
+        run: pnpm --filter @glow-xyz/solana-client install
+      - name: Build
+        run: pnpm --filter @glow-xyz/solana-client run build
       - name: Lint
         run: pnpm --filter @glow-xyz/glow-client run lint
       - name: TSC
