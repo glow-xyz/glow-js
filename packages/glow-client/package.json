@@ -17,6 +17,7 @@
     "release": "pnpm build && release-it"
   },
   "dependencies": {
+    "@glow-xyz/solana-client": "1.1.x",
     "bs58": "5.0.0",
     "buffer": "6.0.3",
     "eventemitter3": "4.0.7",
