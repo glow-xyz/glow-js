@@ -1,8 +1,15 @@
+import { GPublicKey, GKeypair, GTransaction } from "@glow-xyz/solana-client";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
 import { DateTime } from "luxon";
 import nacl from "tweetnacl";
-import { verifySignature, verifySignIn } from "../utils";
+import {
+  constructSignInMessage,
+  constructSignInTx,
+  NOTE_PROGRAM,
+  verifySignature,
+  verifySignIn,
+} from "../utils";
 
 describe("verifySignature", () => {
   test("confirms a valid signature", async () => {
@@ -264,6 +271,96 @@ Nonce: 869`;
         message,
         expectedAddress,
         expectedDomain: "glow.xyz",
+      });
+    }).toThrow();
+  });
+
+  test("parses a signed transaction", () => {
+    const keypair = nacl.sign.keyPair();
+    const address = bs58.encode(keypair.publicKey);
+
+    const { gtransaction, message } = constructSignInTx({
+      address,
+      appName: "Hi app",
+      domain: "glow.app",
+      signer: new GKeypair(keypair),
+    });
+
+    const {
+      appName,
+      domain,
+      address: _address,
+    } = verifySignIn({
+      signed_transaction_base64: GTransaction.toBuffer({
+        gtransaction,
+      }).toString("base64"),
+      message,
+      expectedAddress: address,
+      expectedDomain: "glow.app",
+    });
+    expect(appName).toEqual("Hi app");
+    expect(domain).toEqual("glow.app");
+    expect(address).toEqual(_address);
+  });
+
+  test("rejects a transaction with an invalid message", () => {
+    const keypair = nacl.sign.keyPair();
+    const address = bs58.encode(keypair.publicKey);
+
+    const message = constructSignInMessage({
+      appName: "Hi app",
+      domain: "glow.app",
+      address,
+      nonce: Math.floor(Math.random() * 1000),
+      requestedAt: DateTime.now(),
+    });
+
+    const gtransaction = GTransaction.create({
+      instructions: [
+        {
+          accounts: [
+            { address, signer: true },
+            { address: GPublicKey.nullString, signer: true },
+          ],
+          program: NOTE_PROGRAM,
+          data_base64: Buffer.from(message + "errrrrrrrr").toString("base64"),
+        },
+      ],
+      recentBlockhash: GPublicKey.nullString,
+      feePayer: GPublicKey.nullString,
+      signers: [new GKeypair(keypair)],
+    });
+
+    expect(() => {
+      verifySignIn({
+        signed_transaction_base64: GTransaction.toBuffer({
+          gtransaction,
+        }).toString("base64"),
+        message,
+        expectedAddress: address,
+        expectedDomain: "glow.app",
+      });
+    }).toThrow();
+  });
+
+  test("rejects an unsigned transaction", () => {
+    const keypair = nacl.sign.keyPair();
+    const address = bs58.encode(keypair.publicKey);
+
+    const { gtransaction, message } = constructSignInTx({
+      address,
+      appName: "Hi app",
+      domain: "glow.app",
+    });
+
+    expect(() => {
+      verifySignIn({
+        signed_transaction_base64: GTransaction.toBuffer({
+          gtransaction,
+        }).toString("base64"),
+        message,
+        expectedAddress: address,
+        expectedDomain: "glow.app",
       });
     }).toThrow();
   });
