@@ -105,7 +105,7 @@ export namespace SolanaClient {
     });
   };
 
-  export const getBorshAccountInfo = async <T>({
+  export const getBorshAccountInfo = async <T extends {}>({
     address,
     commitment = "confirmed",
     format,
@@ -144,7 +144,7 @@ export namespace SolanaClient {
     };
   };
 
-  export const getBorshAccounts = async <T>({
+  export const getBorshAccounts = async <T extends {}>({
     addresses,
     commitment = "confirmed",
     format,

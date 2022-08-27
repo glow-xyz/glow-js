@@ -31,7 +31,7 @@ export const normalizeRpcParsedAccountWithPubkey = ({
     return normalizeRpcAccountWithPubkey({
       account: {
         ...account,
-        data: account.data,
+        data: account.data as [string, "base64"],
       },
       pubkey,
     });
