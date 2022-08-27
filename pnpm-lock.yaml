@@ -72,7 +72,7 @@ importers:
       typescript: 4.8.2
       zod: ^3.18.0
     dependencies:
-      '@glow-xyz/solana-client': link:../solana-client
+      '@glow-xyz/solana-client': 1.1.0
       bs58: 5.0.0
       buffer: 6.0.3
       eventemitter3: 4.0.7
@@ -581,6 +581,17 @@ packages:
       '@ethersproject/logger': 5.6.0
       hash.js: 1.1.7
 
+  /@glow-xyz/beet/0.5.0:
+    resolution: {integrity: sha512-D1N66Xp7CkQVIzqzoDqGqgHx0vTYO41SyOGgmUoqEd9DvLyA/QrEHDyYaL9zq+94B39IOMqGQw4PsIJ89XPHiA==}
+    dependencies:
+      ansicolors: 0.3.2
+      bn.js: 5.2.1
+      buffer: 6.0.3
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@glow-xyz/beet/0.6.0:
     resolution: {integrity: sha512-rf1Bbxw1ahzCzpBY4wHZh88KFhxT166apiC3eHYPRHGJFxNBbY9Qu+bCgWVP40LsN60igFhWo67Gb8su6LeJlA==}
     dependencies:
@@ -589,6 +600,31 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@glow-xyz/solana-client/1.1.0:
+    resolution: {integrity: sha512-52eg3XMBphIHL+LXuvaz6ubmMtlBZx/NEQdAHKO88uCR8E0hMsNeV4qrbUwrpS6nf0Ok7AO+ZwsJrVW2DEudfQ==}
+    dependencies:
+      '@glow-xyz/beet': 0.5.0
+      '@solana/web3.js': 1.44.1
+      axios: 0.27.2
+      bignumber.js: 9.0.2
+      bn.js: 5.2.1
+      bs58: 5.0.0
+      buffer: 6.0.3
+      js-sha256: 0.9.0
+      lodash: 4.17.21
+      luxon: 2.4.0
+      p-limit: 3.0.1
+      rimraf: 3.0.2
+      tweetnacl: 1.0.3
+      zod: 3.17.3
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - encoding
+      - supports-color
+      - utf-8-validate
     dev: false
 
   /@humanwhocodes/config-array/0.10.4:
@@ -1626,6 +1662,10 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
+  /ansicolors/0.3.2:
+    resolution: {integrity: sha512-QXu7BPrP29VllRxH8GwB7x5iX5qWKAAMLqKQGWTeLWVlNHNOpVMJ91dsxQAIWXpjuW5wqvxu3Jd/nRjrJ+0pqg==}
+    dev: false
+
   /anymatch/3.1.2:
     resolution: {integrity: sha512-P43ePfOAIupkguHUycrc4qJ9kz8ZiuOUijaETwX7THt0Y/GNK7v0aa8rY816xWjZ7rJdA5XdMcpVFTKMq+RvWg==}
     engines: {node: '>= 8'}
@@ -1833,6 +1873,10 @@ packages:
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
+
+  /bignumber.js/9.0.2:
+    resolution: {integrity: sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==}
+    dev: false
 
   /bignumber.js/9.1.0:
     resolution: {integrity: sha512-4LwHK4nfDOraBCtst+wOWIHbu1vhvAPJK8g8nROd4iuc3PSEjWif/qwbkh8jwCJz6yDBvtU4KPynETgrfh7y3A==}
@@ -6553,6 +6597,10 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod/3.17.3:
+    resolution: {integrity: sha512-4oKP5zvG6GGbMlqBkI5FESOAweldEhSOZ6LI6cG+JzUT7ofj1ZOC0PJudpQOpT1iqOFpYYtX5Pw0+o403y4bcg==}
+    dev: false
 
   /zod/3.18.0:
     resolution: {integrity: sha512-gwTm8RfUCe8l9rDwN5r2A17DkAa8Ez4Yl4yXqc5VqeGaXaJahzYYXbTwvhroZi0SNBqTwh/bKm2N0mpCzuw4bA==}
