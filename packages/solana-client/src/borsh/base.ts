@@ -22,7 +22,7 @@ import { CompactArray } from "./CompactArray";
 /**
  * `new GlowBorsh(...)` is the equivalent of `new beet.BeetArgsStruct(...)`
  */
-export class GlowBorsh<InOut> extends BeetStruct<InOut, InOut> {
+export class GlowBorsh<InOut extends {}> extends BeetStruct<InOut, InOut> {
   constructor({ fields }: { fields: FixedBeetField<InOut>[] }) {
     super(fields, (args) => args, "GlowBorsh");
   }
@@ -349,7 +349,7 @@ export class GlowBorsh<InOut> extends BeetStruct<InOut, InOut> {
  * Sometimes (eg. when using an optional argument, beet.coption)
  * we need a less strict than fixed - fixable format.
  */
-export class FixableGlowBorsh<InOut> extends FixableBeetStruct<InOut, InOut> {
+export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<InOut, InOut> {
   constructor({ fields }: { fields: BeetField<InOut, any>[] }) {
     super(fields, (args) => args, "FixableGlowBorsh");
   }
