@@ -83,7 +83,7 @@ export const verifySignIn = ({
   }
 
   const timeDiff = DateTime.now().diff(requestedAt);
-  if (Math.abs(timeDiff.as("minute")) > 10) {
+  if (Math.abs(timeDiff.as("minute")) > 30) {
     throw new Error("Message is not recent.");
   }
 
