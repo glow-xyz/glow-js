@@ -1,7 +1,7 @@
 import { GPublicKey, GTransaction, GKeypair } from "@glow-xyz/solana-client";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
-import { DateTime } from "luxon";
+import { DateTime, Duration } from "luxon";
 import { sign } from "tweetnacl";
 import { Address } from "./window-types";
 
@@ -16,6 +16,7 @@ const SIGN_IN_REGEX_STR =
     .map((s) => s.trim())
     .join("\n");
 const SIGN_IN_REGEX = new RegExp(SIGN_IN_REGEX_STR);
+const DEFAULT_MAX_ALLOWED_TIME_DIFF = Duration.fromObject({ minutes: 10 });
 
 /**
  * We take in either a signature or a signed transaction.
@@ -27,11 +28,18 @@ export const verifySignIn = ({
   message,
   expectedDomain,
   expectedAddress,
+  maxAllowedTimeDiff = DEFAULT_MAX_ALLOWED_TIME_DIFF,
   ...params
 }: {
   message: string;
   expectedDomain: string | string[];
   expectedAddress: Address;
+  /**
+   * How long is a signature valid for, both ways.
+   * Providing value of 10 minutes will cause signatures
+   * from [t - 10 minutes, t + 10 minutes] to be considered valid.
+   */
+  maxAllowedTimeDiff?: Duration;
 } & (
   | {
       signature: string; // base64
@@ -83,7 +91,7 @@ export const verifySignIn = ({
   }
 
   const timeDiff = DateTime.now().diff(requestedAt);
-  if (Math.abs(timeDiff.as("minute")) > 30) {
+  if (Math.abs(timeDiff.toMillis()) > maxAllowedTimeDiff.toMillis()) {
     throw new Error("Message is not recent.");
   }
 
