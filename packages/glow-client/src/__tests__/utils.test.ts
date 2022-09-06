@@ -1,7 +1,7 @@
 import { GPublicKey, GKeypair, GTransaction } from "@glow-xyz/solana-client";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
-import { DateTime } from "luxon";
+import { DateTime, Duration } from "luxon";
 import nacl from "tweetnacl";
 import {
   constructSignInMessage,
@@ -230,6 +230,29 @@ Nonce: 869`;
         expectedDomain: "glow.xyz",
       });
     }).toThrow();
+  });
+
+  test("accepts an old time if configured so", () => {
+    const keypair = nacl.sign.keyPair();
+    const expectedAddress = bs58.encode(keypair.publicKey);
+
+    const _requestedAt = DateTime.now().minus({ days: 1 }).toUTC().toISO();
+    const message = `Glow Wallet would like you to sign in with your Solana account:
+${expectedAddress}
+
+Domain: glow.xyz
+Requested At: ${_requestedAt}
+Nonce: 869`;
+
+    expect(() => {
+      verifySignIn({
+        signature: signMessage(message, keypair),
+        message,
+        expectedAddress,
+        expectedDomain: "glow.xyz",
+        maxAllowedTimeDiffMs: Duration.fromObject({ days: 2 }).toMillis(),
+      });
+    }).not.toThrow();
   });
 
   test("rejects a future time", () => {
