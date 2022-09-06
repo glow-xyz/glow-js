@@ -16,7 +16,9 @@ const SIGN_IN_REGEX_STR =
     .map((s) => s.trim())
     .join("\n");
 const SIGN_IN_REGEX = new RegExp(SIGN_IN_REGEX_STR);
-const DEFAULT_MAX_ALLOWED_TIME_DIFF = Duration.fromObject({ minutes: 10 });
+const DEFAULT_MAX_ALLOWED_TIME_DIFF_MS = Duration.fromObject({
+  minutes: 10,
+}).toMillis();
 
 /**
  * We take in either a signature or a signed transaction.
@@ -28,7 +30,7 @@ export const verifySignIn = ({
   message,
   expectedDomain,
   expectedAddress,
-  maxAllowedTimeDiff = DEFAULT_MAX_ALLOWED_TIME_DIFF,
+  maxAllowedTimeDiffMs = DEFAULT_MAX_ALLOWED_TIME_DIFF_MS,
   ...params
 }: {
   message: string;
@@ -39,7 +41,7 @@ export const verifySignIn = ({
    * Providing value of 10 minutes will cause signatures
    * from [t - 10 minutes, t + 10 minutes] to be considered valid.
    */
-  maxAllowedTimeDiff?: Duration;
+  maxAllowedTimeDiffMs?: number;
 } & (
   | {
       signature: string; // base64
@@ -91,7 +93,7 @@ export const verifySignIn = ({
   }
 
   const timeDiff = DateTime.now().diff(requestedAt);
-  if (Math.abs(timeDiff.toMillis()) > maxAllowedTimeDiff.toMillis()) {
+  if (Math.abs(timeDiff.toMillis()) > maxAllowedTimeDiffMs) {
     throw new Error("Message is not recent.");
   }
 

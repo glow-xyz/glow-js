@@ -250,7 +250,7 @@ Nonce: 869`;
         message,
         expectedAddress,
         expectedDomain: "glow.xyz",
-        maxAllowedTimeDiff: Duration.fromObject({ days: 2 }),
+        maxAllowedTimeDiffMs: Duration.fromObject({ days: 2 }).toMillis(),
       });
     }).not.toThrow();
   });
