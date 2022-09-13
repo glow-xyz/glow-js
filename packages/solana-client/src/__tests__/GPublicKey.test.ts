@@ -148,13 +148,13 @@ describe("GPublicKey", function () {
 
     // https://github.com/solana-labs/solana/issues/11950
     {
-      let seeds = [
+      const seeds = [
         new GPublicKey(
           "H4snTKK9adiU15gP22ErfZYtro3aqR9BTMXiH3AwiUTQ"
         ).toBuffer(),
         new BN(2).toArrayLike(Buffer, "le", 8),
       ];
-      let programId = new GPublicKey(
+      const programId = new GPublicKey(
         "4ckmDgGdxQoPDLUkDT3vHgSAkzA3QRdNq5ywwY4sUSJn"
       );
       programAddress = await GPublicKey.createProgramAddress(
@@ -171,7 +171,7 @@ describe("GPublicKey", function () {
     const programId = new GPublicKey(
       "BPFLoader1111111111111111111111111111111111"
     );
-    let [programAddress, nonce] = GPublicKey.findProgramAddress(
+    const [programAddress, nonce] = GPublicKey.findProgramAddress(
       [Buffer.from("", "utf8")],
       programId.toString()
     );
@@ -184,14 +184,14 @@ describe("GPublicKey", function () {
   });
 
   test("isOnCurve", () => {
-    let onCurve = GKeypair.generate().publicKey;
+    const onCurve = GKeypair.generate().publicKey;
     expect(GPublicKey.isOnCurve(onCurve.toBuffer())).toBeTruthy();
     expect(GPublicKey.isOnCurve(onCurve.toBase58())).toBeTruthy();
     // A program address, yanked from one of the above tests. This is a pretty
     // poor test vector since it was created by the same code it is testing.
     // Unfortunately, I've been unable to find a golden negative example input
     // for curve25519 point decompression :/
-    let offCurve = new GPublicKey(
+    const offCurve = new GPublicKey(
       "12rqwuEgBYiGhBrDJStCiqEtzQpTTiZbh7teNVLuYcFA"
     );
     expect(GPublicKey.isOnCurve(offCurve.toBuffer())).toBeFalsy();
