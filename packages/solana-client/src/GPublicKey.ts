@@ -1,9 +1,12 @@
 /**
  * This is a lighter version of the public key in `@solana/web3.js`
  */
+import { sha256 } from "@noble/hashes/sha256";
 import BN from "bn.js";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
+import { isOnCurve } from "./utils/ed25519";
+import { Solana } from "./base-types";
 
 /**
  * Value to be converted into public key
@@ -26,6 +29,8 @@ export type PublicKeyData = {
 function isPublicKeyData(value: PublicKeyInitData): value is PublicKeyData {
   return (value as PublicKeyData)._bn !== undefined;
 }
+
+const MAX_SEED_LENGTH = 32;
 
 export class GPublicKey {
   private _bn: BN;
@@ -90,5 +95,68 @@ export class GPublicKey {
 
   toString(): string {
     return this.toBase58();
+  }
+
+  /**
+   * Derive a program address from seeds and a program ID.
+   */
+  static createProgramAddress(
+    seeds: Array<Buffer>,
+    programId: Solana.Address
+  ): Solana.Address {
+    let buffer = Buffer.alloc(0);
+    seeds.forEach(function (seed) {
+      if (seed.length > MAX_SEED_LENGTH) {
+        throw new TypeError(`Max seed length exceeded`);
+      }
+      buffer = Buffer.concat([buffer, seed]);
+    });
+    buffer = Buffer.concat([
+      buffer,
+      new GPublicKey(programId).toBuffer(),
+      Buffer.from("ProgramDerivedAddress"),
+    ]);
+    const publicKeyBytes = sha256(buffer);
+    if (isOnCurve(publicKeyBytes)) {
+      throw new Error(`Invalid seeds, address must fall off the curve`);
+    }
+    return new GPublicKey(publicKeyBytes).toBase58();
+  }
+
+  /**
+   * Find a valid program address
+   *
+   * Valid program addresses must fall off the ed25519 curve.  This function
+   * iterates a nonce until it finds one that when combined with the seeds
+   * results in a valid program address.
+   */
+  static findProgramAddress(
+    seeds: Array<Buffer>,
+    programId: Solana.Address
+  ): [Solana.Address, number] {
+    let nonce = 255;
+    let address: Solana.Address;
+    while (nonce != 0) {
+      try {
+        const seedsWithNonce = seeds.concat(Buffer.from([nonce]));
+        address = GPublicKey.createProgramAddress(seedsWithNonce, programId);
+      } catch (err) {
+        if (err instanceof TypeError) {
+          throw err;
+        }
+        nonce--;
+        continue;
+      }
+      return [address, nonce];
+    }
+    throw new Error(`Unable to find a viable program address nonce`);
+  }
+
+  /**
+   * Check that a pubkey is on the ed25519 curve.
+   */
+  static isOnCurve(pubkeyData: PublicKeyInitData): boolean {
+    const pubkey = new GPublicKey(pubkeyData);
+    return isOnCurve(pubkey.toBytes());
   }
 }
