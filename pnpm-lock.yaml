@@ -122,6 +122,8 @@ importers:
   packages/solana-client:
     specifiers:
       '@glow-xyz/beet': 0.6.0
+      '@noble/ed25519': ^1.7.1
+      '@noble/hashes': ^1.1.2
       '@solana/web3.js': ^1.44.1
       '@types/bn.js': 5.1.0
       '@types/jest': 28.1.8
@@ -150,6 +152,8 @@ importers:
       zod: ^3.18.0
     dependencies:
       '@glow-xyz/beet': 0.6.0
+      '@noble/ed25519': 1.7.1
+      '@noble/hashes': 1.1.2
       '@solana/web3.js': 1.44.1
       axios: 0.27.2
       bignumber.js: 9.1.0
@@ -1075,6 +1079,14 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@noble/ed25519/1.7.1:
+    resolution: {integrity: sha512-Rk4SkJFaXZiznFyC/t77Q0NKS4FL7TLJJsVG2V2oiEq3kJVeTdxysEe/yRWSpnWMe808XRDJ+VFh5pt/FN5plw==}
+    dev: false
+
+  /@noble/hashes/1.1.2:
+    resolution: {integrity: sha512-KYRCASVTv6aeUi1tsF8/vpyR7zpfs3FUzy2Jqm+MU+LmUKhQ0y2FpfwqkCcxSg2ua4GALJd8k2R76WxwZGbQpA==}
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
