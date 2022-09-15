@@ -5,6 +5,7 @@ import {
   SystemProgram,
   SYSVAR_CLOCK_PUBKEY,
   Transaction,
+  TransactionInstruction,
 } from "@solana/web3.js";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
@@ -65,6 +66,18 @@ const TXS_BASE64: Base64[] = [
   "AS1GXrbEj1oV0/ECarPhhJiLYcpPNWvU+/93C+sB3xWbluMnZLj0Z4uQwYhkIIKB4OkYeM+X6q3h+RJyDjqHyw8BAAkL45Qx5CsqvbDhOJtnIpvcng1PorJw47e2KQXX0YVPmjXvDYtv2izrpB2hXUCV0do5Kg0vjtDGx7wPTPrIwoC1bYUPLW4CpHr4JNCatp3ELXDLKMv6JJ+37le50lbBJ2LvhML7GK7WGfVGYyZT7wYCnwKoZL84KYZxgbsg3x1xXDAA9CbhbrjPAxGRdfmAUUNElVzjcOdllA88KUOVRftFqabf0VxQdwX5M5uVPBpN/bycwYbdL2LfSKlYBF4qdlJZxvp6877brTo9ZfNqq8l0MbG75MLS9uDkfKYCA0UvXWEGm4hX/quBhPtof2NGGMA12sQ53BrrO1WYoPAAAAAAAQan1RcYx3TJKFZjmGkdXraLXrijm0ttXHNVWyEAAAAA3OXr4eScO58RTLVUTFCpnsDWktY/Vnla4Cmsg9nqi+IM+di7jRPZjQo/uoVDmTWduvcoaEqabm6a8RqlyHdu+fl36QSuLDan/40yg3zWWeLhLkEAgVrWWg+WZrZbCFnMAQoKAAECAwQFBgcICQA=",
   "AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAStOi5Zv5OLiv4UaIdXNa2CtWeK1aH6sEkF3Le/VM3JHHTMEtlCRuO5hNB70ZQTvJd9VtRFkKsMjiYxID1yYtoQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQACAQIMAgAAAADh9QUAAAAA",
 ];
+
+const convertSolanaIxToGtransactionIxFactory = (
+  ix: TransactionInstruction
+): GTransaction.InstructionFactory => ({
+  accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
+    address: pubkey.toString(),
+    signer: isSigner,
+    writable: isWritable,
+  })),
+  data_base64: ix.data.toString("base64"),
+  program: ix.programId.toString(),
+});
 
 describe("GTransaction", () => {
   test("compare to web3.js", () => {
@@ -317,17 +330,7 @@ describe("GTransaction", () => {
     const gtransaction = GTransaction.create({
       recentBlockhash: GPublicKey.default.toBase58(),
       feePayer: from.address,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
-            address: pubkey.toBase58(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toBase58(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
       signers: [from],
     });
 
@@ -368,17 +371,7 @@ describe("GTransaction", () => {
       GTransaction.create({
         recentBlockhash: GPublicKey.default.toBase58(),
         feePayer: from.address,
-        instructions: [
-          {
-            accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
-              address: pubkey.toBase58(),
-              signer: isSigner,
-              writable: isWritable,
-            })),
-            data_base64: ix.data.toString("base64"),
-            program: ix.programId.toBase58(),
-          },
-        ],
+        instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
         signers: [from, to],
       });
     }).toThrowErrorMatchingSnapshot();
@@ -386,17 +379,7 @@ describe("GTransaction", () => {
     const gtransaction = GTransaction.create({
       recentBlockhash: GPublicKey.default.toBase58(),
       feePayer: from.address,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
-            address: pubkey.toBase58(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toBase58(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
       signers: [from, to],
       suppressInvalidSignerError: true,
     });
@@ -437,17 +420,7 @@ describe("GTransaction", () => {
     let gtransaction = GTransaction.create({
       recentBlockhash: GPublicKey.default.toBase58(),
       feePayer: from.address,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
-            address: pubkey.toBase58(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toBase58(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
     });
 
     expect(() => {
@@ -499,17 +472,7 @@ describe("GTransaction", () => {
     const gtransaction = GTransaction.create({
       feePayer: payer.publicKey.toBase58(),
       recentBlockhash,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
-            address: pubkey.toString(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toString(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
     });
 
     const gBuffer = GTransaction.toBuffer({ gtransaction });
@@ -570,17 +533,7 @@ describe("GTransaction", () => {
     const gtransaction1 = GTransaction.create({
       feePayer: payer.publicKey.toBase58(),
       recentBlockhash: blockhash1,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
-            address: pubkey.toString(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toString(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
     });
     const gtransaction2 = GTransaction.updateBlockhash({
       gtransaction: gtransaction1,
@@ -600,17 +553,7 @@ describe("GTransaction", () => {
     const gtransaction = GTransaction.create({
       feePayer: payer.publicKey.toBase58(),
       recentBlockhash: "CXk5NCtYva7h4BcGXg5BDBDtZDwgBuWZcwmWt5ReY1yA",
-      instructions: [
-        {
-          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
-            address: pubkey.toString(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toString(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
     });
 
     // We freeze the `gTransaction` object so that we don't accidentally modify it improperly
