@@ -396,6 +396,35 @@ export namespace GTransaction {
     }
     return signedTransaction;
   };
+
+  export const verifySignatures = ({
+    gtransaction,
+    suppressMissingSignatureError = false,
+  }: {
+    gtransaction: GTransaction;
+    suppressMissingSignatureError?: boolean;
+  }) => {
+    const messageBuffer = Buffer.from(gtransaction.messageBase64, "base64");
+
+    for (const { address, signature } of gtransaction.signatures) {
+      if (signature === null) {
+        if (suppressMissingSignatureError) {
+          continue;
+        }
+        throw new Error(`Missing signature from ${address}`);
+      }
+
+      if (
+        !nacl.sign.detached.verify(
+          messageBuffer,
+          bs58.decode(signature),
+          bs58.decode(address)
+        )
+      ) {
+        throw new Error(`The Solana signature is invalid (from ${address}).`);
+      }
+    }
+  };
 }
 
 const constructMessageBase64 = ({

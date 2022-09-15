@@ -609,4 +609,67 @@ describe("GTransaction", () => {
       walletTransaction.accounts.map(({ address }) => address)
     ).not.toContain(GPublicKey.nullString);
   });
+
+  describe("signature verification", () => {
+    const payerKeypair = Keypair.generate();
+    const feePayer = payerKeypair.publicKey.toBase58();
+    const recentBlockhash = Keypair.generate().publicKey.toBase58();
+    const unsignedTransaction = GTransaction.create({
+      instructions: [
+        convertSolanaIxToGtransactionIxFactory(
+          SystemProgram.transfer({
+            fromPubkey: payerKeypair.publicKey,
+            toPubkey: new PublicKey(
+              "3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm"
+            ),
+            lamports: 100,
+          })
+        ),
+      ],
+      recentBlockhash,
+      feePayer,
+      signers: [],
+    });
+    const signedTransaction = GTransaction.sign({
+      signers: [payerKeypair],
+      gtransaction: unsignedTransaction,
+    });
+
+    test("doesn't throw if all signatures are valid", () => {
+      expect(() => {
+        GTransaction.verifySignatures({ gtransaction: signedTransaction });
+      }).not.toThrow();
+    });
+
+    test("doesn't throw if one of the signatures is missing and the error should be suppressed", () => {
+      expect(() => {
+        GTransaction.verifySignatures({
+          gtransaction: unsignedTransaction,
+          suppressMissingSignatureError: true,
+        });
+      }).not.toThrow();
+    });
+
+    test("throws if one of the signatures is missing", () => {
+      expect(() => {
+        GTransaction.verifySignatures({ gtransaction: unsignedTransaction });
+      }).toThrowError("Missing signature");
+    });
+
+    test("throws if a signature is invalid", () => {
+      expect(() => {
+        GTransaction.verifySignatures({
+          gtransaction: GTransaction.addSignature({
+            gtransaction: unsignedTransaction,
+            address: feePayer,
+            signature: Buffer.from(
+              bs58.decode(
+                "5MsbE3C4qz1v8u6FR7uCrWV5Sk5eWH5ay5Y2EshSm4Jnk33QPC81WHRHht7HLEYT85crVafjnuqxqo1hPKMRtQQP"
+              )
+            ),
+          }),
+        });
+      }).toThrowError("signature is invalid");
+    });
+  });
 });
