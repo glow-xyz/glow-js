@@ -245,7 +245,7 @@ export namespace GTransaction {
     );
 
     const signatures: Array<{
-      signature: Base58 | null;
+      signature: Base58;
       address: Solana.Address;
     }> = sigs.map((signature, idx) => ({
       signature,
@@ -385,13 +385,13 @@ export namespace GTransaction {
 
     let signedTransaction = unsignedTransaction;
     for (const { address, signature } of gtransaction.signatures) {
-      if (!signature) {
+      if (isSignatureEmpty(signature)) {
         continue;
       }
       signedTransaction = addSignature({
         gtransaction: signedTransaction,
         address,
-        signature: Buffer.from(bs58.decode(signature)),
+        signature: Buffer.from(bs58.decode(signature!)),
       });
     }
     return signedTransaction;
@@ -407,7 +407,7 @@ export namespace GTransaction {
     const messageBuffer = Buffer.from(gtransaction.messageBase64, "base64");
 
     for (const { address, signature } of gtransaction.signatures) {
-      if (signature === null) {
+      if (isSignatureEmpty(signature)) {
         if (suppressMissingSignatureError) {
           continue;
         }
@@ -417,7 +417,7 @@ export namespace GTransaction {
       if (
         !nacl.sign.detached.verify(
           messageBuffer,
-          bs58.decode(signature),
+          bs58.decode(signature!),
           bs58.decode(address)
         )
       ) {
@@ -475,3 +475,6 @@ const constructMessageBase64 = ({
 
   return messageBuffer.toString("base64");
 };
+
+const isSignatureEmpty = (signature: Base58 | null) =>
+  !signature || bs58.decode(signature).every((byte) => byte === 0);
