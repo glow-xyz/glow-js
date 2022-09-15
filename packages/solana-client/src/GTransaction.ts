@@ -245,7 +245,7 @@ export namespace GTransaction {
     );
 
     const signatures: Array<{
-      signature: Base58;
+      signature: Base58 | null;
       address: Solana.Address;
     }> = sigs.map((signature, idx) => ({
       signature,
