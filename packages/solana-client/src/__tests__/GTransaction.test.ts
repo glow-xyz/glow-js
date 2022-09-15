@@ -619,4 +619,51 @@ describe("GTransaction", () => {
       gtransaction.recentBlockhash = "x";
     }).toThrow();
   });
+
+  test("updates fee payer (is compatible with Solana Pay Transaction Requests)", () => {
+    const wallet = Keypair.generate().publicKey.toBase58();
+    const applicationTransaction = GTransaction.create({
+      instructions: [
+        {
+          accounts: [
+            {
+              address: wallet,
+              signer: false,
+              writable: false,
+            },
+            {
+              address: "3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm",
+              signer: false,
+              writable: false,
+            },
+          ],
+          data_base64: Buffer.from("test", "utf-8").toString("base64"),
+          // We need to use non-SystemProgram program for tests,
+          // otherwise placeholder feePayer (111...111) _should_
+          // be included in the accounts list.
+          program: "noteD9tEFTDH1Jn9B1HbpoC7Zu8L9QXRo7FjZj3PT93",
+        },
+      ],
+      recentBlockhash: GPublicKey.nullString,
+      feePayer: GPublicKey.nullString,
+      signers: [],
+    });
+    let walletTransaction: GTransaction.GTransaction | undefined;
+    expect(() => {
+      walletTransaction = GTransaction.parse({
+        buffer: GTransaction.toBuffer({ gtransaction: applicationTransaction }),
+      });
+    }).not.toThrow();
+    if (!walletTransaction) {
+      // expect above should have already aborted
+      return;
+    }
+    walletTransaction = GTransaction.updateFeePayer({
+      gtransaction: walletTransaction,
+      feePayer: wallet,
+    });
+    expect(
+      walletTransaction.accounts.map(({ address }) => address)
+    ).not.toContain(GPublicKey.nullString);
+  });
 });
