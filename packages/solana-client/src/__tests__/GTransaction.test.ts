@@ -5,6 +5,7 @@ import {
   SystemProgram,
   SYSVAR_CLOCK_PUBKEY,
   Transaction,
+  TransactionInstruction,
 } from "@solana/web3.js";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
@@ -64,6 +65,18 @@ const TXS_BASE64: Base64[] = [
   "AVI0QHQFTxA8ANBqHC5NZ1OXbk8hy0zD/ttav7/qzA+Z6bqCEAPfhJ9mosl+zrTqAawnETk+S8uwba8dlC/eTggBAAgP9DSl3UT9vJUWrcpjwpLpd2BpoKkqYZEZeSaJFUmzKrsLkLlvK5elA5tpXfTvWDuFbXeMD37rif3hWXxJ9jwCCXPefVZ0OYUh+CZu06yDllBN3no0+6jxl88WPue+0IICuZsBYBUDOsQ8Ujnbh888T/yJvSzl6rVjHZjB2xKffoa4bJDD4jte2YnEhpQONjEqFxBR7Wak9CGn2y2TIxfLgW2QnGRshVHc/L2Uh+G1hNh+wMUuwvSM21G/QgCyruLkhH+X/bOXvNW0BWhvTG5jYOTDjdu83sw3PIi/s8UuAK543ogDQe0xql0u2Ff66cc9XSGzkyyZdqoGDHUXDByC3cPFykTMEEdN010+pUNW/nNVfMusTiiQ7d3wesXE5xYue9LMtbWoyWA6IlqEcFPb7gzcisgXW+m77YHaDqahgu6BiUIvcQzP9PUe5IFymDPoP5W3QCJlCvs5VUexQVcW27vGiQXdqLJIjiIsOcGpyVQlygHI9g9KUODOfcmU3fDES8suXjPAWgenyCvtVyjXi17LyphQiy/tBjkNkG782jU9jACDGPcqirrQASc2oAsUETjY0b63QmrwkrpzMIHnpguBiNluC88x7iVGxjJXkJ3TjYHYyKSy1a4psZLfCFMlGC0EYEWpjq5rUGUwl31Szb9CMOA8kZSiy9bJe2sCcSYIDQIBABAdt1+MFBUhRXAEJjaAAQAADgYHAgADBAUFJwAAACAODQcCAAgDBAUGAgkKCwwwQAAAAKV2AAAAAAAAwCsyAAAAAAD/////////f06kAgCer1tiAAAAAAAAAAAAAQEUDg0HAgAIAwQFBgIJCgsMMEAAAADLdgAAAAAAAMArMgAAAAAA/////////39PpAIAnq9bYgAAAAAAAAAAAQEBFA4NBwIACAMEBQYCCQoLDDBAAAAAk3YAAAAAAACoXQAAAAAAAP////////9/UKQCAJ6vW2IAAAAAAAAAAAABABQODQcCAAgDBAUGAgkKCwwwQAAAAN12AAAAAAAAqF0AAAAAAAD/////////f1GkAgCer1tiAAAAAAAAAAABAQAUDg0HAgAIAwQFBgIJCgsMMEAAAACodgAAAAAAABYXAAAAAAAA/////////39SpAoAnq9bYqOvW2IAAAAAAAQAFA4NBwIACAMEBQYCCQoLDDBAAAAAyHYAAAAAAAAWFwAAAAAAAP////////9/U6QKAJ6vW2Kjr1tiAAAAAAEEABQ=",
   "AS1GXrbEj1oV0/ECarPhhJiLYcpPNWvU+/93C+sB3xWbluMnZLj0Z4uQwYhkIIKB4OkYeM+X6q3h+RJyDjqHyw8BAAkL45Qx5CsqvbDhOJtnIpvcng1PorJw47e2KQXX0YVPmjXvDYtv2izrpB2hXUCV0do5Kg0vjtDGx7wPTPrIwoC1bYUPLW4CpHr4JNCatp3ELXDLKMv6JJ+37le50lbBJ2LvhML7GK7WGfVGYyZT7wYCnwKoZL84KYZxgbsg3x1xXDAA9CbhbrjPAxGRdfmAUUNElVzjcOdllA88KUOVRftFqabf0VxQdwX5M5uVPBpN/bycwYbdL2LfSKlYBF4qdlJZxvp6877brTo9ZfNqq8l0MbG75MLS9uDkfKYCA0UvXWEGm4hX/quBhPtof2NGGMA12sQ53BrrO1WYoPAAAAAAAQan1RcYx3TJKFZjmGkdXraLXrijm0ttXHNVWyEAAAAA3OXr4eScO58RTLVUTFCpnsDWktY/Vnla4Cmsg9nqi+IM+di7jRPZjQo/uoVDmTWduvcoaEqabm6a8RqlyHdu+fl36QSuLDan/40yg3zWWeLhLkEAgVrWWg+WZrZbCFnMAQoKAAECAwQFBgcICQA=",
 ];
+
+const convertSolanaIxToGtransactionIxFactory = (
+  ix: TransactionInstruction
+): GTransaction.InstructionFactory => ({
+  accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
+    address: pubkey.toString(),
+    signer: isSigner,
+    writable: isWritable,
+  })),
+  data_base64: ix.data.toString("base64"),
+  program: ix.programId.toString(),
+});
 
 describe("GTransaction", () => {
   test("compare to web3.js", () => {
@@ -316,17 +329,7 @@ describe("GTransaction", () => {
     const gtransaction = GTransaction.create({
       recentBlockhash: GPublicKey.default.toBase58(),
       feePayer: from.address,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
-            address: pubkey.toBase58(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toBase58(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
       signers: [from],
     });
 
@@ -367,17 +370,7 @@ describe("GTransaction", () => {
       GTransaction.create({
         recentBlockhash: GPublicKey.default.toBase58(),
         feePayer: from.address,
-        instructions: [
-          {
-            accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
-              address: pubkey.toBase58(),
-              signer: isSigner,
-              writable: isWritable,
-            })),
-            data_base64: ix.data.toString("base64"),
-            program: ix.programId.toBase58(),
-          },
-        ],
+        instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
         signers: [from, to],
       });
     }).toThrowErrorMatchingSnapshot();
@@ -385,17 +378,7 @@ describe("GTransaction", () => {
     const gtransaction = GTransaction.create({
       recentBlockhash: GPublicKey.default.toBase58(),
       feePayer: from.address,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
-            address: pubkey.toBase58(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toBase58(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
       signers: [from, to],
       suppressInvalidSignerError: true,
     });
@@ -436,17 +419,7 @@ describe("GTransaction", () => {
     let gtransaction = GTransaction.create({
       recentBlockhash: GPublicKey.default.toBase58(),
       feePayer: from.address,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ pubkey, isSigner, isWritable }) => ({
-            address: pubkey.toBase58(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toBase58(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
     });
 
     expect(() => {
@@ -498,17 +471,7 @@ describe("GTransaction", () => {
     const gtransaction = GTransaction.create({
       feePayer: payer.publicKey.toBase58(),
       recentBlockhash,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
-            address: pubkey.toString(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toString(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
     });
 
     const gBuffer = GTransaction.toBuffer({ gtransaction });
@@ -569,17 +532,7 @@ describe("GTransaction", () => {
     const gtransaction1 = GTransaction.create({
       feePayer: payer.publicKey.toBase58(),
       recentBlockhash: blockhash1,
-      instructions: [
-        {
-          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
-            address: pubkey.toString(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toString(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
     });
     const gtransaction2 = GTransaction.updateBlockhash({
       gtransaction: gtransaction1,
@@ -599,17 +552,7 @@ describe("GTransaction", () => {
     const gtransaction = GTransaction.create({
       feePayer: payer.publicKey.toBase58(),
       recentBlockhash: "CXk5NCtYva7h4BcGXg5BDBDtZDwgBuWZcwmWt5ReY1yA",
-      instructions: [
-        {
-          accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
-            address: pubkey.toString(),
-            signer: isSigner,
-            writable: isWritable,
-          })),
-          data_base64: ix.data.toString("base64"),
-          program: ix.programId.toString(),
-        },
-      ],
+      instructions: [convertSolanaIxToGtransactionIxFactory(ix)],
     });
 
     // We freeze the `gTransaction` object so that we don't accidentally modify it improperly
@@ -617,5 +560,115 @@ describe("GTransaction", () => {
       // @ts-expect-error
       gtransaction.recentBlockhash = "x";
     }).toThrow();
+  });
+
+  test("updates fee payer (is compatible with Solana Pay Transaction Requests)", () => {
+    const wallet = Keypair.generate().publicKey.toBase58();
+    const applicationTransaction = GTransaction.create({
+      instructions: [
+        {
+          accounts: [
+            {
+              address: wallet,
+              signer: false,
+              writable: false,
+            },
+            {
+              address: "3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm",
+              signer: false,
+              writable: false,
+            },
+          ],
+          data_base64: Buffer.from("test", "utf-8").toString("base64"),
+          // We need to use non-SystemProgram program for tests,
+          // otherwise placeholder feePayer (111...111) _should_
+          // be included in the accounts list.
+          program: "noteD9tEFTDH1Jn9B1HbpoC7Zu8L9QXRo7FjZj3PT93",
+        },
+      ],
+      recentBlockhash: GPublicKey.nullString,
+      feePayer: GPublicKey.nullString,
+      signers: [],
+    });
+    let walletTransaction: GTransaction.GTransaction | undefined;
+    expect(() => {
+      walletTransaction = GTransaction.parse({
+        buffer: GTransaction.toBuffer({ gtransaction: applicationTransaction }),
+      });
+    }).not.toThrow();
+    if (!walletTransaction) {
+      // expect above should have already aborted
+      return;
+    }
+    walletTransaction = GTransaction.updateFeePayer({
+      gtransaction: walletTransaction,
+      feePayer: wallet,
+    });
+    expect(
+      walletTransaction.accounts.map(({ address }) => address)
+    ).not.toContain(GPublicKey.nullString);
+  });
+
+  describe("signature verification", () => {
+    const payerKeypair = Keypair.generate();
+    const feePayer = payerKeypair.publicKey.toBase58();
+    const recentBlockhash = Keypair.generate().publicKey.toBase58();
+    const unsignedTransaction = GTransaction.create({
+      instructions: [
+        convertSolanaIxToGtransactionIxFactory(
+          SystemProgram.transfer({
+            fromPubkey: payerKeypair.publicKey,
+            toPubkey: new PublicKey(
+              "3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm"
+            ),
+            lamports: 100,
+          })
+        ),
+      ],
+      recentBlockhash,
+      feePayer,
+      signers: [],
+    });
+    const signedTransaction = GTransaction.sign({
+      signers: [payerKeypair],
+      gtransaction: unsignedTransaction,
+    });
+
+    test("doesn't throw if all signatures are valid", () => {
+      expect(() => {
+        GTransaction.verifySignatures({ gtransaction: signedTransaction });
+      }).not.toThrow();
+    });
+
+    test("doesn't throw if one of the signatures is missing and the error should be suppressed", () => {
+      expect(() => {
+        GTransaction.verifySignatures({
+          gtransaction: unsignedTransaction,
+          suppressMissingSignatureError: true,
+        });
+      }).not.toThrow();
+    });
+
+    test("throws if one of the signatures is missing", () => {
+      expect(() => {
+        GTransaction.verifySignatures({ gtransaction: unsignedTransaction });
+      }).toThrowError("Missing signature");
+    });
+
+    test("throws if a signature is invalid", () => {
+      expect(() => {
+        GTransaction.verifySignatures({
+          gtransaction: GTransaction.addSignature({
+            gtransaction: unsignedTransaction,
+            address: feePayer,
+            signature: Buffer.from(
+              bs58.decode(
+                "5MsbE3C4qz1v8u6FR7uCrWV5Sk5eWH5ay5Y2EshSm4Jnk33QPC81WHRHht7HLEYT85crVafjnuqxqo1hPKMRtQQP"
+              )
+            ),
+          }),
+        });
+      }).toThrowError("signature is invalid");
+    });
   });
 });

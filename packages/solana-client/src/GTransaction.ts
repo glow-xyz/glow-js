@@ -1,5 +1,6 @@
 import bs58 from "bs58";
 import { Buffer } from "buffer";
+import keyBy from "lodash/keyBy";
 import sortBy from "lodash/sortBy";
 import nacl from "tweetnacl";
 import { z } from "zod";
@@ -105,8 +106,7 @@ export namespace GTransaction {
     // Fee payer needs to always be writable and a signer
     // https://github.com/solana-labs/solana-web3.js/blob/2f80949da901e42d5f5565c44c3b3095ac024e67/src/transaction.ts#L428-L429
     if (feePayer) {
-      accountMap[feePayer].signer = true;
-      accountMap[feePayer].writable = true;
+      accountMap[feePayer] = { signer: true, writable: true };
     }
 
     const unsortedAccounts = Object.entries(accountMap).map(
@@ -359,6 +359,72 @@ export namespace GTransaction {
       }).toString("base64"),
     });
   };
+
+  export const updateFeePayer = ({
+    gtransaction,
+    feePayer,
+  }: {
+    gtransaction: GTransaction;
+    feePayer: Solana.Address;
+  }): GTransaction => {
+    const accountsMap = keyBy(gtransaction.accounts, "address");
+    // Recreate transaction not to copy old feePayer
+    const unsignedTransaction = create({
+      instructions: gtransaction.instructions.map((ix) => ({
+        accounts: ix.accounts.map((address) => ({
+          address,
+          signer: accountsMap[address].signer,
+          writable: accountsMap[address].writable,
+        })),
+        data_base64: ix.data_base64,
+        program: ix.program,
+      })),
+      recentBlockhash: gtransaction.recentBlockhash,
+      feePayer,
+    });
+
+    let signedTransaction = unsignedTransaction;
+    for (const { address, signature } of gtransaction.signatures) {
+      if (isSignatureEmpty(signature)) {
+        continue;
+      }
+      signedTransaction = addSignature({
+        gtransaction: signedTransaction,
+        address,
+        signature: Buffer.from(bs58.decode(signature!)),
+      });
+    }
+    return signedTransaction;
+  };
+
+  export const verifySignatures = ({
+    gtransaction,
+    suppressMissingSignatureError = false,
+  }: {
+    gtransaction: GTransaction;
+    suppressMissingSignatureError?: boolean;
+  }) => {
+    const messageBuffer = Buffer.from(gtransaction.messageBase64, "base64");
+
+    for (const { address, signature } of gtransaction.signatures) {
+      if (isSignatureEmpty(signature)) {
+        if (suppressMissingSignatureError) {
+          continue;
+        }
+        throw new Error(`Missing signature from ${address}`);
+      }
+
+      if (
+        !nacl.sign.detached.verify(
+          messageBuffer,
+          bs58.decode(signature!),
+          bs58.decode(address)
+        )
+      ) {
+        throw new Error(`The Solana signature is invalid (from ${address}).`);
+      }
+    }
+  };
 }
 
 const constructMessageBase64 = ({
@@ -409,3 +475,6 @@ const constructMessageBase64 = ({
 
   return messageBuffer.toString("base64");
 };
+
+const isSignatureEmpty = (signature: Base58 | null) =>
+  !signature || bs58.decode(signature).every((byte) => byte === 0);
