@@ -1,4 +1,5 @@
-import { GlowIdInline } from "@glow-xyz/glow-id/src";
+import { GlowIdInline } from "@glow-xyz/glow-id";
+import React from "react";
 
 export default function GlowIdPage() {
   return (
