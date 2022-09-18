@@ -16,12 +16,14 @@
   },
   "dependencies": {
     "classnames": "2.3.1",
+    "styled-components": "^5.3.5",
     "swr": "2.0.0-beta.7"
   },
   "devDependencies": {
     "@solana/web3.js": "1.44.1",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
+    "@types/styled-components": "^5.1.26",
     "esbuild": "0.15.5",
     "esbuild-register": "3.3.3",
     "prettier": "2.7.1",
