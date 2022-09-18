@@ -1,5 +1,6 @@
-import styled from "styled-components";
 import React from "react";
+import styled from "styled-components";
+import { Tooltip } from "./Tooltip";
 import { useGlowId } from "./useGlowId";
 
 const abbreviateAddress = (address: string | null | undefined) => {
@@ -18,24 +19,29 @@ export const GlowIdInline = ({
   const glowId = useGlowId(address);
 
   if (!glowId) {
-    return <Wrapper>{abbreviateAddress(address)}</Wrapper>;
+    return (
+      <div style={{ display: "inline-flex" }}>{abbreviateAddress(address)}</div>
+    );
   }
 
   return (
-    <Wrapper>
-      {glowId.image && (
-        <AvatarImage
-          src={glowId.image}
-          alt={`A photo of ${glowId.handle}.glow.`}
-        />
-      )}
+    <Tooltip tooltip={<div>{glowId.name}</div>}>
+      <Wrapper>
+        {glowId.image && (
+          <AvatarImage
+            src={glowId.image}
+            alt={`A photo of ${glowId.handle}.glow.`}
+          />
+        )}
 
-      <span>{glowId.handle}.glow</span>
-    </Wrapper>
+        <span>{glowId.handle}.glow</span>
+      </Wrapper>
+    </Tooltip>
   );
 };
 
 const Wrapper = styled.div`
+  cursor: pointer;
   display: inline-flex;
   align-items: baseline;
   gap: 0.25rem;

@@ -4,6 +4,7 @@ const withTM = require("next-transpile-modules")(["@glow-xyz/glow-id"]);
 
 const nextConfig = {
   reactStrictMode: true,
+  styledComponents: true,
 };
 
 module.exports = withTM(nextConfig);
