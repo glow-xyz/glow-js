@@ -7,6 +7,7 @@ import {
   useFocus,
   useRole,
   useDismiss,
+  safePolygon,
 } from "@floating-ui/react-dom-interactions";
 import React, { cloneElement, useRef, useState } from "react";
 import styled from "styled-components";
@@ -25,11 +26,18 @@ export const Tooltip = ({
     useFloating({
       placement: "top",
       onOpenChange: setOpen,
-      middleware: [arrow({ element: arrowRef })],
+      middleware: [
+        arrow({
+          element: arrowRef,
+        }),
+      ],
     });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    useHover(context, { restMs: 0 }),
+    useHover(context, {
+      restMs: 0,
+      handleClose: safePolygon(),
+    }),
     useFocus(context),
     useRole(context, { role: "tooltip" }),
     useDismiss(context),
@@ -69,7 +77,7 @@ export const Tooltip = ({
               ref={arrowRef}
               style={{
                 left: arrowX,
-                bottom: "-0.25rem",
+                bottom: `calc(${arrowY || 0}px - 0.25rem)`,
               }}
             />
           </TooltipContainer>
