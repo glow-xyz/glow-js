@@ -73,4 +73,19 @@ export namespace EllipticCurve {
     }
     throw new Error(`Unable to find a viable program address nonce`);
   };
+
+  export const AddressRegex = /^[5KL1-9A-HJ-NP-Za-km-z]{32,44}$/;
+
+  export const isValidAddress = (address: string): boolean => {
+    if (!AddressRegex.test(address)) {
+      return false;
+    }
+
+    try {
+      new GPublicKey(address);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 }
