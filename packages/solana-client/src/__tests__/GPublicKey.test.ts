@@ -1,5 +1,6 @@
 import BN from "bn.js";
 import { Buffer } from "buffer";
+import { EllipticCurve } from "../EllipticCurve";
 import { GKeypair } from "../GKeypair";
 import { GPublicKey } from "../GPublicKey";
 
@@ -109,38 +110,38 @@ describe("GPublicKey", function () {
       "SeedPubey1111111111111111111111111111111111"
     );
 
-    let programAddress = await GPublicKey.createProgramAddress(
+    let programAddress = await EllipticCurve.createProgramAddress(
       [Buffer.from("", "utf8"), Buffer.from([1])],
       programId.toBase58()
     );
     expect(programAddress).toBe("3gF2KMe9KiC6FNVBmfg9i267aMPvK37FewCip4eGBFcT");
 
-    programAddress = await GPublicKey.createProgramAddress(
+    programAddress = await EllipticCurve.createProgramAddress(
       [Buffer.from("☉", "utf8")],
       programId.toBase58()
     );
     expect(programAddress).toBe("7ytmC1nT1xY4RfxCV2ZgyA7UakC93do5ZdyhdF3EtPj7");
 
-    programAddress = await GPublicKey.createProgramAddress(
+    programAddress = await EllipticCurve.createProgramAddress(
       [Buffer.from("Talking", "utf8"), Buffer.from("Squirrels", "utf8")],
       programId.toBase58()
     );
     expect(programAddress).toBe("HwRVBufQ4haG5XSgpspwKtNd3PC9GM9m1196uJW36vds");
 
-    programAddress = await GPublicKey.createProgramAddress(
+    programAddress = await EllipticCurve.createProgramAddress(
       [publicKey.toBuffer()],
       programId.toString()
     );
     expect(programAddress).toBe("GUs5qLUfsEHkcMB9T38vjr18ypEhRuNWiePW2LoK4E3K");
 
-    const programAddress2 = await GPublicKey.createProgramAddress(
+    const programAddress2 = await EllipticCurve.createProgramAddress(
       [Buffer.from("Talking", "utf8")],
       programId.toBase58()
     );
     expect(programAddress).not.toBe(programAddress2);
 
     await expect(async () => {
-      GPublicKey.createProgramAddress(
+      EllipticCurve.createProgramAddress(
         [Buffer.alloc(32 + 1)],
         programId.toBase58()
       );
@@ -157,7 +158,7 @@ describe("GPublicKey", function () {
       const programId = new GPublicKey(
         "4ckmDgGdxQoPDLUkDT3vHgSAkzA3QRdNq5ywwY4sUSJn"
       );
-      programAddress = await GPublicKey.createProgramAddress(
+      programAddress = await EllipticCurve.createProgramAddress(
         seeds,
         programId.toBase58()
       );
@@ -171,12 +172,12 @@ describe("GPublicKey", function () {
     const programId = new GPublicKey(
       "BPFLoader1111111111111111111111111111111111"
     );
-    const [programAddress, nonce] = GPublicKey.findProgramAddress(
+    const [programAddress, nonce] = EllipticCurve.findProgramAddress(
       [Buffer.from("", "utf8")],
       programId.toString()
     );
     expect(programAddress).toBe(
-      GPublicKey.createProgramAddress(
+      EllipticCurve.createProgramAddress(
         [Buffer.from("", "utf8"), Buffer.from([nonce])],
         programId.toBase58()
       )
@@ -185,8 +186,8 @@ describe("GPublicKey", function () {
 
   test("isOnCurve", () => {
     const onCurve = GKeypair.generate().publicKey;
-    expect(GPublicKey.isOnCurve(onCurve.toBuffer())).toBeTruthy();
-    expect(GPublicKey.isOnCurve(onCurve.toBase58())).toBeTruthy();
+    expect(EllipticCurve.isOnCurve(onCurve.toBuffer())).toBeTruthy();
+    expect(EllipticCurve.isOnCurve(onCurve.toBase58())).toBeTruthy();
     // A program address, yanked from one of the above tests. This is a pretty
     // poor test vector since it was created by the same code it is testing.
     // Unfortunately, I've been unable to find a golden negative example input
@@ -194,7 +195,7 @@ describe("GPublicKey", function () {
     const offCurve = new GPublicKey(
       "12rqwuEgBYiGhBrDJStCiqEtzQpTTiZbh7teNVLuYcFA"
     );
-    expect(GPublicKey.isOnCurve(offCurve.toBuffer())).toBeFalsy();
-    expect(GPublicKey.isOnCurve(offCurve.toBase58())).toBeFalsy();
+    expect(EllipticCurve.isOnCurve(offCurve.toBuffer())).toBeFalsy();
+    expect(EllipticCurve.isOnCurve(offCurve.toBase58())).toBeFalsy();
   });
 });
