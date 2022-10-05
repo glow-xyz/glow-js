@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Base58, Solana } from "./base-types";
 import { FixableGlowBorsh } from "./borsh/base";
 import { GlowBorshTypes } from "./borsh/GlowBorshTypes";
-import { TRANSACTION_MESSAGE } from "./borsh/transaction-borsh";
+import { TransactionMessageFormat } from "./borsh/transaction-borsh";
 
 export type Signer = { secretKey: Buffer | Uint8Array };
 
@@ -218,7 +218,7 @@ export namespace GTransaction {
       recentBlockhash,
       instructions: rawInstructions,
       addresses,
-    } = TRANSACTION_MESSAGE.parse({ buffer: messageBuffer })!;
+    } = TransactionMessageFormat.parse({ buffer: messageBuffer })!;
 
     const numAccounts = addresses.length;
 
@@ -339,7 +339,7 @@ export namespace GTransaction {
       messageBase64: _messageBase64,
     } = gtransaction;
 
-    const messageData = TRANSACTION_MESSAGE.parse({
+    const messageData = TransactionMessageFormat.parse({
       base64: _messageBase64,
     });
 
@@ -353,7 +353,7 @@ export namespace GTransaction {
       accounts,
       instructions,
       recentBlockhash: blockhash,
-      messageBase64: TRANSACTION_MESSAGE.toBuffer({
+      messageBase64: TransactionMessageFormat.toBuffer({
         ...messageData,
         recentBlockhash: blockhash,
       }).toString("base64"),
@@ -464,7 +464,7 @@ const constructMessageBase64 = ({
     }
   );
 
-  const messageBuffer = TRANSACTION_MESSAGE.toBuffer({
+  const messageBuffer = TransactionMessageFormat.toBuffer({
     numReadonlySigned: numReadOnlySigs,
     recentBlockhash,
     numReadonlyUnsigned,

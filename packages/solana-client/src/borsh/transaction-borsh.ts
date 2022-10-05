@@ -3,6 +3,7 @@ import { FixableBeet, FixedSizeBeet } from "@glow-xyz/beet";
 import { Buffer } from "buffer";
 import { Solana } from "../base-types";
 import { FixableGlowBorsh, GlowBorsh } from "./base";
+import { CompactArray } from "./CompactArray";
 
 type InstructionRaw = {
   programIdx: number;
@@ -102,16 +103,40 @@ const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
   },
 };
 
-export const TRANSACTION_MESSAGE = new FixableGlowBorsh<{
+type AddressTableLookup = {
+  lookupTableAddress: Solana.Address;
+  writableIndexes: number[];
+  readonlyIndexes: number[];
+};
+
+export const AddressTableLookupFormat =
+  new FixableGlowBorsh<AddressTableLookup>({
+    fields: [
+      ["lookupTableAddress", GlowBorsh.address],
+      [
+        "writableIndexes",
+        FixableGlowBorsh.compactArray({ itemCoder: beet.u8 }),
+      ],
+      [
+        "readonlyIndexes",
+        FixableGlowBorsh.compactArray({ itemCoder: beet.u8 }),
+      ],
+    ],
+  });
+
+export const TransactionMessageFormat = new FixableGlowBorsh<{
   numRequiredSigs: number;
   numReadonlySigned: number;
   numReadonlyUnsigned: number;
   addresses: Solana.Address[];
   recentBlockhash: string;
   instructions: InstructionRaw[];
+  addressTableLookups: AddressTableLookup[];
 }>({
   fields: [
-    ["numRequiredSigs", beet.u8],
+    // In a very confusing naming format, they are calling the second version of txs "V0"
+    // https://beta.docs.solana.com/proposals/transactions-v2
+    ["numRequiredSigs", beet.u8], // The first bit here will indicate if it's a versioned tx
     ["numReadonlySigned", beet.u8],
     ["numReadonlyUnsigned", beet.u8],
     [
@@ -123,6 +148,12 @@ export const TRANSACTION_MESSAGE = new FixableGlowBorsh<{
       "instructions",
       FixableGlowBorsh.compactArrayFixable({
         elemCoder: TransactionInstruction,
+      }),
+    ],
+    [
+      "addressTableLookups",
+      FixableGlowBorsh.compactArrayFixable({
+        elemCoder: AddressTableLookupFormat,
       }),
     ],
   ],
