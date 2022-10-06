@@ -220,7 +220,6 @@ export namespace SolanaClient {
       timeout,
       ...config,
     });
-    console.log(result)
 
     if (result == null) {
       throw new GlowError(`Could not find transaction.`, {
