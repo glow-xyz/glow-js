@@ -29,6 +29,8 @@ type RequestConfig = {
 
 const MAX_ACCOUNTS_IN_ONE_REQUEST = 50;
 
+const maxSupportedTransactionVersion: "legacy" | number = 0;
+
 /**
  * We are using our own wrapper of Solana's JSON RPC API instead of web3.js
  *
@@ -211,6 +213,7 @@ export namespace SolanaClient {
         {
           encoding: "base64",
           commitment,
+          maxSupportedTransactionVersion,
         },
       ],
       zod: SolanaRpcTypes.TransactionRawWithMetaZ.nullable(),
