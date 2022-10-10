@@ -18,16 +18,16 @@
   "dependencies": {
     "@glow-xyz/glow-client": "latest",
     "@glow-xyz/solana-client": "latest",
-    "classnames": "2.3.1"
+    "classnames": "2.3.2"
   },
   "devDependencies": {
-    "@solana/web3.js": "1.44.1",
-    "@types/react": "18.0.17",
+    "@solana/web3.js": "1.63.1",
+    "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "esbuild": "0.15.5",
     "esbuild-register": "3.3.3",
     "prettier": "2.7.1",
-    "sass": "1.54.5"
+    "sass": "1.55.0"
   },
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0",
