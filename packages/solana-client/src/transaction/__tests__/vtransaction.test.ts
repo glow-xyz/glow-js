@@ -10,7 +10,7 @@ describe("vTransaction", () => {
     // console.log(vTransaction5j9);
     const vTransaction = new VTransaction({
       transactionBase64: vTransaction5j9.transaction[0],
-      meta: vTransaction5j9.meta,
+      loadedAddresses: vTransaction5j9.meta.loadedAddresses,
     });
     console.log(vTransaction.addresses);
 
@@ -85,7 +85,7 @@ describe("vTransaction", () => {
     const txBuffer = Buffer.from(transactionBase64, "base64");
     const vTransaction = new VTransaction({
       transactionBase64,
-      meta: vTransaction3N3.meta,
+      loadedAddresses: vTransaction3N3.meta.loadedAddresses,
     });
 
     const web3VersionedTx = web3.VersionedTransaction.deserialize(txBuffer);

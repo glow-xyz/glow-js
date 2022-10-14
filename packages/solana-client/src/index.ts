@@ -10,3 +10,5 @@ export * from "./GPublicKey";
 export * from "./GTransaction";
 export * from "./EllipticCurve";
 export * from "./transaction/transaction-utils";
+export * from "./transaction/VTransaction";
+export * from "./transaction/AddressLookupTable";

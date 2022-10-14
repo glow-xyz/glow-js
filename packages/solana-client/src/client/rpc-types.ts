@@ -95,6 +95,7 @@ export namespace SolanaRpcTypes {
     }),
   });
   export type TransactionRawMeta = z.infer<typeof TransactionRawMetaZ>;
+  export type LoadedAddresses = TransactionRawMeta["loadedAddresses"];
   // https://github.com/luma-team/solana/blob/6d5bbca630bd59fb64f2bc446793c83482d8fba4/transaction-status/src/lib.rs#L403
   export const TransactionRawWithMetaZ = z.object({
     slot: z.number().optional(),
