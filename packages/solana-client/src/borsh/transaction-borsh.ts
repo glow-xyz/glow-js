@@ -4,17 +4,20 @@ import { Buffer } from "buffer";
 import { Solana } from "../base-types";
 import { FixableGlowBorsh, GlowBorsh } from "./base";
 
-type InstructionRaw = {
+export type InstructionRawType = {
   programIdx: number;
   accountIdxs: number[];
   data: Buffer;
 };
 
-const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
+export const TransactionInstructionFormat: FixableBeet<
+  InstructionRawType,
+  InstructionRawType
+> = {
   description: "TransactionInstruction",
   toFixedFromValue: (
-    ix: InstructionRaw
-  ): FixedSizeBeet<InstructionRaw, InstructionRaw> => {
+    ix: InstructionRawType
+  ): FixedSizeBeet<InstructionRawType, InstructionRawType> => {
     const accountsCoderFixable = FixableGlowBorsh.compactArray({
       itemCoder: beet.u8,
     });
@@ -29,7 +32,11 @@ const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
 
     return {
       description: "TransactionInstruction",
-      write: function (buff: Buffer, offset: number, ix: InstructionRaw): void {
+      write: function (
+        buff: Buffer,
+        offset: number,
+        ix: InstructionRawType
+      ): void {
         let cursor = offset;
         beet.u8.write(buff, cursor, ix.programIdx);
         cursor += beet.u8.byteSize;
@@ -40,7 +47,7 @@ const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
         dataCoder.write(buff, cursor, Array.from(ix.data));
       },
 
-      read: function (buff: Buffer, offset: number): InstructionRaw {
+      read: function (buff: Buffer, offset: number): InstructionRawType {
         let cursor = offset;
         const programIdx = beet.u8.read(buff, cursor);
         cursor += beet.u8.byteSize;
@@ -57,7 +64,7 @@ const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
   toFixedFromData: (
     buff: Buffer,
     offset: number
-  ): FixedSizeBeet<InstructionRaw, InstructionRaw> => {
+  ): FixedSizeBeet<InstructionRawType, InstructionRawType> => {
     let cursor = offset + 1; // + 1 for the programIdx which is a u8
 
     const accountsCoderFixable = FixableGlowBorsh.compactArray({
@@ -75,7 +82,11 @@ const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
 
     return {
       description: "TransactionInstruction",
-      write: function (buf: Buffer, offset: number, ix: InstructionRaw): void {
+      write: function (
+        buf: Buffer,
+        offset: number,
+        ix: InstructionRawType
+      ): void {
         let cursor = offset;
         beet.u8.write(buff, cursor, ix.programIdx);
         cursor += beet.u8.byteSize;
@@ -86,7 +97,7 @@ const TransactionInstruction: FixableBeet<InstructionRaw, InstructionRaw> = {
         dataCoder.write(buff, cursor, Array.from(ix.data));
       },
 
-      read: function (buf: Buffer, offset: number): InstructionRaw {
+      read: function (buf: Buffer, offset: number): InstructionRawType {
         let cursor = offset;
         const programIdx = beet.u8.read(buff, cursor);
         cursor += beet.u8.byteSize;
@@ -108,7 +119,7 @@ export const TRANSACTION_MESSAGE = new FixableGlowBorsh<{
   numReadonlyUnsigned: number;
   addresses: Solana.Address[];
   recentBlockhash: string;
-  instructions: InstructionRaw[];
+  instructions: InstructionRawType[];
 }>({
   fields: [
     ["numRequiredSigs", beet.u8],
@@ -122,7 +133,7 @@ export const TRANSACTION_MESSAGE = new FixableGlowBorsh<{
     [
       "instructions",
       FixableGlowBorsh.compactArrayFixable({
-        elemCoder: TransactionInstruction,
+        elemCoder: TransactionInstructionFormat,
       }),
     ],
   ],

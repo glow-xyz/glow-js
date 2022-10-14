@@ -19,7 +19,7 @@ const TestData: Array<[TransactionVersion, Base64]> = [
 describe("getTransactionVersion", () => {
   test("get transaction versions", () => {
     for (const [expectedVersion, base64] of TestData) {
-      const version = getTransactionVersion({
+      const { version } = getTransactionVersion({
         buffer: Buffer.from(base64, "base64"),
       });
       expect(version).toBe(expectedVersion);

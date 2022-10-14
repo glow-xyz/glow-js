@@ -1,5 +1,5 @@
 import { z } from "zod";
-import {Solana} from "../base-types";
+import { Solana } from "../base-types";
 
 /**
  * Here are the types returned directly by the Solana RPC, with no modification.
@@ -89,8 +89,13 @@ export namespace SolanaRpcTypes {
     preBalances: z.array(z.number()),
     preTokenBalances: z.array(TokenBalanceZ).nullable(),
     postTokenBalances: z.array(TokenBalanceZ).nullable(),
+    loadedAddresses: z.object({
+      readonly: z.array(Solana.AddressZ),
+      writable: z.array(Solana.AddressZ),
+    }),
   });
   export type TransactionRawMeta = z.infer<typeof TransactionRawMetaZ>;
+  export type LoadedAddresses = TransactionRawMeta["loadedAddresses"];
   // https://github.com/luma-team/solana/blob/6d5bbca630bd59fb64f2bc446793c83482d8fba4/transaction-status/src/lib.rs#L403
   export const TransactionRawWithMetaZ = z.object({
     slot: z.number().optional(),
