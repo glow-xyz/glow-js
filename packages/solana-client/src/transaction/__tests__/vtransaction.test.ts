@@ -1,5 +1,7 @@
 import _ from "lodash";
 import { Buffer } from "buffer";
+import { GKeypair } from "../../GKeypair";
+import { GPublicKey } from "../../GPublicKey";
 import { VTransaction } from "../VTransaction";
 import * as web3 from "@solana/web3.js";
 import vTransaction5j9 from "./vtransaction-5j9WCjiybkEDMXYyuUTy8d2kEcJeaRyzcsPpkF4kmJdVbxR483dzKsJLRTrY91bKxi9tA94vfzqjCmdP3G596kBt.json";
@@ -9,7 +11,7 @@ describe("vTransaction", () => {
   test("vTransaction5j9", () => {
     // console.log(vTransaction5j9);
     const vTransaction = new VTransaction({
-      transactionBase64: vTransaction5j9.transaction[0],
+      base64: vTransaction5j9.transaction[0],
       loadedAddresses: vTransaction5j9.meta.loadedAddresses,
     });
     console.log(vTransaction.addresses);
@@ -84,7 +86,7 @@ describe("vTransaction", () => {
     const transactionBase64 = vTransaction3N3.transaction[0];
     const txBuffer = Buffer.from(transactionBase64, "base64");
     const vTransaction = new VTransaction({
-      transactionBase64,
+      base64: transactionBase64,
       loadedAddresses: vTransaction3N3.meta.loadedAddresses,
     });
 
@@ -116,5 +118,41 @@ describe("vTransaction", () => {
         data_base64: web3Ix!.data.toString("base64"),
       });
     }
+  });
+
+  test("signing a transaction", () => {
+    const keypair = GKeypair.generate();
+
+    // Set up web3 transaction
+    const pubkey = new web3.PublicKey(keypair.address);
+    const instructions = [
+      web3.SystemProgram.transfer({
+        fromPubkey: pubkey,
+        toPubkey: pubkey,
+        lamports: 100000,
+      }),
+    ];
+    const messageV0 = new web3.TransactionMessage({
+      payerKey: pubkey,
+      recentBlockhash: GPublicKey.nullString,
+      instructions,
+    }).compileToV0Message();
+    const web3Transaction = new web3.VersionedTransaction(messageV0);
+    const initialBase64 = Buffer.from(web3Transaction.serialize()).toString(
+      "base64"
+    );
+
+    // Set up the vtransaction
+    const vtransaction = new VTransaction({
+      base64: initialBase64,
+      loadedAddresses: { writable: [], readonly: [] },
+    });
+    expect(vtransaction.toHex()).toBe(
+      Buffer.from(initialBase64, "base64").toString("hex")
+    );
+
+    web3Transaction.sign([keypair as unknown as web3.Keypair]);
+    const signedHex = Buffer.from(web3Transaction.serialize()).toString("hex");
+    expect(vtransaction.sign({ signers: [keypair] }).toHex()).toBe(signedHex);
   });
 });

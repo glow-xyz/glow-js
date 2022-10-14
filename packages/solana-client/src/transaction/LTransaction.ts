@@ -1,7 +1,7 @@
 import * as beet from "@glow-xyz/beet";
 import bs58 from "bs58";
-import { Buffer } from "buffer";
 import nacl from "tweetnacl";
+import { Buffer } from "buffer";
 import { Base64, Hex, Solana } from "../base-types";
 import {
   FixableGlowBorsh,
@@ -10,7 +10,6 @@ import {
   InstructionRawType,
   TransactionInstructionFormat,
 } from "../borsh";
-import { SolanaRpcTypes } from "../client/rpc-types";
 import { GKeypair } from "../GKeypair";
 import { getTransactionVersion } from "./transaction-utils";
 import {
@@ -20,32 +19,29 @@ import {
   TransactionInterface,
 } from "./TransactionInterface";
 
-export class VTransaction implements TransactionInterface {
+/**
+ * This is for a legacy transactions which as of 2022-10-14 are
+ * the most common transaction type.
+ */
+export class LTransaction implements TransactionInterface {
   #signatureInfos: Array<SignatureInfo>;
-  readonly #loadedAddresses: SolanaRpcTypes.LoadedAddresses;
   readonly #byteLength: number;
   readonly #messageBuffer: Buffer;
-  readonly #message: V0Message;
+  readonly #message: LegacyTransactionMessage;
 
-  constructor({
-    base64,
-    loadedAddresses,
-  }: {
-    base64: Base64;
-    loadedAddresses: SolanaRpcTypes.LoadedAddresses | null;
-  }) {
+  constructor({ base64 }: { base64: Base64 }) {
     const txBuffer = Buffer.from(base64, "base64");
     const { version, messageBuffer, signatures } = getTransactionVersion({
       buffer: txBuffer,
     });
 
-    if (version !== 0) {
+    if (version !== "legacy") {
       throw new Error(
-        `Unsupported transaction version. Expected 0, received ${version}.`
+        `Unsupported transaction version. Expected legacy, received ${version}.`
       );
     }
 
-    const message = V0TransactionMessageFormat.parse({
+    const message = LegacyTransactionMessageFormat.parse({
       buffer: messageBuffer,
     });
 
@@ -54,7 +50,6 @@ export class VTransaction implements TransactionInterface {
     }
 
     this.#byteLength = txBuffer.byteLength;
-    this.#loadedAddresses = loadedAddresses || { writable: [], readonly: [] };
     this.#messageBuffer = messageBuffer;
     this.#message = message;
     this.#signatureInfos = signatures.map((signature, idx) => ({
@@ -65,6 +60,10 @@ export class VTransaction implements TransactionInterface {
 
   get addresses(): Solana.Address[] {
     return this.accounts.map((account) => account.address);
+  }
+
+  get numRequiredSigs(): number {
+    return this.#message.numRequiredSigs;
   }
 
   toBuffer(): Buffer {
@@ -95,8 +94,6 @@ export class VTransaction implements TransactionInterface {
       const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
       const address = bs58.encode(keypair.publicKey);
 
-      // TODO: check if address is required to be a signer
-
       const signatureUint = nacl.sign.detached(this.#messageBuffer, secretKey);
 
       const accountIndex = this.#message.addresses.findIndex(
@@ -125,13 +122,8 @@ export class VTransaction implements TransactionInterface {
     });
   }
 
-  get numRequiredSigs(): number {
-    return this.#message.numRequiredSigs;
-  }
-
   get accounts(): Array<TransactionAccount> {
     const message = this.#message;
-    const loadedAddresses = this.#loadedAddresses;
 
     const {
       numReadonlySigned,
@@ -140,7 +132,7 @@ export class VTransaction implements TransactionInterface {
       addresses,
     } = message;
 
-    const out: TransactionAccount[] = addresses.map((address, idx) => ({
+    return addresses.map((address, idx) => ({
       address,
       signer: idx < numRequiredSigs,
       writable:
@@ -149,77 +141,34 @@ export class VTransaction implements TransactionInterface {
           idx < addresses.length - numReadonlyUnsigned),
       wasLookedUp: false,
     }));
-
-    for (const address of loadedAddresses.writable) {
-      out.push({
-        address,
-        writable: true,
-        signer: false,
-        wasLookedUp: true,
-      });
-    }
-    for (const address of loadedAddresses.readonly) {
-      out.push({
-        address,
-        writable: false,
-        signer: false,
-        wasLookedUp: true,
-      });
-    }
-
-    return out;
   }
 }
 
-type AddressTableLookup = {
-  lookupTableAddress: Solana.Address;
-  writableIndexes: number[];
-  readonlyIndexes: number[];
-};
-
-const AddressTableLookup = new FixableGlowBorsh<AddressTableLookup>({
-  fields: [
-    ["lookupTableAddress", GlowBorsh.address],
-    ["writableIndexes", FixableGlowBorsh.compactArray({ itemCoder: beet.u8 })],
-    ["readonlyIndexes", FixableGlowBorsh.compactArray({ itemCoder: beet.u8 })],
-  ],
-});
-
-type V0Message = {
-  maskedVersion: number;
+type LegacyTransactionMessage = {
   numRequiredSigs: number;
   numReadonlySigned: number;
   numReadonlyUnsigned: number;
   addresses: Solana.Address[];
   recentBlockhash: string;
   instructions: InstructionRawType[];
-  addressTableLookups: AddressTableLookup[];
 };
 
-export const V0TransactionMessageFormat = new FixableGlowBorsh<V0Message>({
-  fields: [
-    // In a very confusing naming format, they are calling the second version of txs "V0"
-    // https://beta.docs.solana.com/proposals/transactions-v2
-    ["maskedVersion", beet.u8], // The first bit here will indicate if it's a versioned tx
-    ["numRequiredSigs", beet.u8],
-    ["numReadonlySigned", beet.u8],
-    ["numReadonlyUnsigned", beet.u8],
-    [
-      "addresses",
-      FixableGlowBorsh.compactArray({ itemCoder: GlowBorsh.address }),
+export const LegacyTransactionMessageFormat =
+  new FixableGlowBorsh<LegacyTransactionMessage>({
+    fields: [
+      ["numRequiredSigs", beet.u8],
+      ["numReadonlySigned", beet.u8],
+      ["numReadonlyUnsigned", beet.u8],
+      [
+        "addresses",
+        FixableGlowBorsh.compactArray({ itemCoder: GlowBorsh.address }),
+      ],
+      ["recentBlockhash", GlowBorsh.address],
+      [
+        "instructions",
+        FixableGlowBorsh.compactArrayFixable({
+          elemCoder: TransactionInstructionFormat,
+        }),
+      ],
     ],
-    ["recentBlockhash", GlowBorsh.address],
-    [
-      "instructions",
-      FixableGlowBorsh.compactArrayFixable({
-        elemCoder: TransactionInstructionFormat,
-      }),
-    ],
-    [
-      "addressTableLookups",
-      FixableGlowBorsh.compactArrayFixable({
-        elemCoder: AddressTableLookup,
-      }),
-    ],
-  ],
-});
+  });
