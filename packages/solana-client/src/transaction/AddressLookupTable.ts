@@ -6,9 +6,14 @@ import { FixableGlowBorsh, GlowBorsh } from "../borsh";
 import { GPublicKey } from "../GPublicKey";
 
 /**
+ * The lookup table stores some information about how it was configured.
+ *
+ * Then it stores addresses at an offset. It does not store the number of addresses,
+ * so when getting addresses, we just iterate over the rest of the data.
+ *
  * https://github.com/luma-team/solana/blob/b05c7d91ed4e0279ec622584edb54c9ef8547ad1/programs/address-lookup-table/src/state.rs#L40
  */
-export const LookupTableMetaFormat = new FixableGlowBorsh<{
+const LookupTableMetaFormat = new FixableGlowBorsh<{
   typeIndex: number;
   deactivationSlot: BN;
   lastExtendedSlot: BN;

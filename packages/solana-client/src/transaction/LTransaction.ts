@@ -22,6 +22,9 @@ import {
 /**
  * This is for a legacy transactions which as of 2022-10-14 are
  * the most common transaction type.
+ *
+ * This is designed to resemble VTransaction. We are moving away from GTransaction
+ * and I hope to phase it out by the end of the year.
  */
 export class LTransaction implements TransactionInterface {
   #signatureInfos: Array<SignatureInfo>;
@@ -94,11 +97,15 @@ export class LTransaction implements TransactionInterface {
       const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
       const address = bs58.encode(keypair.publicKey);
 
-      const signatureUint = nacl.sign.detached(this.#messageBuffer, secretKey);
-
       const accountIndex = this.#message.addresses.findIndex(
         (a) => a === address
       );
+      if (accountIndex === -1) {
+        continue;
+      }
+
+      const signatureUint = nacl.sign.detached(this.#messageBuffer, secretKey);
+
       newSigs[accountIndex] = {
         signature: bs58.encode(signatureUint),
         address,

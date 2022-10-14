@@ -20,6 +20,10 @@ import {
   TransactionInterface,
 } from "./TransactionInterface";
 
+/**
+ * This creates a Version 0 transaction. You need to have the lookup
+ * tables populated when instantiating this or certain calls will error.
+ */
 export class VTransaction implements TransactionInterface {
   #signatureInfos: Array<SignatureInfo>;
   readonly #loadedAddresses: SolanaRpcTypes.LoadedAddresses;
@@ -95,13 +99,15 @@ export class VTransaction implements TransactionInterface {
       const keypair = nacl.sign.keyPair.fromSecretKey(secretKey);
       const address = bs58.encode(keypair.publicKey);
 
-      // TODO: check if address is required to be a signer
-
-      const signatureUint = nacl.sign.detached(this.#messageBuffer, secretKey);
-
       const accountIndex = this.#message.addresses.findIndex(
         (a) => a === address
       );
+      if (accountIndex === -1) {
+        continue;
+      }
+
+      const signatureUint = nacl.sign.detached(this.#messageBuffer, secretKey);
+
       newSigs[accountIndex] = {
         signature: bs58.encode(signatureUint),
         address,
