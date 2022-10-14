@@ -89,6 +89,10 @@ export namespace SolanaRpcTypes {
     preBalances: z.array(z.number()),
     preTokenBalances: z.array(TokenBalanceZ).nullable(),
     postTokenBalances: z.array(TokenBalanceZ).nullable(),
+    loadedAddresses: z.object({
+      readonly: z.array(Solana.AddressZ),
+      writable: z.array(Solana.AddressZ),
+    }),
   });
   export type TransactionRawMeta = z.infer<typeof TransactionRawMetaZ>;
   // https://github.com/luma-team/solana/blob/6d5bbca630bd59fb64f2bc446793c83482d8fba4/transaction-status/src/lib.rs#L403
@@ -97,10 +101,6 @@ export namespace SolanaRpcTypes {
     transaction: z.tuple([z.string(), z.literal("base64")]),
     blockTime: z.number().optional().nullable(),
     meta: TransactionRawMetaZ.nullable(),
-    loadedAddresses: z.object({
-      readonly: z.array(Solana.AddressZ),
-      writable: z.array(Solana.AddressZ),
-    }),
   });
   export type TransactionRawWithMeta = z.infer<typeof TransactionRawWithMetaZ>;
 
