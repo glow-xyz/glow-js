@@ -15,7 +15,6 @@ type Account = {
   signer: boolean;
   writable: boolean;
   wasLookedUp: boolean;
-  idx: number;
 };
 
 type Instruction = {
@@ -87,37 +86,23 @@ export class VTransaction {
         (idx >= numRequiredSigs &&
           idx < addresses.length - numReadonlyUnsigned),
       wasLookedUp: false,
-      idx,
     }));
 
-    for (const lookupTable of message.addressTableLookups) {
-      for (const [
-        writableIndex,
-        overallIdx,
-      ] of lookupTable.writableIndexes.entries()) {
-        const address = loadedAddresses.writable[writableIndex];
-        out.push({
-          address,
-          writable: true,
-          signer: false,
-          wasLookedUp: true,
-          idx: overallIdx + addresses.length,
-        });
-      }
-
-      for (const [
-        readonlyIndex,
-        overallIdx,
-      ] of lookupTable.readonlyIndexes.entries()) {
-        const address = loadedAddresses.readonly[readonlyIndex];
-        out.push({
-          address,
-          writable: false,
-          signer: false,
-          wasLookedUp: true,
-          idx: overallIdx + addresses.length,
-        });
-      }
+    for (const address of loadedAddresses.writable) {
+      out.push({
+        address,
+        writable: true,
+        signer: false,
+        wasLookedUp: true,
+      });
+    }
+    for (const address of loadedAddresses.readonly) {
+      out.push({
+        address,
+        writable: false,
+        signer: false,
+        wasLookedUp: true,
+      });
     }
 
     return out;

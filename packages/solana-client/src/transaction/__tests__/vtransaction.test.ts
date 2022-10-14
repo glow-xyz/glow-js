@@ -1,6 +1,9 @@
+import _ from "lodash";
 import { Buffer } from "buffer";
 import { VTransaction } from "../VTransaction";
+import * as web3 from "@solana/web3.js";
 import vTransaction5j9 from "./vtransaction-5j9WCjiybkEDMXYyuUTy8d2kEcJeaRyzcsPpkF4kmJdVbxR483dzKsJLRTrY91bKxi9tA94vfzqjCmdP3G596kBt.json";
+import vTransaction3N3 from "./vtransaction-3N3xmERQotKh5of4H5Q5UEjwMKhaDR52pfJHCGRcQUD5hHTBX9hnXBbRcJ6CiFczrRtPhtx3b2ddd2kSjvZP7Cg.json";
 
 describe("vTransaction", () => {
   test("vTransaction5j9", () => {
@@ -75,5 +78,43 @@ describe("vTransaction", () => {
         ],
       },
     ]);
+  });
+
+  test("vTransaction3N3", () => {
+    const transactionBase64 = vTransaction3N3.transaction[0];
+    const txBuffer = Buffer.from(transactionBase64, "base64");
+    const vTransaction = new VTransaction({
+      transactionBase64,
+      meta: vTransaction3N3.meta,
+    });
+
+    const web3VersionedTx = web3.VersionedTransaction.deserialize(txBuffer);
+    const web3TxMessage = web3.TransactionMessage.decompile(
+      web3VersionedTx.message,
+      {
+        accountKeysFromLookups: {
+          writable: vTransaction3N3.meta.loadedAddresses.writable.map(
+            (address) => new web3.PublicKey(address)
+          ),
+          readonly: vTransaction3N3.meta.loadedAddresses.readonly.map(
+            (address) => new web3.PublicKey(address)
+          ),
+        },
+      }
+    );
+
+    expect(vTransaction.instructions.length).toBe(
+      web3TxMessage.instructions.length
+    );
+    for (const [web3Ix, ix] of _.zip(
+      web3TxMessage.instructions,
+      vTransaction.instructions
+    )) {
+      expect(ix).toEqual({
+        accounts: web3Ix!.keys.map(({ pubkey }) => pubkey.toBase58()),
+        program: web3Ix!.programId.toBase58(),
+        data_base64: web3Ix!.data.toString("base64"),
+      });
+    }
   });
 });
