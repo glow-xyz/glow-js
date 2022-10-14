@@ -1,4 +1,4 @@
-import _ from "lodash";
+import zip from "lodash/zip";
 import { Buffer } from "buffer";
 import { GKeypair } from "../../GKeypair";
 import { GPublicKey } from "../../GPublicKey";
@@ -108,7 +108,7 @@ describe("vTransaction", () => {
     expect(vTransaction.instructions.length).toBe(
       web3TxMessage.instructions.length
     );
-    for (const [web3Ix, ix] of _.zip(
+    for (const [web3Ix, ix] of zip(
       web3TxMessage.instructions,
       vTransaction.instructions
     )) {
