@@ -1,5 +1,5 @@
 import { z } from "zod";
-import {Solana} from "../base-types";
+import { Solana } from "../base-types";
 
 /**
  * Here are the types returned directly by the Solana RPC, with no modification.
@@ -97,6 +97,10 @@ export namespace SolanaRpcTypes {
     transaction: z.tuple([z.string(), z.literal("base64")]),
     blockTime: z.number().optional().nullable(),
     meta: TransactionRawMetaZ.nullable(),
+    loadedAddresses: z.object({
+      readonly: z.array(Solana.AddressZ),
+      writable: z.array(Solana.AddressZ),
+    }),
   });
   export type TransactionRawWithMeta = z.infer<typeof TransactionRawWithMetaZ>;
 

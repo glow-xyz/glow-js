@@ -9,3 +9,4 @@ export * from "./GKeypair";
 export * from "./GPublicKey";
 export * from "./GTransaction";
 export * from "./EllipticCurve";
+export * from "./transaction/transaction-utils";
