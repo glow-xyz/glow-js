@@ -89,10 +89,12 @@ export namespace SolanaRpcTypes {
     preBalances: z.array(z.number()),
     preTokenBalances: z.array(TokenBalanceZ).nullable(),
     postTokenBalances: z.array(TokenBalanceZ).nullable(),
-    loadedAddresses: z.object({
-      readonly: z.array(Solana.AddressZ),
-      writable: z.array(Solana.AddressZ),
-    }),
+    loadedAddresses: z
+      .object({
+        readonly: z.array(Solana.AddressZ),
+        writable: z.array(Solana.AddressZ),
+      })
+      .optional(),
   });
   export type TransactionRawMeta = z.infer<typeof TransactionRawMetaZ>;
   export type LoadedAddresses = TransactionRawMeta["loadedAddresses"];

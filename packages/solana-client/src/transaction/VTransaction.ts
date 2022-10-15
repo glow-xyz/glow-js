@@ -156,7 +156,7 @@ export class VTransaction implements TransactionInterface {
       wasLookedUp: false,
     }));
 
-    for (const address of loadedAddresses.writable) {
+    for (const address of loadedAddresses?.writable ?? []) {
       out.push({
         address,
         writable: true,
@@ -164,7 +164,7 @@ export class VTransaction implements TransactionInterface {
         wasLookedUp: true,
       });
     }
-    for (const address of loadedAddresses.readonly) {
+    for (const address of loadedAddresses?.readonly ?? []) {
       out.push({
         address,
         writable: false,
