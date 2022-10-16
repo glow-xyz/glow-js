@@ -123,6 +123,10 @@ export class VTransaction implements TransactionInterface {
     return this.#signatureInfos[0].address;
   }
 
+  get signature(): Solana.Signature {
+    return this.#signatureInfos[0].signature;
+  }
+
   get instructions(): Array<TransactionInstruction> {
     const accounts = this.accounts;
 

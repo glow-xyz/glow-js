@@ -69,6 +69,10 @@ export class LTransaction implements TransactionInterface {
     return this.#message.numRequiredSigs;
   }
 
+  get signature(): Solana.Signature {
+    return this.#signatureInfos[0].signature;
+  }
+
   get feePayer(): Solana.Address {
     return this.#signatureInfos[0].address;
   }
