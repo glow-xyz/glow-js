@@ -83,12 +83,12 @@ export class GlowWallet implements Wallet {
             },
             'solana:signAndSendTransaction': {
                 version: '1.0.0',
-                supportedTransactionVersions: ['legacy'],
+                supportedTransactionVersions: ['legacy', 0],
                 signAndSendTransaction: this.#signAndSendTransaction,
             },
             'solana:signTransaction': {
                 version: '1.0.0',
-                supportedTransactionVersions: ['legacy'],
+                supportedTransactionVersions: ['legacy', 0],
                 signTransaction: this.#signTransaction,
             },
             'standard:signMessage': {
