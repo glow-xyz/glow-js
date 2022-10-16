@@ -5,6 +5,10 @@ export namespace Solana {
   export const AddressZ = z.string().regex(AddressRegex);
   export type Address = z.infer<typeof AddressZ>;
 
+  export const SignatureRegex = /^[5KL1-9A-HJ-NP-Za-km-z]{85,90}$/;
+  export const SignatureZ = z.string().regex(SignatureRegex);
+  export type Signature = z.infer<typeof SignatureZ>;
+
   export const SolAmountZ = z.object({ lamports: z.string() });
   export type SolAmount = z.infer<typeof SolAmountZ>;
 
