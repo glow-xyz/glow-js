@@ -50,6 +50,6 @@ export namespace GlowBorshTypes {
       },
     };
 
-  export const transactionSignaturesSection: FixableBeet<string[], string[]> =
+  export const transactionSignaturesSection: FixableBeet<Base58[], Base58[]> =
     FixableGlowBorsh.compactArray({ itemCoder: GlowBorshTypes.signature });
 }
