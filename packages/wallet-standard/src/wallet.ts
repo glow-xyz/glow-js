@@ -1,5 +1,14 @@
 import type { GlowAdapter, Network, PhantomAdapter, SolanaWindow } from '@glow-xyz/glow-client';
 import type {
+    SolanaSignAndSendTransactionFeature,
+    SolanaSignAndSendTransactionMethod,
+    SolanaSignAndSendTransactionOutput,
+    SolanaSignTransactionFeature,
+    SolanaSignTransactionMethod,
+    SolanaSignTransactionOutput,
+} from '@solana/wallet-standard-features';
+import type { Wallet } from '@wallet-standard/base';
+import type {
     ConnectFeature,
     ConnectMethod,
     DisconnectFeature,
@@ -12,15 +21,6 @@ import type {
     SignMessageMethod,
     SignMessageOutput,
 } from '@wallet-standard/features';
-import type {
-    SolanaSignAndSendTransactionFeature,
-    SolanaSignAndSendTransactionMethod,
-    SolanaSignAndSendTransactionOutput,
-    SolanaSignTransactionFeature,
-    SolanaSignTransactionMethod,
-    SolanaSignTransactionOutput,
-} from '@wallet-standard/solana-features';
-import type { Wallet } from '@wallet-standard/standard';
 import bs58 from 'bs58';
 import { Buffer } from 'buffer';
 import { GlowWalletAccount } from './account.js';
