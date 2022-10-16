@@ -69,6 +69,10 @@ export class LTransaction implements TransactionInterface {
     return this.#message.numRequiredSigs;
   }
 
+  get feePayer(): Solana.Address {
+    return this.#signatureInfos[0].address;
+  }
+
   toBuffer(): Buffer {
     const signatures = this.#signatureInfos.map((i) => i.signature);
     const signaturesCoder =
