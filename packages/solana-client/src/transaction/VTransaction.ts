@@ -119,6 +119,10 @@ export class VTransaction implements TransactionInterface {
     return this;
   }
 
+  get feePayer(): Solana.Address {
+    return this.#signatureInfos[0].address;
+  }
+
   get instructions(): Array<TransactionInstruction> {
     const accounts = this.accounts;
 

@@ -11,6 +11,7 @@ export interface TransactionInterface {
   addresses: Solana.Address[];
   instructions: TransactionInstruction[];
   accounts: TransactionAccount[];
+  feePayer: Solana.Address;
 
   numRequiredSigs: number;
 }
