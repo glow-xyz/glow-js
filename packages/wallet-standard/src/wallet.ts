@@ -140,7 +140,7 @@ export class GlowWallet implements Wallet {
   #connected = () => {
     const address = window.glow.address;
     const publicKey = window.glow.publicKey;
-    if (address) {
+    if (address && publicKey) {
       const account = this.#account;
       if (!account || account.address !== address) {
         this.#account = new GlowWalletAccount({
