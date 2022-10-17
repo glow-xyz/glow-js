@@ -46,6 +46,7 @@ export class GlowWalletAccount implements WalletAccount {
     address,
     publicKey,
     label,
+    publicKey,
     icon,
   }: Omit<WalletAccount, "chains" | "features">) {
     if (new.target === GlowWalletAccount) {
