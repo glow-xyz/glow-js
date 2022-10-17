@@ -1,6 +1,6 @@
 {
   "name": "@glow-xyz/glow-client",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -17,7 +17,7 @@
     "release": "pnpm build && release-it"
   },
   "dependencies": {
-    "@glow-xyz/solana-client": "1.6.x",
+    "@glow-xyz/solana-client": "1.7.x",
     "bs58": "^5.0.0",
     "buffer": "^6.0.3",
     "eventemitter3": "^4.0.7",
