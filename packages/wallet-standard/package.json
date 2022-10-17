@@ -1,6 +1,6 @@
 {
   "name": "@glow-xyz/wallet-standard",
-  "version": "1.0.0-rc.0",
+  "version": "0.0.1",
   "type": "module",
   "sideEffects": false,
   "main": "./lib/cjs/index.js",
