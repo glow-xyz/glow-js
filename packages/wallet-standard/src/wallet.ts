@@ -1,4 +1,5 @@
-import type { GlowAdapter, Network, SolanaWindow } from "@glow-xyz/glow-client";
+import type { GlowAdapter, SolanaWindow } from "@glow-xyz/glow-client";
+import { Network } from "@glow-xyz/glow-client";
 import type {
   SolanaSignAndSendTransactionFeature,
   SolanaSignAndSendTransactionMethod,
@@ -234,8 +235,7 @@ export class GlowWallet implements Wallet {
 
       const { signedTransactionBase64 } = await window.glow.signTransaction({
         transactionBase64: Buffer.from(transaction).toString("base64"),
-        // FIXME: Glow's defaults to mainnet, so simulation fails and we can't sign
-        network: chain ? getNetworkForChain(chain) : ("mainnet" as Network),
+        network: chain ? getNetworkForChain(chain) : Network.Mainnet,
       });
 
       outputs.push({
@@ -270,10 +270,7 @@ export class GlowWallet implements Wallet {
       const { signedTransactionsBase64 } =
         await window.glow.signAllTransactions({
           transactionsBase64,
-          // HACK: Glow's type definition requires `network` but we might not know it, so pass undefined and pray.
-          network: chain
-            ? getNetworkForChain(chain)
-            : (undefined as any as Network),
+          network: chain ? getNetworkForChain(chain) : Network.Mainnet,
         });
 
       outputs.push(
