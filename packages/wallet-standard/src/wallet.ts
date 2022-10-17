@@ -169,7 +169,9 @@ export class GlowWallet implements Wallet {
   };
 
   #connect: ConnectMethod = async ({ silent } = {}) => {
-    await window.glow.connect(silent ? { onlyIfTrusted: true } : undefined);
+    if (!this.#account) {
+      await window.glow.connect(silent ? { onlyIfTrusted: true } : undefined);
+    }
 
     this.#connected();
 
