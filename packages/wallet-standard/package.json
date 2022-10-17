@@ -20,7 +20,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "pnpm run clean && pnpm run tsc && pnpm run package",
+    "build": "pnpm run tsc",
     "tsc": "tsc --noEmit",
     "fmt": "prettier --write '{*,**/*}.{ts,tsx,js,jsx,json}'",
     "lint": "eslint . --ext ts --ext tsx --quiet",
