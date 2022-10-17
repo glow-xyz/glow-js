@@ -1,15 +1,23 @@
 {
-    "extends": "./tsconfig.base.json",
-    "compilerOptions": {
-        "composite": true
-    },
-    "references": [
-        {
-            "path": "./tsconfig.cjs.json"
-        },
-        {
-            "path": "./tsconfig.esm.json"
-        }
-    ]
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "declaration": false,
+    "declarationDir": null,
+    "esModuleInterop": true,
+    "incremental": false,
+    "jsx": "react",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "dist/cjs/",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES6"
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*.ts*"]
 }
-

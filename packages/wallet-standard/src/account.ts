@@ -45,6 +45,7 @@ export class GlowWalletAccount implements WalletAccount {
   constructor({
     address,
     label,
+    publicKey,
     icon,
   }: Omit<WalletAccount, "chains" | "features">) {
     if (new.target === GlowWalletAccount) {
@@ -52,6 +53,7 @@ export class GlowWalletAccount implements WalletAccount {
     }
 
     this.#address = address;
+    this.#publicKey = publicKey;
     this.#chains = chains;
     this.#features = features;
     this.#label = label;
