@@ -1,3 +1,4 @@
+import { GPublicKey } from "@glow-xyz/solana-client";
 import type { PublicKey, Transaction } from "@solana/web3.js";
 import EventEmitter from "eventemitter3";
 import { z } from "zod";
@@ -59,6 +60,9 @@ export interface PhantomAdapter extends EventEmitter<PhantomWalletEvents> {
 }
 
 export interface GlowAdapter extends EventEmitter<PhantomWalletEvents> {
+  address: Address | null;
+  publicKey: GPublicKey | null;
+
   signIn: () => Promise<{
     address: Address;
     signatureBase64: string;

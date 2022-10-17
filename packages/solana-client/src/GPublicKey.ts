@@ -74,7 +74,7 @@ export class GPublicKey {
   }
 
   toBytes(): Uint8Array {
-    return this.toBuffer();
+    return new Uint8Array(this.toBuffer());
   }
 
   toBuffer(): Buffer {
