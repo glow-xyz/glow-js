@@ -1,0 +1,13 @@
+{
+  "git": {
+    "commitMessage": "[wallet-standard]: Release v${version}",
+    "tagName": "wallet-standard-v${version}"
+  },
+  "github": {
+    "release": true,
+    "releaseName": "`@glow-xyz/wallet-standard` v${version}`"
+  },
+  "npm": {
+    "access": "public"
+  }
+}

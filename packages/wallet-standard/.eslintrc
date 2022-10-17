@@ -1,17 +1,19 @@
 {
     "root": true,
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
-    ],
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     "parser": "@typescript-eslint/parser",
-    "plugins": [
-        "@typescript-eslint",
-        "prettier",
-        "require-extensions"
-    ],
+    "plugins": ["@typescript-eslint", "require-extensions"],
     "rules": {
-        "@typescript-eslint/consistent-type-imports": "error"
+        "@typescript-eslint/consistent-type-imports": "error",
+        "curly": "error",
+        "lodash/import-scope": [2, "method"],
+        "no-restricted-globals": ["error", "name", "event", "origin", "status"],
+        "prefer-const": [
+            "error",
+            {
+                "destructuring": "all"
+            }
+        ],
+        "no-console": 0
     }
 }
