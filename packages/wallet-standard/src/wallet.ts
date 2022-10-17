@@ -161,7 +161,7 @@ export class GlowWallet implements Wallet {
   };
 
   #reconnected = () => {
-    if (window.glow.address) {
+    if (window.glow.address && window.glow.publicKey) {
       this.#connected();
     } else {
       this.#disconnected();
