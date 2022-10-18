@@ -102,7 +102,7 @@ export const signXTransaction = ({
 
   const signed_transaction = Buffer.alloc(txBuffer.byteLength);
   signaturesCoder.write(signed_transaction, 0, newSignatures);
-  signed_transaction.copy(messageBuffer, signaturesCoder.byteSize);
+  messageBuffer.copy(signed_transaction, signaturesCoder.byteSize);
 
   return { signature, signed_transaction };
 };
