@@ -9,10 +9,14 @@ export const SOLANA_MAINNET_CHAIN = "solana:mainnet";
 /** Solana Devnet cluster, e.g. https://api.devnet.solana.com */
 export const SOLANA_DEVNET_CHAIN = "solana:devnet";
 
+/** Solana Localnet cluster, e.g. http://localhost:8899 */
+export const SOLANA_LOCALNET_CHAIN = "solana:localnet";
+
 /** Array of Solana clusters (Glow doesn't support testnet) */
 export const SOLANA_CHAINS = [
   SOLANA_MAINNET_CHAIN,
   SOLANA_DEVNET_CHAIN,
+  SOLANA_LOCALNET_CHAIN,
 ] as const;
 
 /** Type of all Solana clusters */
@@ -34,6 +38,8 @@ export function getNetworkForChain(chain: SolanaChain): Network {
       return Network.Mainnet;
     case SOLANA_DEVNET_CHAIN:
       return Network.Devnet;
+    case SOLANA_LOCALNET_CHAIN:
+      return Network.Localnet;
     default:
       return Network.Mainnet;
   }
