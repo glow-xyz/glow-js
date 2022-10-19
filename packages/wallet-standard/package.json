@@ -1,6 +1,6 @@
 {
   "name": "@glow-xyz/wallet-standard",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "sideEffects": false,
   "typings": "dist/types/index.d.ts",
   "exports": {
