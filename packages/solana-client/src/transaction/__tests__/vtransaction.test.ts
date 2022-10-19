@@ -8,6 +8,17 @@ import vTransaction5j9 from "./vtransaction-5j9WCjiybkEDMXYyuUTy8d2kEcJeaRyzcsPp
 import vTransaction3N3 from "./vtransaction-3N3xmERQotKh5of4H5Q5UEjwMKhaDR52pfJHCGRcQUD5hHTBX9hnXBbRcJ6CiFczrRtPhtx3b2ddd2kSjvZP7Cg.json";
 
 describe("vTransaction", () => {
+  test("vTransaction5j9 does not error if we don't pass in loadedAddresses", () => {
+    // We want to be able to get basic info about the transaction without erroring.
+    const vTransaction = new VTransaction({
+      base64: vTransaction5j9.transaction[0],
+      loadedAddresses: null,
+    });
+    expect(async () => {
+      vTransaction.instructions;
+    }).rejects.toThrow();
+  });
+
   test("vTransaction5j9", () => {
     // console.log(vTransaction5j9);
     const vTransaction = new VTransaction({
