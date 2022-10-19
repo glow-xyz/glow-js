@@ -13,6 +13,7 @@ export interface TransactionInterface {
   accounts: TransactionAccount[];
   signature: Solana.Signature;
   feePayer: Solana.Address;
+  recentBlockhash: string;
 
   numRequiredSigs: number;
 }

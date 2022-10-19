@@ -71,6 +71,10 @@ export class VTransaction implements TransactionInterface {
     return this.accounts.map((account) => account.address);
   }
 
+  get recentBlockhash(): string {
+    return this.#message.recentBlockhash;
+  }
+
   toBuffer(): Buffer {
     const signatures = this.#signatureInfos.map((i) => i.signature);
     const signaturesCoder =

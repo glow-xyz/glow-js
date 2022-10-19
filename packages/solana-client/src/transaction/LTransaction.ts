@@ -77,6 +77,10 @@ export class LTransaction implements TransactionInterface {
     return this.#signatureInfos[0].address;
   }
 
+  get recentBlockhash(): string {
+    return this.#message.recentBlockhash;
+  }
+
   toBuffer(): Buffer {
     const signatures = this.#signatureInfos.map((i) => i.signature);
     const signaturesCoder =
