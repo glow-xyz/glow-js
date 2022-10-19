@@ -25,7 +25,7 @@
     "release": "pnpm build && release-it"
   },
   "dependencies": {
-    "@glow-xyz/glow-client": "^1.4.0",
+    "@glow-xyz/glow-client": "^1.4.1",
     "@solana/wallet-standard-features": "^1.0.0-rc.0",
     "@wallet-standard/base": "^1.0.0-rc.0",
     "@wallet-standard/features": "^1.0.0-rc.0",
