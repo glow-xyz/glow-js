@@ -268,11 +268,12 @@ export class GlowWallet implements Wallet {
         Buffer.from(transaction).toString("base64")
       );
 
-      const { signedTransactionsBase64 } =
-        await this.#glow.signAllTransactions({
+      const { signedTransactionsBase64 } = await this.#glow.signAllTransactions(
+        {
           transactionsBase64,
           network: chain ? getNetworkForChain(chain) : Network.Mainnet,
-        });
+        }
+      );
 
       outputs.push(
         ...signedTransactionsBase64.map((signedTransactionBase64) => ({
