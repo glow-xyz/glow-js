@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "@glow-xyz/glow-client": "^1.4.1",
-    "@solana/wallet-standard-features": "^1.0.0-rc.7",
-    "@wallet-standard/base": "^1.0.0-rc.5",
-    "@wallet-standard/features": "^1.0.0-rc.5",
+    "@solana/wallet-standard-features": "^1.0.0",
+    "@wallet-standard/base": "^1.0.0",
+    "@wallet-standard/features": "^1.0.0",
     "bs58": "^5.0.0",
     "buffer": "^6.0.3"
   },

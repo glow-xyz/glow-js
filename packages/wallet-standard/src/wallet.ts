@@ -4,6 +4,9 @@ import type {
   SolanaSignAndSendTransactionFeature,
   SolanaSignAndSendTransactionMethod,
   SolanaSignAndSendTransactionOutput,
+  SolanaSignMessageFeature,
+  SolanaSignMessageMethod,
+  SolanaSignMessageOutput,
   SolanaSignTransactionFeature,
   SolanaSignTransactionMethod,
   SolanaSignTransactionOutput,
@@ -18,9 +21,6 @@ import type {
   EventsListeners,
   EventsNames,
   EventsOnMethod,
-  SignMessageFeature,
-  SignMessageMethod,
-  SignMessageOutput,
 } from "@wallet-standard/features";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
@@ -64,7 +64,7 @@ export class GlowWallet implements Wallet {
     EventsFeature &
     SolanaSignAndSendTransactionFeature &
     SolanaSignTransactionFeature &
-    SignMessageFeature &
+    SolanaSignMessageFeature &
     GlowFeature {
     return {
       "standard:connect": {
@@ -89,7 +89,7 @@ export class GlowWallet implements Wallet {
         supportedTransactionVersions: ["legacy", 0],
         signTransaction: this.#signTransaction,
       },
-      "standard:signMessage": {
+      "solana:signMessage": {
         version: "1.0.0",
         signMessage: this.#signMessage,
       },
@@ -287,12 +287,12 @@ export class GlowWallet implements Wallet {
     return outputs;
   };
 
-  #signMessage: SignMessageMethod = async (...inputs) => {
+  #signMessage: SolanaSignMessageMethod = async (...inputs) => {
     if (!this.#account) {
       throw new Error("not connected");
     }
 
-    const outputs: SignMessageOutput[] = [];
+    const outputs: SolanaSignMessageOutput[] = [];
 
     if (inputs.length === 1) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -1,4 +1,4 @@
-// This is copied with modification from @wallet-standard/util
+// This is copied with modification from @wallet-standard/wallet
 
 import type { WalletAccount } from "@wallet-standard/base";
 import { SOLANA_CHAINS } from "./solana.js";
