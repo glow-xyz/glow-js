@@ -186,13 +186,13 @@ importers:
 
   packages/wallet-standard:
     specifiers:
-      '@glow-xyz/glow-client': ^1.4.0
-      '@solana/wallet-standard-features': ^1.0.0-rc.0
+      '@glow-xyz/glow-client': ^1.4.1
+      '@solana/wallet-standard-features': ^1.0.0
       '@types/node': ^18.8.5
       '@typescript-eslint/eslint-plugin': ^5.32.0
       '@typescript-eslint/parser': ^5.32.0
-      '@wallet-standard/base': ^1.0.0-rc.0
-      '@wallet-standard/features': ^1.0.0-rc.0
+      '@wallet-standard/base': ^1.0.0
+      '@wallet-standard/features': ^1.0.0
       bs58: ^5.0.0
       buffer: ^6.0.3
       eslint: 8.22.0
@@ -204,9 +204,9 @@ importers:
       typescript: ^4.8.4
     dependencies:
       '@glow-xyz/glow-client': link:../glow-client
-      '@solana/wallet-standard-features': 1.0.0-rc.0
-      '@wallet-standard/base': 1.0.0-rc.0
-      '@wallet-standard/features': 1.0.0-rc.0
+      '@solana/wallet-standard-features': 1.0.0
+      '@wallet-standard/base': 1.0.0
+      '@wallet-standard/features': 1.0.0
       bs58: 5.0.0
       buffer: 6.0.3
     devDependencies:
@@ -1253,11 +1253,12 @@ packages:
       buffer: 6.0.3
     dev: true
 
-  /@solana/wallet-standard-features/1.0.0-rc.0:
-    resolution: {integrity: sha512-BPxu50kzCDSxogQFp8wUQAhPDHNyyzetf4iBiae23iT1TnVQNSoS0e+f+AAqK/GMwfCoEcubhzNNuLpRIHI1qA==}
+  /@solana/wallet-standard-features/1.0.0:
+    resolution: {integrity: sha512-cZKUm2w67MQOAzbfdZCGAbePWuqSwpvpbWA2K2D0UcHX30I8ry8YEeHlqwqULIOTeY8lRCHu8WMxZwC9iMEqHQ==}
+    engines: {node: '>=16'}
     dependencies:
-      '@wallet-standard/base': 1.0.0-rc.0
-      '@wallet-standard/features': 1.0.0-rc.0
+      '@wallet-standard/base': 1.0.0
+      '@wallet-standard/features': 1.0.0
     dev: false
 
   /@solana/web3.js/1.63.1:
@@ -1657,14 +1658,16 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@wallet-standard/base/1.0.0-rc.0:
-    resolution: {integrity: sha512-yfQ5Ho61eKXRT6b81ezwGQ6DflKjI7hmkVRGVPAHno5gPK8TvFuiDmQJid1Y+c0v8huGGc/XFvw3451JJgb1fg==}
+  /@wallet-standard/base/1.0.0:
+    resolution: {integrity: sha512-MxGmm4vFvz2zZ/NPphdsQxSsAEtHMFSgDLqo6WNaI0w1MLxj1S93cRIjhHCn7Ny7lpNJ6jVEZqhB3F/dqRkFlg==}
+    engines: {node: '>=16'}
     dev: false
 
-  /@wallet-standard/features/1.0.0-rc.0:
-    resolution: {integrity: sha512-4Jo/IPvsLFGnRqTF1P1Tukbae/xiiiV5Gqpf3hxjXhX7wK1hflU2aLMoU2le4P3FRY7Tphj4pkoVcrl/jBm7Xg==}
+  /@wallet-standard/features/1.0.0:
+    resolution: {integrity: sha512-t0Fr+ds2e1L53NoIht8jLAt2pZJYupOouI9ztk4DEXRWZAC+iiPvIrH/fqI2YKmsfvNBRn6hUVsd3UsV3Uw3Sg==}
+    engines: {node: '>=16'}
     dependencies:
-      '@wallet-standard/base': 1.0.0-rc.0
+      '@wallet-standard/base': 1.0.0
     dev: false
 
   /JSONStream/1.3.5:

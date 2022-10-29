@@ -1,9 +1,12 @@
-import type { GlowAdapter, SolanaWindow } from "@glow-xyz/glow-client";
+import type { GlowAdapter } from "@glow-xyz/glow-client";
 import { Network } from "@glow-xyz/glow-client";
 import type {
   SolanaSignAndSendTransactionFeature,
   SolanaSignAndSendTransactionMethod,
   SolanaSignAndSendTransactionOutput,
+  SolanaSignMessageFeature,
+  SolanaSignMessageMethod,
+  SolanaSignMessageOutput,
   SolanaSignTransactionFeature,
   SolanaSignTransactionMethod,
   SolanaSignTransactionOutput,
@@ -18,9 +21,6 @@ import type {
   EventsListeners,
   EventsNames,
   EventsOnMethod,
-  SignMessageFeature,
-  SignMessageMethod,
-  SignMessageOutput,
 } from "@wallet-standard/features";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
@@ -28,8 +28,6 @@ import { GlowWalletAccount } from "./account.js";
 import { icon } from "./icon.js";
 import type { SolanaChain } from "./solana.js";
 import { getNetworkForChain, isSolanaChain, SOLANA_CHAINS } from "./solana.js";
-
-declare const window: SolanaWindow;
 
 export type GlowFeature = {
   "glow:": {
@@ -43,6 +41,7 @@ export class GlowWallet implements Wallet {
   readonly #name = "Glow" as const;
   readonly #icon = icon;
   #account: GlowWalletAccount | null = null;
+  readonly #glow: GlowAdapter;
 
   get version() {
     return this.#version;
@@ -65,7 +64,7 @@ export class GlowWallet implements Wallet {
     EventsFeature &
     SolanaSignAndSendTransactionFeature &
     SolanaSignTransactionFeature &
-    SignMessageFeature &
+    SolanaSignMessageFeature &
     GlowFeature {
     return {
       "standard:connect": {
@@ -90,14 +89,12 @@ export class GlowWallet implements Wallet {
         supportedTransactionVersions: ["legacy", 0],
         signTransaction: this.#signTransaction,
       },
-      "standard:signMessage": {
+      "solana:signMessage": {
         version: "1.0.0",
         signMessage: this.#signMessage,
       },
       "glow:": {
-        get glow() {
-          return window.glow;
-        },
+        glow: this.#glow,
       },
     };
   }
@@ -106,14 +103,16 @@ export class GlowWallet implements Wallet {
     return this.#account ? [this.#account] : [];
   }
 
-  constructor() {
+  constructor(glow: GlowAdapter) {
     if (new.target === GlowWallet) {
       Object.freeze(this);
     }
 
-    window.glow.on("connect", this.#connected, this);
-    window.glow.on("disconnect", this.#disconnected, this);
-    window.glow.on("accountChanged", this.#reconnected, this);
+    this.#glow = glow;
+
+    glow.on("connect", this.#connected, this);
+    glow.on("disconnect", this.#disconnected, this);
+    glow.on("accountChanged", this.#reconnected, this);
 
     this.#connected();
   }
@@ -139,8 +138,8 @@ export class GlowWallet implements Wallet {
   }
 
   #connected = () => {
-    const address = window.glow.address;
-    const publicKey = window.glow.publicKey;
+    const address = this.#glow.address;
+    const publicKey = this.#glow.publicKey;
     if (address && publicKey) {
       const account = this.#account;
       if (!account || account.address !== address) {
@@ -161,7 +160,7 @@ export class GlowWallet implements Wallet {
   };
 
   #reconnected = () => {
-    if (window.glow.address && window.glow.publicKey) {
+    if (this.#glow.address && this.#glow.publicKey) {
       this.#connected();
     } else {
       this.#disconnected();
@@ -170,7 +169,7 @@ export class GlowWallet implements Wallet {
 
   #connect: ConnectMethod = async ({ silent } = {}) => {
     if (!this.#account) {
-      await window.glow.connect(silent ? { onlyIfTrusted: true } : undefined);
+      await this.#glow.connect(silent ? { onlyIfTrusted: true } : undefined);
     }
 
     this.#connected();
@@ -179,7 +178,7 @@ export class GlowWallet implements Wallet {
   };
 
   #disconnect: DisconnectMethod = async () => {
-    await window.glow.disconnect();
+    await this.#glow.disconnect();
   };
 
   #signAndSendTransaction: SolanaSignAndSendTransactionMethod = async (
@@ -202,7 +201,7 @@ export class GlowWallet implements Wallet {
         throw new Error("invalid chain");
       }
 
-      const { signature } = await window.glow.signAndSendTransaction({
+      const { signature } = await this.#glow.signAndSendTransaction({
         transactionBase64: Buffer.from(transaction).toString("base64"),
         network: getNetworkForChain(chain),
         waitForConfirmation: Boolean(commitment),
@@ -235,7 +234,7 @@ export class GlowWallet implements Wallet {
         throw new Error("invalid chain");
       }
 
-      const { signedTransactionBase64 } = await window.glow.signTransaction({
+      const { signedTransactionBase64 } = await this.#glow.signTransaction({
         transactionBase64: Buffer.from(transaction).toString("base64"),
         network: chain ? getNetworkForChain(chain) : Network.Mainnet,
       });
@@ -269,11 +268,12 @@ export class GlowWallet implements Wallet {
         Buffer.from(transaction).toString("base64")
       );
 
-      const { signedTransactionsBase64 } =
-        await window.glow.signAllTransactions({
+      const { signedTransactionsBase64 } = await this.#glow.signAllTransactions(
+        {
           transactionsBase64,
           network: chain ? getNetworkForChain(chain) : Network.Mainnet,
-        });
+        }
+      );
 
       outputs.push(
         ...signedTransactionsBase64.map((signedTransactionBase64) => ({
@@ -287,12 +287,12 @@ export class GlowWallet implements Wallet {
     return outputs;
   };
 
-  #signMessage: SignMessageMethod = async (...inputs) => {
+  #signMessage: SolanaSignMessageMethod = async (...inputs) => {
     if (!this.#account) {
       throw new Error("not connected");
     }
 
-    const outputs: SignMessageOutput[] = [];
+    const outputs: SolanaSignMessageOutput[] = [];
 
     if (inputs.length === 1) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -301,7 +301,7 @@ export class GlowWallet implements Wallet {
         throw new Error("invalid account");
       }
 
-      const { signedMessageBase64 } = await window.glow.signMessage({
+      const { signedMessageBase64 } = await this.#glow.signMessage({
         messageBase64: Buffer.from(message).toString("base64"),
       });
 

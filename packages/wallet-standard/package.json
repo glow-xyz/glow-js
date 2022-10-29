@@ -1,6 +1,6 @@
 {
   "name": "@glow-xyz/wallet-standard",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "sideEffects": false,
   "typings": "dist/types/index.d.ts",
   "exports": {
@@ -25,10 +25,10 @@
     "release": "pnpm build && release-it"
   },
   "dependencies": {
-    "@glow-xyz/glow-client": "^1.4.0",
-    "@solana/wallet-standard-features": "^1.0.0-rc.0",
-    "@wallet-standard/base": "^1.0.0-rc.0",
-    "@wallet-standard/features": "^1.0.0-rc.0",
+    "@glow-xyz/glow-client": "^1.4.1",
+    "@solana/wallet-standard-features": "^1.0.0",
+    "@wallet-standard/base": "^1.0.0",
+    "@wallet-standard/features": "^1.0.0",
     "bs58": "^5.0.0",
     "buffer": "^6.0.3"
   },
