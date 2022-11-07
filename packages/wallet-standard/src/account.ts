@@ -6,8 +6,8 @@ import { SOLANA_CHAINS } from "./solana.js";
 const chains = SOLANA_CHAINS;
 const features = [
   "solana:signAndSendTransaction",
-  "solana:signTransaction",
   "solana:signMessage",
+  "solana:signTransaction",
 ] as const;
 
 export class GlowWalletAccount implements WalletAccount {
