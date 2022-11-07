@@ -7,7 +7,7 @@ const chains = SOLANA_CHAINS;
 const features = [
   "solana:signAndSendTransaction",
   "solana:signTransaction",
-  "standard:signMessage",
+  "solana:signMessage",
 ] as const;
 
 export class GlowWalletAccount implements WalletAccount {
