@@ -22,12 +22,12 @@
   },
   "devDependencies": {
     "@solana/web3.js": "1.63.1",
-    "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
-    "esbuild": "0.15.5",
-    "esbuild-register": "3.3.3",
-    "prettier": "2.7.1",
-    "sass": "1.55.0"
+    "@types/react": "18.0.26",
+    "@types/react-dom": "18.0.9",
+    "esbuild": "0.15.17",
+    "esbuild-register": "3.4.1",
+    "prettier": "2.8.0",
+    "sass": "1.56.1"
   },
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0",
