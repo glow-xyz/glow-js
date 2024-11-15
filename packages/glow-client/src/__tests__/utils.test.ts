@@ -349,7 +349,7 @@ Nonce: 869`;
           data_base64: Buffer.from(message + "errrrrrrrr").toString("base64"),
         },
       ],
-      latestBlockhash: GPublicKey.nullString,
+      recentBlockhash: GPublicKey.nullString,
       feePayer: GPublicKey.nullString,
       signers: [new GKeypair(keypair)],
     });
