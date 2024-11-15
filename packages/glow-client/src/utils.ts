@@ -193,7 +193,7 @@ export const constructSignInTx = ({
         data_base64: Buffer.from(message).toString("base64"),
       },
     ],
-    recentBlockhash: GPublicKey.nullString,
+    latestBlockhash: GPublicKey.nullString,
     feePayer: GPublicKey.nullString,
     signers: signer ? [signer] : undefined,
   });
