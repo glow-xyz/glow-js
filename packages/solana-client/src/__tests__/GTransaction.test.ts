@@ -101,7 +101,7 @@ describe("GTransaction", () => {
           writable: message.isAccountWritable(idx),
         }))
       ).toEqual(gTransaction.accounts);
-      expect(transaction.latestBlockhash).toEqual(gTransaction.latestBlockhash);
+      expect(transaction.recentBlockhash).toEqual(gTransaction.latestBlockhash);
       expect(
         transaction.instructions.map((inst) => ({
           program: inst.programId.toBase58(),
@@ -199,7 +199,7 @@ describe("GTransaction", () => {
     const to = GKeypair.generate();
     const transaction = new Transaction({
       feePayer: from.publicKey as unknown as PublicKey,
-      latestBlockhash: GPublicKey.default.toBase58(),
+      recentBlockhash: GPublicKey.default.toBase58(),
     });
     transaction.add(
       SystemProgram.transfer({
@@ -275,7 +275,7 @@ describe("GTransaction", () => {
     const to = GKeypair.generate();
     const transaction = new Transaction({
       feePayer: from.publicKey as unknown as PublicKey,
-      latestBlockhash: GPublicKey.default.toBase58(),
+      recentBlockhash: GPublicKey.default.toBase58(),
     });
     transaction.add(
       SystemProgram.transfer({
@@ -322,7 +322,7 @@ describe("GTransaction", () => {
 
     const transaction = new Transaction({
       feePayer: from.publicKey as unknown as PublicKey,
-      latestBlockhash: GPublicKey.default.toBase58(),
+      recentBlockhash: GPublicKey.default.toBase58(),
     });
     transaction.add(ix);
 
@@ -362,7 +362,7 @@ describe("GTransaction", () => {
 
     const transaction = new Transaction({
       feePayer: from.publicKey as unknown as PublicKey,
-      latestBlockhash: GPublicKey.default.toBase58(),
+      recentBlockhash: GPublicKey.default.toBase58(),
     });
     transaction.add(ix);
 
@@ -412,7 +412,7 @@ describe("GTransaction", () => {
 
     const transaction = new Transaction({
       feePayer: from.publicKey as unknown as PublicKey,
-      latestBlockhash: GPublicKey.default.toBase58(),
+      recentBlockhash: GPublicKey.default.toBase58(),
     });
     transaction.add(ix);
 
@@ -462,7 +462,7 @@ describe("GTransaction", () => {
     });
 
     const tx = new Transaction({
-      latestBlockhash,
+      recentBlockhash: latestBlockhash,
       feePayer: payer.publicKey as unknown as PublicKey,
     });
     tx.add(ix);
@@ -487,7 +487,7 @@ describe("GTransaction", () => {
       authorizedPubkey: payer.publicKey,
       stakePubkey: stake.publicKey,
     });
-    tx.latestBlockhash = latestBlockhash;
+    tx.recentBlockhash = latestBlockhash;
     tx.feePayer = payer.publicKey;
     const txBuffer = tx.serialize({ verifySignatures: false });
 
@@ -523,7 +523,7 @@ describe("GTransaction", () => {
       lamports: 100,
     });
     const web3Tx = new Transaction({
-      latestBlockhash: blockhash2,
+      recentBlockhash: blockhash2,
       feePayer: payer.publicKey as unknown as PublicKey,
     });
     web3Tx.add(ix);
@@ -558,7 +558,7 @@ describe("GTransaction", () => {
     // We freeze the `gTransaction` object so that we don't accidentally modify it improperly
     expect(() => {
       // @ts-expect-error
-      gtransaction.latestBlockhash = "x";
+      gtransaction.recentBlockhash = "x";
     }).toThrow();
   });
 
