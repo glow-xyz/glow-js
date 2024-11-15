@@ -145,7 +145,7 @@ describe("vTransaction", () => {
     ];
     const messageV0 = new web3.TransactionMessage({
       payerKey: pubkey,
-      recentBlockhash: GPublicKey.nullString,
+      latestBlockhash: GPublicKey.nullString,
       instructions,
     }).compileToV0Message();
     const web3Transaction = new web3.VersionedTransaction(messageV0);

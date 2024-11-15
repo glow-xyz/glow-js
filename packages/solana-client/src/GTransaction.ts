@@ -63,7 +63,7 @@ export namespace GTransaction {
     signature: z.string().nullable(),
     signatures: z.array(SignatureZ),
     accounts: z.array(AccountZ),
-    recentBlockhash: z.string(), // Base58
+    latestBlockhash: z.string(), // Base58
     instructions: z.array(InstructionZ),
     messageBase64: z.string(),
   });
@@ -71,13 +71,13 @@ export namespace GTransaction {
 
   export const create = ({
     instructions,
-    recentBlockhash,
+    latestBlockhash,
     feePayer,
     signers = [],
     suppressInvalidSignerError,
   }: {
     instructions: InstructionFactory[];
-    recentBlockhash: string;
+    latestBlockhash: string;
     feePayer?: string;
     signers?: Array<Signer>;
     suppressInvalidSignerError?: boolean;
@@ -140,14 +140,14 @@ export namespace GTransaction {
     const messageBase64 = constructMessageBase64({
       instructions,
       accounts,
-      recentBlockhash,
+      latestBlockhash,
     });
 
     const gtransaction: GTransaction.GTransaction = {
       signature: null,
       signatures,
       accounts,
-      recentBlockhash,
+      latestBlockhash,
       messageBase64,
       instructions: instructions.map(({ accounts, program, data_base64 }) => ({
         program,
@@ -215,7 +215,7 @@ export namespace GTransaction {
       numReadonlySigned,
       numReadonlyUnsigned,
       numRequiredSigs,
-      recentBlockhash,
+      latestBlockhash,
       instructions: rawInstructions,
       addresses,
     } = TRANSACTION_MESSAGE.parse({ buffer: messageBuffer })!;
@@ -256,7 +256,7 @@ export namespace GTransaction {
       GTransactionZ.parse({
         signature: signatures[0].signature,
         signatures,
-        recentBlockhash,
+        latestBlockhash,
         instructions,
         accounts,
         messageBase64: messageBuffer.toString("base64"),
@@ -352,10 +352,10 @@ export namespace GTransaction {
       signatures,
       accounts,
       instructions,
-      recentBlockhash: blockhash,
+      latestBlockhash: blockhash,
       messageBase64: TRANSACTION_MESSAGE.toBuffer({
         ...messageData,
-        recentBlockhash: blockhash,
+        latestBlockhash: blockhash,
       }).toString("base64"),
     });
   };
@@ -379,7 +379,7 @@ export namespace GTransaction {
         data_base64: ix.data_base64,
         program: ix.program,
       })),
-      recentBlockhash: gtransaction.recentBlockhash,
+      latestBlockhash: gtransaction.latestBlockhash,
       feePayer,
     });
 
@@ -430,11 +430,11 @@ export namespace GTransaction {
 const constructMessageBase64 = ({
   instructions,
   accounts,
-  recentBlockhash,
+  latestBlockhash,
 }: {
   instructions: GTransaction.InstructionFactory[];
   accounts: GTransaction.GTransaction["accounts"];
-  recentBlockhash: string;
+  latestBlockhash: string;
 }): string => {
   const numRequiredSigs = accounts.filter((a) => a.signer).length;
   const numReadOnlySigs = accounts.filter(
@@ -466,7 +466,7 @@ const constructMessageBase64 = ({
 
   const messageBuffer = TRANSACTION_MESSAGE.toBuffer({
     numReadonlySigned: numReadOnlySigs,
-    recentBlockhash,
+    latestBlockhash,
     numReadonlyUnsigned,
     numRequiredSigs,
     instructions: compiledInstructions,
