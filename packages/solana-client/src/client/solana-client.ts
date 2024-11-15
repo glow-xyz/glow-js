@@ -348,11 +348,11 @@ export namespace SolanaClient {
     return output;
   };
 
-  export const getRecentBlockhash = async ({
+  export const getLatestBlockhash = async ({
     rpcUrl,
   }: RequestConfig): Promise<string> => {
     const resp = await makeRpcRequest({
-      method: "getRecentBlockhash",
+      method: "getLatestBlockhash",
       rpcUrl: rpcUrl,
       params: [{ commitment: "finalized" }],
       zod: z.object({
@@ -361,9 +361,6 @@ export namespace SolanaClient {
         }),
         value: z.object({
           blockhash: z.string(),
-          feeCalculator: z.object({
-            lamportsPerSignature: z.number(),
-          }),
         }),
       }),
     });
