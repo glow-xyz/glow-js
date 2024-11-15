@@ -1,6 +1,6 @@
 {
   "name": "@glow-xyz/glow-react",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "module": "dist/index.cjs.js",
   "typings": "dist/index.d.ts",
@@ -16,14 +16,14 @@
     "release": "pnpm build && release-it"
   },
   "dependencies": {
-    "@glow-xyz/glow-client": "latest",
-    "@glow-xyz/solana-client": "latest",
+    "@glow-xyz/glow-client": "^1.5.0",
+    "@glow-xyz/solana-client": "^1.8.0",
     "classnames": "2.3.2"
   },
   "devDependencies": {
-    "@solana/web3.js": "1.63.1",
-    "@types/react": "18.0.26",
-    "@types/react-dom": "18.0.9",
+    "@solana/web3.js": "1.95.4",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
     "esbuild": "0.15.17",
     "esbuild-register": "3.4.1",
     "prettier": "2.8.0",

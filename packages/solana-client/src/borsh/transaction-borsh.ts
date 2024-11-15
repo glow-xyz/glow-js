@@ -118,7 +118,7 @@ export const TRANSACTION_MESSAGE = new FixableGlowBorsh<{
   numReadonlySigned: number;
   numReadonlyUnsigned: number;
   addresses: Solana.Address[];
-  recentBlockhash: string;
+  latestBlockhash: string;
   instructions: InstructionRawType[];
 }>({
   fields: [
@@ -129,7 +129,7 @@ export const TRANSACTION_MESSAGE = new FixableGlowBorsh<{
       "addresses",
       FixableGlowBorsh.compactArray({ itemCoder: GlowBorsh.address }),
     ],
-    ["recentBlockhash", GlowBorsh.address],
+    ["latestBlockhash", GlowBorsh.address],
     [
       "instructions",
       FixableGlowBorsh.compactArrayFixable({

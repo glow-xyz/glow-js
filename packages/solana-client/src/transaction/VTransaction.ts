@@ -71,8 +71,8 @@ export class VTransaction implements TransactionInterface {
     return this.accounts.map((account) => account.address);
   }
 
-  get recentBlockhash(): string {
-    return this.#message.recentBlockhash;
+  get latestBlockhash(): string {
+    return this.#message.latestBlockhash;
   }
 
   toBuffer(): Buffer {
@@ -209,7 +209,7 @@ type V0Message = {
   numReadonlySigned: number;
   numReadonlyUnsigned: number;
   addresses: Solana.Address[];
-  recentBlockhash: string;
+  latestBlockhash: string;
   instructions: InstructionRawType[];
   addressTableLookups: AddressTableLookup[];
 };
@@ -226,7 +226,7 @@ export const V0TransactionMessageFormat = new FixableGlowBorsh<V0Message>({
       "addresses",
       FixableGlowBorsh.compactArray({ itemCoder: GlowBorsh.address }),
     ],
-    ["recentBlockhash", GlowBorsh.address],
+    ["latestBlockhash", GlowBorsh.address],
     [
       "instructions",
       FixableGlowBorsh.compactArrayFixable({

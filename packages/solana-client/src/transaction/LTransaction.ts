@@ -77,8 +77,8 @@ export class LTransaction implements TransactionInterface {
     return this.#signatureInfos[0].address;
   }
 
-  get recentBlockhash(): string {
-    return this.#message.recentBlockhash;
+  get latestBlockhash(): string {
+    return this.#message.latestBlockhash;
   }
 
   toBuffer(): Buffer {
@@ -168,7 +168,7 @@ type LegacyTransactionMessage = {
   numReadonlySigned: number;
   numReadonlyUnsigned: number;
   addresses: Solana.Address[];
-  recentBlockhash: string;
+  latestBlockhash: string;
   instructions: InstructionRawType[];
 };
 
@@ -182,7 +182,7 @@ export const LegacyTransactionMessageFormat =
         "addresses",
         FixableGlowBorsh.compactArray({ itemCoder: GlowBorsh.address }),
       ],
-      ["recentBlockhash", GlowBorsh.address],
+      ["latestBlockhash", GlowBorsh.address],
       [
         "instructions",
         FixableGlowBorsh.compactArrayFixable({
