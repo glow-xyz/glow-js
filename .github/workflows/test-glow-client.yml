@@ -16,9 +16,7 @@ jobs:
         with:
           fetch-depth: 1
       - name: Install PNPM and dependencies
-        run: npm i pnpm@9.12.1 -g && pnpm install --filter @glow-xyz/solana-client... --frozen-lockfile
-      - name: Install PNPM and dependencies
-        run: npm i pnpm@9.12.1 -g && pnpm install --filter @glow-xyz/gloe-client... --frozen-lockfile
+        run: npm i pnpm@9.12.1 -g && pnpm install --filter @glow-xyz/solana-client... --filter @glow-xyz/glow-client... --frozen-lockfile
       - name: Build
         run: pnpm --filter @glow-xyz/solana-client run build
       - name: Lint
