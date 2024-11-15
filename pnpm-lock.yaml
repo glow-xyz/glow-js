@@ -37,13 +37,13 @@ importers:
         version: 2.3.2
       next:
         specifier: 12.3.1
-        version: 12.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.56.1)
+        version: 12.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.56.1)
       react:
-        specifier: 18.2.0
-        version: 18.2.0
+        specifier: 18.3.1
+        version: 18.3.1
       react-dom:
-        specifier: 18.2.0
-        version: 18.2.0(react@18.2.0)
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
     devDependencies:
       '@types/node':
         specifier: ^18.11.10
@@ -52,11 +52,11 @@ importers:
         specifier: ^2.6.2
         version: 2.6.12
       '@types/react':
-        specifier: ^18.0.26
-        version: 18.0.26
+        specifier: ^18.3.12
+        version: 18.3.12
       '@types/react-dom':
-        specifier: ^18.0.9
-        version: 18.0.9
+        specifier: ^18.3.1
+        version: 18.3.1
       eslint:
         specifier: ^8.29.0
         version: 8.29.0
@@ -73,7 +73,7 @@ importers:
   packages/glow-client:
     dependencies:
       '@glow-xyz/solana-client':
-        specifier: 1.8.x
+        specifier: 1.8.0
         version: 1.8.0
       bs58:
         specifier: ^5.0.0
@@ -137,11 +137,11 @@ importers:
   packages/glow-react:
     dependencies:
       '@glow-xyz/glow-client':
-        specifier: latest
-        version: 1.4.2
+        specifier: ^1.5.0
+        version: 1.5.0
       '@glow-xyz/solana-client':
-        specifier: latest
-        version: 1.7.9
+        specifier: ^1.8.0
+        version: 1.8.0
       classnames:
         specifier: 2.3.2
         version: 2.3.2
@@ -154,13 +154,13 @@ importers:
     devDependencies:
       '@solana/web3.js':
         specifier: 1.95.4
-        version: 1.95.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+        version: 1.95.4(bufferutil@4.0.8)(utf-8-validate@6.0.5)
       '@types/react':
-        specifier: 18.0.26
-        version: 18.0.26
+        specifier: 18.3.12
+        version: 18.3.12
       '@types/react-dom':
-        specifier: 18.0.9
-        version: 18.0.9
+        specifier: 18.3.1
+        version: 18.3.1
       esbuild:
         specifier: 0.15.17
         version: 0.15.17
@@ -221,7 +221,7 @@ importers:
     devDependencies:
       '@solana/web3.js':
         specifier: ^1.63.1
-        version: 1.95.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+        version: 1.95.4(bufferutil@4.0.8)(utf-8-validate@6.0.5)
       '@types/bn.js':
         specifier: 5.1.1
         version: 5.1.1
@@ -268,8 +268,8 @@ importers:
   packages/wallet-standard:
     dependencies:
       '@glow-xyz/glow-client':
-        specifier: ^1.4.1
-        version: 1.4.2
+        specifier: ^1.5.0
+        version: 1.5.0
       '@solana/wallet-standard-features':
         specifier: ^1.0.0
         version: 1.2.0
@@ -517,11 +517,8 @@ packages:
   '@glow-xyz/beet@0.6.0':
     resolution: {integrity: sha512-rf1Bbxw1ahzCzpBY4wHZh88KFhxT166apiC3eHYPRHGJFxNBbY9Qu+bCgWVP40LsN60igFhWo67Gb8su6LeJlA==}
 
-  '@glow-xyz/glow-client@1.4.2':
-    resolution: {integrity: sha512-Eb6kFw6VrrG6QngplHRg9YkpDIxg5Ml4kbThvOKM4fdTV26xPA6g8k4eUTeYOiLkKUwQuqdmDraYmOdeRdkX/A==}
-
-  '@glow-xyz/solana-client@1.7.9':
-    resolution: {integrity: sha512-3QU0tNbNDjycRypylksEcubBd5ienxtLG/7nrZrYIDLgYfuiTAy1+483mV6V1K8I2eJDAqN3fSnKGPAXr9mK/g==}
+  '@glow-xyz/glow-client@1.5.0':
+    resolution: {integrity: sha512-N2SkfgiAO8PcSqH8vMr7OygvNQsesPpZygJ8M/6cLf7ySjySqG/lkAfVo3Q7pVIpn9F1OEKmbAY6svEl7QtzOw==}
 
   '@glow-xyz/solana-client@1.8.0':
     resolution: {integrity: sha512-8BhBg68FedB9UuxuJvYr7ZYOOcfdHtMeOTyBjEUcfo8JNopgZUOaXaODLArnuZo5NmxPTsAybGdsUXob1MI+ig==}
@@ -924,14 +921,11 @@ packages:
   '@types/prop-types@15.7.13':
     resolution: {integrity: sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==}
 
-  '@types/react-dom@18.0.9':
-    resolution: {integrity: sha512-qnVvHxASt/H7i+XG1U1xMiY5t+IHcPGUK7TDMDzom08xa7e86eCeKOiLZezwCKVxJn6NEiiy2ekgX8aQssjIKg==}
+  '@types/react-dom@18.3.1':
+    resolution: {integrity: sha512-qW1Mfv8taImTthu4KoXgDfLuk4bydU6Q/TkADnDWWHwi4NX4BR+LWfTp2sVmTqRrsHvyDDTelgelxJ+SsejKKQ==}
 
-  '@types/react@18.0.26':
-    resolution: {integrity: sha512-hCR3PJQsAIXyxhTNSiDFY//LhnMZWpNNr5etoCqx/iUfGc5gXWtQR2Phl908jVR6uPXacojQWTg4qRpkxTuGug==}
-
-  '@types/scheduler@0.23.0':
-    resolution: {integrity: sha512-YIoDCTH3Af6XM5VuwGG/QL/CJqga1Zm3NkU3HZ4ZHK2fRMPYP1VczsTUqtsf43PH/iJNVlPHAo2oWX7BSdB2Hw==}
+  '@types/react@18.3.12':
+    resolution: {integrity: sha512-D2wOSq/d6Agt28q7rSI3jhU7G6aiuzljDGZ2hTZHIkrTLUI+AF3WMeKkEZ9nN2fkBAlcktT6vcZjDFiIhMYEQw==}
 
   '@types/semver@7.5.8':
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
@@ -3185,6 +3179,11 @@ packages:
     peerDependencies:
       react: ^18.2.0
 
+  react-dom@18.3.1:
+    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
+    peerDependencies:
+      react: ^18.3.1
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -3193,6 +3192,10 @@ packages:
 
   react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
+    engines: {node: '>=0.10.0'}
+
+  react@18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
     engines: {node: '>=0.10.0'}
 
   readable-stream@1.1.14:
@@ -3706,6 +3709,10 @@ packages:
     resolution: {integrity: sha512-Z6czzLq4u8fPOyx7TU6X3dvUZVvoJmxSQ+IcrlmagKhilxlhZgxPK6C5Jqbkw1IDUmFTM+cz9QDnnLTwDz/2gQ==}
     engines: {node: '>=6.14.2'}
 
+  utf-8-validate@6.0.5:
+    resolution: {integrity: sha512-EYZR+OpIXp9Y1eG1iueg8KRsY8TuT8VNgnanZ0uA3STqhHQTLwbl+WX76/9X5OY12yQubymBpaBSmMPkSTQcKA==}
+    engines: {node: '>=6.14.2'}
+
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -4081,33 +4088,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@glow-xyz/glow-client@1.4.2':
+  '@glow-xyz/glow-client@1.5.0':
     dependencies:
-      '@glow-xyz/solana-client': 1.7.9
+      '@glow-xyz/solana-client': 1.8.0
       bs58: 5.0.0
       buffer: 6.0.3
       eventemitter3: 5.0.1
       luxon: 3.5.0
-      tweetnacl: 1.0.3
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  '@glow-xyz/solana-client@1.7.9':
-    dependencies:
-      '@glow-xyz/beet': 0.6.0
-      '@noble/ed25519': 1.7.3
-      '@noble/hashes': 1.5.0
-      axios: 0.27.2
-      bignumber.js: 9.1.2
-      bn.js: 5.2.1
-      bs58: 5.0.0
-      buffer: 6.0.3
-      js-sha256: 0.9.0
-      lodash: 4.17.21
-      luxon: 3.5.0
-      p-limit: 3.1.0
       tweetnacl: 1.0.3
       zod: 3.23.8
     transitivePeerDependencies:
@@ -4546,6 +4533,28 @@ snapshots:
       - encoding
       - utf-8-validate
 
+  '@solana/web3.js@1.95.4(bufferutil@4.0.8)(utf-8-validate@6.0.5)':
+    dependencies:
+      '@babel/runtime': 7.26.0
+      '@noble/curves': 1.6.0
+      '@noble/hashes': 1.5.0
+      '@solana/buffer-layout': 4.0.1
+      agentkeepalive: 4.5.0
+      bigint-buffer: 1.1.5
+      bn.js: 5.2.1
+      borsh: 0.7.0
+      bs58: 4.0.1
+      buffer: 6.0.3
+      fast-stable-stringify: 1.0.0
+      jayson: 4.1.2(bufferutil@4.0.8)(utf-8-validate@6.0.5)
+      node-fetch: 2.7.0
+      rpc-websockets: 9.0.4
+      superstruct: 2.0.2
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - utf-8-validate
+
   '@swc/helpers@0.4.11':
     dependencies:
       tslib: 2.8.1
@@ -4635,17 +4644,14 @@ snapshots:
 
   '@types/prop-types@15.7.13': {}
 
-  '@types/react-dom@18.0.9':
+  '@types/react-dom@18.3.1':
     dependencies:
-      '@types/react': 18.0.26
+      '@types/react': 18.3.12
 
-  '@types/react@18.0.26':
+  '@types/react@18.3.12':
     dependencies:
       '@types/prop-types': 15.7.13
-      '@types/scheduler': 0.23.0
       csstype: 3.1.3
-
-  '@types/scheduler@0.23.0': {}
 
   '@types/semver@7.5.8': {}
 
@@ -6428,6 +6434,10 @@ snapshots:
     dependencies:
       ws: 7.5.10(bufferutil@4.0.8)(utf-8-validate@5.0.10)
 
+  isomorphic-ws@4.0.1(ws@7.5.10(bufferutil@4.0.8)(utf-8-validate@6.0.5)):
+    dependencies:
+      ws: 7.5.10(bufferutil@4.0.8)(utf-8-validate@6.0.5)
+
   istanbul-lib-coverage@3.2.2: {}
 
   istanbul-lib-instrument@5.2.1:
@@ -6498,6 +6508,24 @@ snapshots:
       json-stringify-safe: 5.0.1
       uuid: 8.3.2
       ws: 7.5.10(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  jayson@4.1.2(bufferutil@4.0.8)(utf-8-validate@6.0.5):
+    dependencies:
+      '@types/connect': 3.4.38
+      '@types/node': 12.20.55
+      '@types/ws': 7.4.7
+      JSONStream: 1.3.5
+      commander: 2.20.3
+      delay: 5.0.0
+      es6-promisify: 5.0.0
+      eyes: 0.1.8
+      isomorphic-ws: 4.0.1(ws@7.5.10(bufferutil@4.0.8)(utf-8-validate@6.0.5))
+      json-stringify-safe: 5.0.1
+      uuid: 8.3.2
+      ws: 7.5.10(bufferutil@4.0.8)(utf-8-validate@6.0.5)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -7041,16 +7069,16 @@ snapshots:
     dependencies:
       type-fest: 2.19.0
 
-  next@12.3.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.56.1):
+  next@12.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.56.1):
     dependencies:
       '@next/env': 12.3.1
       '@swc/helpers': 0.4.11
       caniuse-lite: 1.0.30001680
       postcss: 8.4.14
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.0.7(react@18.2.0)
-      use-sync-external-store: 1.2.0(react@18.2.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      styled-jsx: 5.0.7(react@18.3.1)
+      use-sync-external-store: 1.2.0(react@18.3.1)
     optionalDependencies:
       '@next/swc-android-arm-eabi': 12.3.1
       '@next/swc-android-arm64': 12.3.1
@@ -7377,11 +7405,21 @@ snapshots:
       react: 18.2.0
       scheduler: 0.23.2
 
+  react-dom@18.3.1(react@18.3.1):
+    dependencies:
+      loose-envify: 1.4.0
+      react: 18.3.1
+      scheduler: 0.23.2
+
   react-is@16.13.1: {}
 
   react-is@18.3.1: {}
 
   react@18.2.0:
+    dependencies:
+      loose-envify: 1.4.0
+
+  react@18.3.1:
     dependencies:
       loose-envify: 1.4.0
 
@@ -7746,9 +7784,9 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  styled-jsx@5.0.7(react@18.2.0):
+  styled-jsx@5.0.7(react@18.3.1):
     dependencies:
-      react: 18.2.0
+      react: 18.3.1
 
   superstruct@2.0.2: {}
 
@@ -7950,11 +7988,16 @@ snapshots:
 
   url-join@5.0.0: {}
 
-  use-sync-external-store@1.2.0(react@18.2.0):
+  use-sync-external-store@1.2.0(react@18.3.1):
     dependencies:
-      react: 18.2.0
+      react: 18.3.1
 
   utf-8-validate@5.0.10:
+    dependencies:
+      node-gyp-build: 4.8.3
+    optional: true
+
+  utf-8-validate@6.0.5:
     dependencies:
       node-gyp-build: 4.8.3
     optional: true
@@ -8075,6 +8118,11 @@ snapshots:
     optionalDependencies:
       bufferutil: 4.0.8
       utf-8-validate: 5.0.10
+
+  ws@7.5.10(bufferutil@4.0.8)(utf-8-validate@6.0.5):
+    optionalDependencies:
+      bufferutil: 4.0.8
+      utf-8-validate: 6.0.5
 
   ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@5.0.10):
     optionalDependencies:
