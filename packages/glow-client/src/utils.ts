@@ -229,7 +229,6 @@ export const verifySignature = ({
   }
 
   if (!sign.detached.verify(messageUint, signatureUint, addressUint)) {
-    console.error("Problem verifying signature...");
     throw new Error("The Solana signature is invalid.");
   }
 };
