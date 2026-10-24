@@ -4,6 +4,7 @@ import { SolanaRpcTypes } from "../client/rpc-types";
 import { LTransaction } from "./LTransaction";
 import { getTransactionVersion } from "./transaction-utils";
 import { TransactionInterface } from "./TransactionInterface";
+import { V1Transaction } from "./V1Transaction";
 import { VTransaction } from "./VTransaction";
 
 /**
@@ -27,6 +28,10 @@ export namespace XTransaction {
 
     if (version === 0) {
       return new VTransaction({ base64, loadedAddresses });
+    }
+
+    if (version === 1) {
+      return new V1Transaction({ base64 });
     }
 
     throw new Error("Invalid transaction format.");

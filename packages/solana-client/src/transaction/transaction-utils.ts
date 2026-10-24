@@ -5,6 +5,7 @@ import { Base58, Base64, Solana } from "../base-types";
 import { GlowBorshTypes } from "../borsh";
 import { GKeypair } from "../GKeypair";
 import { LegacyTransactionMessageFormat } from "./LTransaction";
+import { parseV1Transaction, V1_VERSION_BYTE } from "./V1Transaction";
 import { V0TransactionMessageFormat } from "./VTransaction";
 
 const VERSION_PREFIX_MASK = 0x7f;
@@ -20,6 +21,20 @@ export const getTransactionVersion = ({
   messageBuffer: Buffer;
   addresses: Solana.Address[];
 } => {
+  // A legacy or v0 transaction starts with its signature count, which can't be
+  // 0x81 since that would mean at least 129 signatures
+  if (buffer[0] === V1_VERSION_BYTE) {
+    const { message, messageBuffer, signatures } = parseV1Transaction({
+      buffer,
+    });
+    return {
+      version: 1,
+      signatures,
+      messageBuffer,
+      addresses: message.addresses,
+    };
+  }
+
   const signaturesCoder =
     GlowBorshTypes.transactionSignaturesSection.toFixedFromData(buffer, 0);
   const signatures = signaturesCoder.read(buffer, 0);
@@ -75,10 +90,9 @@ export const signXTransaction = ({
   signed_transaction: Buffer;
 } => {
   const txBuffer = Buffer.from(base64, "base64");
-  const signaturesCoder =
-    GlowBorshTypes.transactionSignaturesSection.toFixedFromData(txBuffer, 0);
 
   const {
+    version,
     messageBuffer,
     addresses,
     signatures: oldSignatures,
@@ -100,6 +114,17 @@ export const signXTransaction = ({
     return sig;
   });
 
+  if (version === 1) {
+    // v1 transactions put the signatures after the message
+    const signed_transaction = Buffer.concat([
+      messageBuffer,
+      ...newSignatures.map((sig) => Buffer.from(bs58.decode(sig))),
+    ]);
+    return { signature, signed_transaction };
+  }
+
+  const signaturesCoder =
+    GlowBorshTypes.transactionSignaturesSection.toFixedFromData(txBuffer, 0);
   const signed_transaction = Buffer.alloc(txBuffer.byteLength);
   signaturesCoder.write(signed_transaction, 0, newSignatures);
   messageBuffer.copy(signed_transaction, signaturesCoder.byteSize);

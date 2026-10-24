@@ -13,5 +13,6 @@ export * from "./transaction/AddressLookupTable";
 export * from "./transaction/LTransaction";
 export * from "./transaction/transaction-utils";
 export * from "./transaction/TransactionInterface";
+export * from "./transaction/V1Transaction";
 export * from "./transaction/VTransaction";
 export * from "./transaction/XTransaction";
