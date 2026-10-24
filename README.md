@@ -32,3 +32,13 @@ bun run test    # run tests
 bun run lint    # oxlint
 bun fmt         # format
 ```
+
+### Releasing
+
+Releases are PRs that bump versions. In each package to release:
+
+```sh
+cd packages/solana-client && bun pm version minor --no-git-tag-version
+```
+
+Bump dependents too if they need the new version (e.g. `glow-client` pins `solana-client` exactly). After merge, `.github/workflows/release.yml` publishes every package whose version isn't on npm yet (via npm trusted publishing, no token), tags it `<package>-v<version>`, and creates a GitHub release. Run the workflow manually for a dry run.

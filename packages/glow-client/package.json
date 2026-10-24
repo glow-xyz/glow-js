@@ -16,8 +16,7 @@
   "scripts": {
     "tsc": "tsc --noEmit",
     "test": "bun test src",
-    "build": "rm -rf dist && tsc -p tsconfig.build.json",
-    "release": "bun run build && release-it"
+    "build": "rm -rf dist && tsc -p tsconfig.build.json"
   },
   "dependencies": {
     "@glow-xyz/solana-client": "1.8.0",

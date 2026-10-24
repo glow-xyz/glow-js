@@ -1,0 +1,41 @@
+name: Release
+
+# Publishes any package whose version was bumped. See scripts/release.ts.
+on:
+  push:
+    branches: [master]
+    paths: ["packages/*/package.json"]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only print what would be released"
+        type: boolean
+        default: true
+
+concurrency: release
+
+permissions:
+  contents: write # push tags, create GitHub releases
+  id-token: write # npm trusted publishing (no npm token needed)
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # tags, for release notes
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      # Trusted publishing needs npm >= 11.5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: bun run test
+      - run: bun scripts/release.ts ${{ inputs.dry_run && '--dry-run' || '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}

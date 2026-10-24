@@ -13,8 +13,7 @@
   "scripts": {
     "build": "bun run build:js && npm run build:css",
     "build:js": "tsc",
-    "build:css": "sass src/styles/index.scss:dist/styles.css",
-    "release": "bun run build && release-it"
+    "build:css": "sass src/styles/index.scss:dist/styles.css"
   },
   "dependencies": {
     "@glow-xyz/glow-client": "^1.5.0",

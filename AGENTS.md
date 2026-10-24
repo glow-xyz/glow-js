@@ -31,4 +31,13 @@ CI runs `bun fmt --check`, lint, build, tsc, and test.
 - Tests live in `src/**/__tests__/*.test.ts` and import from `bun:test`. They are excluded from the build and from published files.
 - Packages ship CJS (and ESM for `solana-client`/`wallet-standard`); don't change module output without a major version bump.
 - Avoid adding runtime dependencies — these are libraries other people install.
-- Each package is released separately with `bun run release` (release-it) from its directory.
+
+## Releasing
+
+Releases are PRs that bump versions. In each package to release:
+
+```sh
+cd packages/solana-client && bun pm version minor --no-git-tag-version
+```
+
+Bump dependents too if they need the new version (e.g. `glow-client` pins `solana-client` exactly). After merge, `.github/workflows/release.yml` publishes every package whose version isn't on npm yet (via npm trusted publishing, no token), tags it `<package>-v<version>`, and creates a GitHub release. Run the workflow manually for a dry run.

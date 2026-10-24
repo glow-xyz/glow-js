@@ -23,8 +23,7 @@
   "scripts": {
     "tsc": "tsc --noEmit",
     "test": "bun test src",
-    "build": "rm -rf dist && tsc -p tsconfig.build.json && tsc -p tsconfig.esm.json",
-    "release": "bun run build && release-it"
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && tsc -p tsconfig.esm.json"
   },
   "dependencies": {
     "@glow-xyz/beet": "0.6.0",
