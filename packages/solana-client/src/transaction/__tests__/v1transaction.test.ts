@@ -190,6 +190,42 @@ describe("v1 parsing", () => {
     });
   });
 
+  test.each([BigInt(0), BigInt(Number.MAX_SAFE_INTEGER)])(
+    "reads a safe priority fee of %s exactly",
+    (priorityFee) => {
+      const configValues = Buffer.alloc(8);
+      configValues.writeBigUInt64LE(priorityFee);
+      const buffer = buildV1Transaction({ configMask: 0b11, configValues });
+      const tx = new V1Transaction({ base64: buffer.toString("base64") });
+
+      expect(tx.config.priorityFee).toBe(Number(priorityFee));
+      expect(tx.toBuffer()).toEqual(buffer);
+    },
+  );
+
+  test.each([
+    BigInt(Number.MAX_SAFE_INTEGER) + BigInt(1),
+    BigInt(Number.MAX_SAFE_INTEGER) + BigInt(2),
+    BigInt("18446744073709551615"),
+  ])("rejects an unsafe priority fee of %s", (priorityFee) => {
+    const configValues = Buffer.alloc(8);
+    configValues.writeBigUInt64LE(priorityFee);
+    const base64 = buildV1Transaction({
+      configMask: 0b11,
+      configValues,
+    }).toString("base64");
+
+    expect(() => new V1Transaction({ base64 })).toThrow(
+      "priority fee exceeds Number.MAX_SAFE_INTEGER",
+    );
+    expect(() => XTransaction.parse({ base64, loadedAddresses: null })).toThrow(
+      "priority fee exceeds Number.MAX_SAFE_INTEGER",
+    );
+    expect(() =>
+      signXTransaction({ base64, signer: GKeypair.generate() }),
+    ).toThrow("priority fee exceeds Number.MAX_SAFE_INTEGER");
+  });
+
   test("reads instruction data longer than 255 bytes", () => {
     const data = Array.from({ length: 300 }, (_, i) => i % 256);
     const tx = new V1Transaction({

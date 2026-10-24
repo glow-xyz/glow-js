@@ -291,8 +291,13 @@ const parseConfigValues = ({
     }
 
     if (bit === 0) {
-      // Lamport totals fit well within Number.MAX_SAFE_INTEGER
-      config.priorityFee = Number(take(8).readBigUInt64LE(0));
+      const priorityFee = take(8).readBigUInt64LE(0);
+      if (priorityFee > BigInt(Number.MAX_SAFE_INTEGER)) {
+        throw new Error(
+          "Cannot parse v1 transaction: priority fee exceeds Number.MAX_SAFE_INTEGER.",
+        );
+      }
+      config.priorityFee = Number(priorityFee);
       bit++;
     } else if (bit === 2) {
       config.computeUnitLimit = take(4).readUInt32LE(0);
