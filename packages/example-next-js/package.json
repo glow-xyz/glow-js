@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "bun run --cwd ../.. build && next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@glow-xyz/glow-client": "1.5.x",
@@ -23,8 +22,6 @@
     "@types/node-fetch": "^2.6.2",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
-    "eslint": "^8.29.0",
-    "eslint-config-next": "^13.0.6",
     "sass": "^1.56.1",
     "typescript": "^5.6.3"
   }

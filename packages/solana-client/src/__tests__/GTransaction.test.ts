@@ -558,7 +558,7 @@ describe("GTransaction", () => {
 
     // We freeze the `gTransaction` object so that we don't accidentally modify it improperly
     expect(() => {
-      // @ts-expect-error
+      // @ts-expect-error: recentBlockhash is not assignable
       gtransaction.recentBlockhash = "x";
     }).toThrow();
   });

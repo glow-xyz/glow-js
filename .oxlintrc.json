@@ -1,0 +1,98 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  // Rules should be "error" or "off", never "warn". Warnings are easy to
+  // ignore and pile up — if a rule is worth having, it should block.
+  "plugins": ["typescript", "react", "import"],
+  "env": {
+    "builtin": true,
+    "browser": true,
+    "node": true
+  },
+  "ignorePatterns": ["**/node_modules/*", "**/dist/*", "**/.next/*"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "error"
+  },
+  "rules": {
+    "no-underscore-dangle": "off",
+    // We intentionally do sequential awaits in loops (rate-limited RPC calls)
+    "no-await-in-loop": "off",
+    // `new GPublicKey(...)` is used to validate input
+    "no-new": "off",
+    // `offset`, `cursor` etc. are commonly reused names in nested scopes
+    "no-shadow": "off",
+    "react/jsx-no-constructed-context-values": "off",
+    // Moving functions to outer scope is a style choice, not a bug
+    "unicorn/consistent-function-scoping": "off",
+    // React 17+ doesn't require React in scope for JSX
+    "react/react-in-jsx-scope": "off",
+    // We use unassigned imports for side effects (e.g., CSS, polyfills)
+    "import/no-unassigned-import": "off",
+    "import/no-named-as-default": "off",
+    "import/no-named-as-default-member": "off",
+    "import/default": "off",
+    "import/namespace": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "none",
+        "destructuredArrayIgnorePattern": "^_",
+        "ignoreRestSiblings": true,
+        "varsIgnorePattern": "^_",
+        "fix": {
+          "imports": "safe-fix"
+        }
+      }
+    ],
+    "no-fallthrough": "error",
+    "no-self-compare": "error",
+    "no-template-curly-in-string": "error",
+    "no-return-assign": "error",
+    "no-new-wrappers": "error",
+    "import/no-self-import": "error",
+    "@typescript-eslint/ban-ts-comment": "error",
+    "@typescript-eslint/no-confusing-non-null-assertion": "error",
+    "react/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "array-callback-return": "error",
+    "no-throw-literal": "error",
+    "curly": "error",
+    "no-restricted-globals": ["error", "name", "event", "origin", "status"],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "lodash",
+            "message": "Import the method directly (lodash/chunk) to keep bundles small."
+          }
+        ]
+      }
+    ],
+    "prefer-const": ["error", { "destructuring": "all" }]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+        "no-var": "error",
+        "prefer-rest-params": "error",
+        "prefer-spread": "error"
+      }
+    },
+    {
+      // The ESM build is consumed directly, so relative imports need `.js`
+      "files": ["packages/wallet-standard/**"],
+      "rules": {
+        "@typescript-eslint/consistent-type-imports": "error",
+        "import/extensions": ["error", "always", { "ignorePackages": true }]
+      }
+    },
+    {
+      "files": ["packages/example-next-js/**"],
+      "plugins": ["nextjs"]
+    }
+  ]
+}

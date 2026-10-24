@@ -15,9 +15,7 @@ describe("vTransaction", () => {
       base64: vTransaction5j9.transaction[0],
       loadedAddresses: null,
     });
-    expect((async () => {
-      vTransaction.instructions;
-    })()).rejects.toThrow();
+    expect(() => vTransaction.instructions).toThrow();
   });
 
   test("vTransaction5j9", () => {

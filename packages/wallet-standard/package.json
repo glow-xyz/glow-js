@@ -20,8 +20,6 @@
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
     "tsc": "tsc --noEmit",
-    "fmt": "prettier --write '{*,**/*}.{ts,tsx,js,jsx,json}'",
-    "lint": "eslint . --ext ts --ext tsx --quiet",
     "release": "bun run build && release-it"
   },
   "dependencies": {
@@ -34,13 +32,6 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.10",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
-    "eslint": "8.29.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-require-extensions": "^0.1.1",
-    "prettier": "^2.8.0",
     "typescript": "^5.6.3"
   }
 }

@@ -11,7 +11,7 @@ const SIGN_IN_REGEX_STR =
 
         Domain: (?<domain>[A-Za-z0-9.\\-]+)
         Requested At: (?<requestedAt>.+)
-        Nonce: (?<nonce>[A-Za-z0-9\-\.]+)$`
+        Nonce: (?<nonce>[A-Za-z0-9.\\-]+)$`
     .split("\n")
     .map((s) => s.trim())
     .join("\n");

@@ -877,9 +877,6 @@ const makeRpcRequest = async <Response>({
         reason: parseResult.error,
       },
     });
-  } catch (error) {
-    // event.add({ isError: true });
-    throw error;
   } finally {
     // Honeycomb after
     // const endHr = process.hrtime.bigint();

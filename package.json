@@ -7,12 +7,14 @@
   ],
   "scripts": {
     "build": "bun run --filter '*' --filter '!@glow-xyz/example-next-js' build",
-    "lint": "bun run --filter '*' lint",
+    "lint": "oxlint",
     "test": "bun run --filter '*' test",
-    "tsc": "bun run --filter '*' tsc"
+    "tsc": "bun run --filter '*' tsc",
+    "fmt": "bun fmt",
+    "fmt:check": "bun fmt --check"
   },
   "devDependencies": {
-    "prettier": "2.8.0",
+    "oxlint": "1.83.0",
     "release-it": "15.5.1",
     "typescript": "5.6.3"
   }

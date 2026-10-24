@@ -50,7 +50,7 @@ export class GlowClient extends EventEmitter {
     });
   }
 
-  private emitUpdate(reason: string) {
+  private emitUpdate(_reason: string) {
     // TODO: think about how we should define event
     this.emit("update");
   }
