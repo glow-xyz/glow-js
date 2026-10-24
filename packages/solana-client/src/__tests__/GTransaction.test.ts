@@ -1,3 +1,4 @@
+import { describe, expect, test } from "bun:test";
 import {
   Keypair,
   PublicKey,
@@ -88,7 +89,7 @@ describe("GTransaction", () => {
 
       expect(
         transaction.signatures.map((sig) => ({
-          signature: bs58.encode(sig.signature!),
+          signature: bs58.encode(sig.signature!) as string | null,
           address: sig.publicKey.toBase58(),
         }))
       ).toEqual(gTransaction.signatures);

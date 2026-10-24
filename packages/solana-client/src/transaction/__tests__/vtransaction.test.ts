@@ -1,3 +1,4 @@
+import { describe, expect, test } from "bun:test";
 import zip from "lodash/zip";
 import { Buffer } from "buffer";
 import { GKeypair } from "../../GKeypair";
@@ -14,9 +15,9 @@ describe("vTransaction", () => {
       base64: vTransaction5j9.transaction[0],
       loadedAddresses: null,
     });
-    expect(async () => {
+    expect((async () => {
       vTransaction.instructions;
-    }).rejects.toThrow();
+    })()).rejects.toThrow();
   });
 
   test("vTransaction5j9", () => {

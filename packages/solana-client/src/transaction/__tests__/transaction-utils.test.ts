@@ -1,3 +1,4 @@
+import { describe, expect, test } from "bun:test";
 import { Buffer } from "buffer";
 import { Base64 } from "../../base-types";
 import {

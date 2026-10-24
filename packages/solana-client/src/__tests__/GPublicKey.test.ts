@@ -1,3 +1,4 @@
+import { describe, expect, test } from "bun:test";
 import BN from "bn.js";
 import { Buffer } from "buffer";
 import { EllipticCurve } from "../EllipticCurve";
@@ -6,34 +7,34 @@ import { GPublicKey } from "../GPublicKey";
 
 describe("GPublicKey", function () {
   test("invalid", async () => {
-    await expect(async () => {
+    await expect((async () => {
       new GPublicKey([
         3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0,
       ]);
-    }).rejects.toThrow();
+    })()).rejects.toThrow();
 
-    await expect(async () => {
+    await expect((async () => {
       new GPublicKey(
         "0x300000000000000000000000000000000000000000000000000000000000000000000"
       );
-    }).rejects.toThrow();
+    })()).rejects.toThrow();
 
-    await expect(async () => {
+    await expect((async () => {
       new GPublicKey(
         "0x300000000000000000000000000000000000000000000000000000000000000"
       );
-    }).rejects.toThrow();
+    })()).rejects.toThrow();
 
-    await expect(async () => {
+    await expect((async () => {
       new GPublicKey(
         "135693854574979916511997248057056142015550763280047535983739356259273198796800000"
       );
-    }).rejects.toThrow();
+    })()).rejects.toThrow();
 
-    await expect(async () => {
+    await expect((async () => {
       new GPublicKey("12345");
-    }).rejects.toThrow();
+    })()).rejects.toThrow();
   });
 
   test("equals", () => {
@@ -140,12 +141,12 @@ describe("GPublicKey", function () {
     );
     expect(programAddress).not.toBe(programAddress2);
 
-    await expect(async () => {
+    await expect((async () => {
       EllipticCurve.createProgramAddress(
         [Buffer.alloc(32 + 1)],
         programId.toBase58()
       );
-    }).rejects.toThrow();
+    })()).rejects.toThrow();
 
     // https://github.com/solana-labs/solana/issues/11950
     {
