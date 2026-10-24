@@ -3,6 +3,11 @@
   "version": "1.9.0",
   "private": false,
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glow-xyz/glow-js.git",
+    "directory": "packages/solana-client"
+  },
   "files": [
     "dist/**/*",
     "src/**/*",

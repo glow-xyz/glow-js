@@ -4,6 +4,11 @@
   "private": false,
   "description": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glow-xyz/glow-js.git",
+    "directory": "packages/glow-client"
+  },
   "files": [
     "dist/**/*",
     "src/**/*",
