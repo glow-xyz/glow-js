@@ -14,6 +14,7 @@ jobs:
         with:
           bun-version-file: .bun-version
       - run: bun install --frozen-lockfile
+      - run: bun fmt --check
       - run: bun run lint
       - run: bun run build
       - run: bun run tsc

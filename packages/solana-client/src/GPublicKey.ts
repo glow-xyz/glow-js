@@ -1,20 +1,16 @@
+import { Buffer } from "buffer";
+
 /**
  * This is a lighter version of the public key in `@solana/web3.js`
  */
 import BN from "bn.js";
 import bs58 from "bs58";
-import { Buffer } from "buffer";
 
 /**
  * Value to be converted into public key
  */
 export type PublicKeyInitData =
-  | number
-  | string
-  | Buffer
-  | Uint8Array
-  | Array<number>
-  | PublicKeyData;
+  number | string | Buffer | Uint8Array | Array<number> | PublicKeyData;
 
 /**
  * JSON object representation of GPublicKey class

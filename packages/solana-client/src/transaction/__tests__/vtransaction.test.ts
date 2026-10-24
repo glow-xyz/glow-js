@@ -1,12 +1,14 @@
-import { describe, expect, test } from "bun:test";
-import zip from "lodash/zip";
 import { Buffer } from "buffer";
+import { describe, expect, test } from "bun:test";
+
+import * as web3 from "@solana/web3.js";
+import zip from "lodash/zip";
+
 import { GKeypair } from "../../GKeypair";
 import { GPublicKey } from "../../GPublicKey";
 import { VTransaction } from "../VTransaction";
-import * as web3 from "@solana/web3.js";
-import vTransaction5j9 from "./vtransaction-5j9WCjiybkEDMXYyuUTy8d2kEcJeaRyzcsPpkF4kmJdVbxR483dzKsJLRTrY91bKxi9tA94vfzqjCmdP3G596kBt.json";
 import vTransaction3N3 from "./vtransaction-3N3xmERQotKh5of4H5Q5UEjwMKhaDR52pfJHCGRcQUD5hHTBX9hnXBbRcJ6CiFczrRtPhtx3b2ddd2kSjvZP7Cg.json";
+import vTransaction5j9 from "./vtransaction-5j9WCjiybkEDMXYyuUTy8d2kEcJeaRyzcsPpkF4kmJdVbxR483dzKsJLRTrY91bKxi9tA94vfzqjCmdP3G596kBt.json";
 
 describe("vTransaction", () => {
   test("vTransaction5j9 does not error if we don't pass in loadedAddresses", () => {
@@ -15,9 +17,7 @@ describe("vTransaction", () => {
       base64: vTransaction5j9.transaction[0],
       loadedAddresses: null,
     });
-    expect((async () => {
-      vTransaction.instructions;
-    })()).rejects.toThrow();
+    expect(() => vTransaction.instructions).toThrow();
   });
 
   test("vTransaction5j9", () => {
@@ -61,7 +61,7 @@ describe("vTransaction", () => {
       {
         data_base64: Buffer.from(
           "48656c6c6f2c2066726f6d2074686520536f6c616e612057616c6c65742041646170746572206578616d706c652061707021",
-          "hex"
+          "hex",
         ).toString("base64"),
         program: "Memo1UhkJRfHyvLMcVucJwxXeuD728EqVDDwQDxFMNo",
         accounts: [
@@ -108,21 +108,21 @@ describe("vTransaction", () => {
       {
         accountKeysFromLookups: {
           writable: vTransaction3N3.meta.loadedAddresses.writable.map(
-            (address) => new web3.PublicKey(address)
+            (address) => new web3.PublicKey(address),
           ),
           readonly: vTransaction3N3.meta.loadedAddresses.readonly.map(
-            (address) => new web3.PublicKey(address)
+            (address) => new web3.PublicKey(address),
           ),
         },
-      }
+      },
     );
 
     expect(vTransaction.instructions.length).toBe(
-      web3TxMessage.instructions.length
+      web3TxMessage.instructions.length,
     );
     for (const [web3Ix, ix] of zip(
       web3TxMessage.instructions,
-      vTransaction.instructions
+      vTransaction.instructions,
     )) {
       expect(ix).toEqual({
         accounts: web3Ix!.keys.map(({ pubkey }) => pubkey.toBase58()),
@@ -151,7 +151,7 @@ describe("vTransaction", () => {
     }).compileToV0Message();
     const web3Transaction = new web3.VersionedTransaction(messageV0);
     const initialBase64 = Buffer.from(web3Transaction.serialize()).toString(
-      "base64"
+      "base64",
     );
 
     // Set up the vtransaction
@@ -160,7 +160,7 @@ describe("vTransaction", () => {
       loadedAddresses: { writable: [], readonly: [] },
     });
     expect(vtransaction.toHex()).toBe(
-      Buffer.from(initialBase64, "base64").toString("hex")
+      Buffer.from(initialBase64, "base64").toString("hex"),
     );
 
     web3Transaction.sign([keypair as unknown as web3.Keypair]);

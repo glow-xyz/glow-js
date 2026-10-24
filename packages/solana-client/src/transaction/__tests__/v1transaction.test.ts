@@ -1,7 +1,9 @@
-import { describe, expect, test } from "bun:test";
-import bs58 from "bs58";
 import { Buffer } from "buffer";
+import { describe, expect, test } from "bun:test";
+
+import bs58 from "bs58";
 import nacl from "tweetnacl";
+
 import { GKeypair } from "../../GKeypair";
 import { GPublicKey } from "../../GPublicKey";
 import { getTransactionVersion, signXTransaction } from "../transaction-utils";
@@ -69,7 +71,7 @@ describe("v1 mainnet transactions", () => {
       const addresses = expected.accountKeys.map((key) => key.address);
       expect(tx.addresses).toEqual(addresses);
       expect(tx.accounts).toEqual(
-        expected.accountKeys.map((key) => ({ ...key, wasLookedUp: false }))
+        expected.accountKeys.map((key) => ({ ...key, wasLookedUp: false })),
       );
       expect(tx.latestBlockhash).toBe(expected.recentBlockhash);
       expect(tx.numRequiredSigs).toBe(expected.header.numRequiredSignatures);
@@ -82,11 +84,11 @@ describe("v1 mainnet transactions", () => {
           program: addresses[ix.programIdIndex],
           accounts: ix.accounts.map((idx) => addresses[idx]),
           data_base64: Buffer.from(bs58.decode(ix.data)).toString("base64"),
-        }))
+        })),
       );
 
       expect(tx.toBase64()).toBe(base64);
-    }
+    },
   );
 
   test.each(v1Transactions.map((fixture) => [fixture.signature, fixture]))(
@@ -103,11 +105,11 @@ describe("v1 mainnet transactions", () => {
           nacl.sign.detached.verify(
             messageBuffer,
             bs58.decode(signature),
-            bs58.decode(expected.accountKeys[idx].address)
-          )
+            bs58.decode(expected.accountKeys[idx].address),
+          ),
         ).toBe(true);
       });
-    }
+    },
   );
 });
 
@@ -139,8 +141,8 @@ describe("v1 signing", () => {
       nacl.sign.detached.verify(
         messageBuffer,
         bs58.decode(signedTx.signature),
-        bs58.decode(feePayer.address)
-      )
+        bs58.decode(feePayer.address),
+      ),
     ).toBe(true);
   });
 
@@ -197,7 +199,7 @@ describe("v1 parsing", () => {
     });
 
     expect(tx.instructions[0].data_base64).toBe(
-      Buffer.from(data).toString("base64")
+      Buffer.from(data).toString("base64"),
     );
   });
 
@@ -218,7 +220,7 @@ describe("v1 parsing", () => {
     });
 
     expect(
-      tx.accounts.map(({ signer, writable }) => ({ signer, writable }))
+      tx.accounts.map(({ signer, writable }) => ({ signer, writable })),
     ).toEqual([
       { signer: true, writable: true },
       { signer: true, writable: false },
@@ -249,7 +251,7 @@ describe("v1 parsing", () => {
     ["has no signers", buildV1Transaction({ numRequiredSigs: 0 })],
   ])("throws when the transaction %s", (_description, buffer) => {
     expect(
-      () => new V1Transaction({ base64: buffer.toString("base64") })
+      () => new V1Transaction({ base64: buffer.toString("base64") }),
     ).toThrow("Cannot parse v1 transaction");
   });
 });

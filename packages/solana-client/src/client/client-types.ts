@@ -1,5 +1,7 @@
-import {Buffer} from "buffer";
+import { Buffer } from "buffer";
+
 import { DateTime } from "luxon";
+
 import { Solana } from "../base-types";
 import { GTransaction } from "../GTransaction";
 

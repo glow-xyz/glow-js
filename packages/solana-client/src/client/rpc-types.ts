@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { Solana } from "../base-types";
 
 /**
@@ -23,7 +24,7 @@ export namespace SolanaRpcTypes {
   export const AccountZ = BaseAccountZ.and(
     z.object({
       data: z.tuple([z.string(), z.literal("base64")]),
-    })
+    }),
   );
 
   export const ParsedAccountZ = BaseAccountZ.and(
@@ -31,7 +32,7 @@ export namespace SolanaRpcTypes {
       data: z
         .tuple([z.string(), z.literal("base64")])
         .or(z.record(z.string(), z.any())),
-    })
+    }),
   );
 
   export const AccountWithPubkeyZ = z.object({
@@ -81,7 +82,7 @@ export namespace SolanaRpcTypes {
         z.object({
           index: z.number(),
           instructions: z.array(InstructionZ),
-        })
+        }),
       )
       .nullish(),
     logMessages: z.array(z.string()).nullish(),

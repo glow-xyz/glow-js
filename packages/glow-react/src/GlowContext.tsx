@@ -1,9 +1,14 @@
-import { GlowClient } from "@glow-xyz/glow-client";
+import {
+  Address,
+  GlowAdapter,
+  GlowClient,
+  PhantomAdapter,
+} from "@glow-xyz/glow-client";
 import { Solana } from "@glow-xyz/solana-client";
+import React, { createContext, useCallback, useContext, useState } from "react";
+
 import { useOnMount } from "./hooks/useOnMount";
 import { usePolling } from "./hooks/usePolling";
-import React, { createContext, useCallback, useContext, useState } from "react";
-import { GlowAdapter, PhantomAdapter, Address } from "@glow-xyz/glow-client";
 
 type GlowUser = { address: Address };
 
@@ -45,7 +50,7 @@ export const GlowProvider = ({ children }: { children: React.ReactNode }) => {
       }
     },
     glowDetected ? null : 250,
-    { runOnMount: true }
+    { runOnMount: true },
   );
 
   useOnMount(() => {

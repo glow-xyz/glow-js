@@ -1,6 +1,8 @@
-import bs58 from "bs58";
 import { Buffer } from "buffer";
+
+import bs58 from "bs58";
 import nacl from "tweetnacl";
+
 import { Base58, Base64, Hex, Solana } from "../base-types";
 import { InstructionRawType } from "../borsh";
 import { GKeypair } from "../GKeypair";
@@ -96,7 +98,7 @@ export class V1Transaction implements TransactionInterface {
       const address = bs58.encode(keypair.publicKey);
 
       const accountIndex = this.#signatureInfos.findIndex(
-        (i) => i.address === address
+        (i) => i.address === address,
       );
       if (accountIndex === -1) {
         continue;
@@ -233,7 +235,7 @@ export const parseV1Transaction = ({
         accountIdxs,
         data: Buffer.from(take(numDataBytes)),
       };
-    }
+    },
   );
 
   const messageBuffer = buffer.subarray(0, cursor);

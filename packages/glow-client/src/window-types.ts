@@ -45,17 +45,17 @@ export interface PhantomAdapter extends EventEmitter<PhantomWalletEvents> {
   }) => Promise<{ publicKey: PublicKey | null }>;
   disconnect: () => Promise<void>;
   signMessage: (
-    message: Uint8Array
+    message: Uint8Array,
   ) => Promise<{ signature: Uint8Array | null }>;
   signTransaction: (
     transaction: Transaction,
     // The network parameter is not supported on Phantom
-    network?: Network
+    network?: Network,
   ) => Promise<Transaction>;
   signAllTransactions(
     transactions: Transaction[],
     // The network parameter is not supported on Phantom
-    network?: Network
+    network?: Network,
   ): Promise<Transaction[]>;
 }
 

@@ -19,16 +19,12 @@ pnpm install @glow-xyz/glow-react
 
 ```tsx
 // Top level app component
-import { GlowSignInButton, GlowProvider } from "@glow-xyz/glow-react";
+import { GlowProvider, GlowSignInButton } from "@glow-xyz/glow-react";
 import "@glow-xyz/glow-react/dist/styles.css";
 
-const App = ({children}) => {
-  return (
-    <GlowProvider>
-      {children}
-    </GlowProvider>
-  )
-}
+const App = ({ children }) => {
+  return <GlowProvider>{children}</GlowProvider>;
+};
 
 // Component rendered under <App /> in the tree
 const Home = () => {
@@ -36,12 +32,8 @@ const Home = () => {
 
   return (
     <div>
-      {user ? (
-        <div>Signed in as {user.address}</div>
-      ) : (
-        <GlowSignInButton />
-      )}
+      {user ? <div>Signed in as {user.address}</div> : <GlowSignInButton />}
     </div>
-  )
-}
+  );
+};
 ```

@@ -6,7 +6,7 @@ This is a set of packages that helps you integrate the [Glow Solana Wallet](http
 
 [![Glow JS Overview](https://cdn.loom.com/sessions/thumbnails/837a218eca284292a5c69d719564ed9d-with-play.gif)](https://www.loom.com/share/837a218eca284292a5c69d719564ed9d)
 
-## Packages 
+## Packages
 
 Here is a set of packages that you can use to integrate Glow onto your dApp:
 
@@ -29,5 +29,6 @@ bun install
 bun run build   # build all packages in dependency order
 bun run tsc     # typecheck
 bun run test    # run tests
-bun run lint
+bun run lint    # oxlint
+bun fmt         # format
 ```

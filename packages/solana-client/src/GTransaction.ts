@@ -1,9 +1,11 @@
-import bs58 from "bs58";
 import { Buffer } from "buffer";
+
+import bs58 from "bs58";
 import keyBy from "lodash/keyBy";
 import sortBy from "lodash/sortBy";
 import nacl from "tweetnacl";
 import { z } from "zod";
+
 import { Base58, Solana } from "./base-types";
 import { FixableGlowBorsh } from "./borsh/base";
 import { GlowBorshTypes } from "./borsh/GlowBorshTypes";
@@ -52,7 +54,7 @@ export namespace GTransaction {
         address: Solana.AddressZ,
         writable: z.boolean().optional(),
         signer: z.boolean().optional(),
-      })
+      }),
     ),
     program: Solana.AddressZ,
     data_base64: z.string(),
@@ -110,7 +112,7 @@ export namespace GTransaction {
     }
 
     const unsortedAccounts = Object.entries(accountMap).map(
-      ([address, { writable, signer }]) => ({ writable, signer, address })
+      ([address, { writable, signer }]) => ({ writable, signer, address }),
     );
 
     const accounts = sortBy(
@@ -129,7 +131,7 @@ export namespace GTransaction {
           return [4, address];
         }
         return [5, address];
-      }
+      },
     );
     const signerAccounts = accounts.filter((a) => a.signer);
     const signatures = signerAccounts.map((a) => ({
@@ -161,7 +163,7 @@ export namespace GTransaction {
         signers,
         gtransaction,
         suppressInvalidSignerError,
-      })
+      }),
     );
   };
 
@@ -182,13 +184,13 @@ export namespace GTransaction {
         // Skip to next signer if suppressing unknown signer
         if (suppressInvalidSignerError) {
           console.log(
-            `Transaction did not require a signature from ${address}, skipping.`
+            `Transaction did not require a signature from ${address}, skipping.`,
           );
           continue;
         }
 
         throw new Error(
-          `This transaction does not require a signature from: ${address}`
+          `This transaction does not require a signature from: ${address}`,
         );
       }
 
@@ -241,7 +243,7 @@ export namespace GTransaction {
           return addresses[idx];
         }),
         data_base64: data.toString("base64"),
-      })
+      }),
     );
 
     const signatures: Array<{
@@ -260,7 +262,7 @@ export namespace GTransaction {
         instructions,
         accounts,
         messageBase64: messageBuffer.toString("base64"),
-      })
+      }),
     );
   };
 
@@ -274,12 +276,12 @@ export namespace GTransaction {
     signature: Buffer;
   }): GTransaction => {
     const accountIndex = gtransaction.accounts.findIndex(
-      (account) => account.address === address
+      (account) => account.address === address,
     );
 
     if (accountIndex < 0) {
       throw new Error(
-        `This transaction does not require a signature from: ${address}`
+        `This transaction does not require a signature from: ${address}`,
       );
     }
 
@@ -308,7 +310,7 @@ export namespace GTransaction {
     const signaturesFixedBeet = FixableGlowBorsh.compactArray({
       itemCoder: GlowBorshTypes.signatureNullable,
     }).toFixedFromValue(
-      gtransaction.signatures.map(({ signature }) => signature)
+      gtransaction.signatures.map(({ signature }) => signature),
     );
     const txBufferSize =
       signaturesFixedBeet.byteSize + messageBuffer.byteLength;
@@ -317,7 +319,7 @@ export namespace GTransaction {
     signaturesFixedBeet.write(
       txBuffer,
       0,
-      gtransaction.signatures.map(({ signature }) => signature)
+      gtransaction.signatures.map(({ signature }) => signature),
     );
     messageBuffer.copy(txBuffer, signaturesFixedBeet.byteSize);
 
@@ -418,7 +420,7 @@ export namespace GTransaction {
         !nacl.sign.detached.verify(
           messageBuffer,
           bs58.decode(signature!),
-          bs58.decode(address)
+          bs58.decode(address),
         )
       ) {
         throw new Error(`The Solana signature is invalid (from ${address}).`);
@@ -438,16 +440,16 @@ const constructMessageBase64 = ({
 }): string => {
   const numRequiredSigs = accounts.filter((a) => a.signer).length;
   const numReadOnlySigs = accounts.filter(
-    (a) => !a.writable && a.signer
+    (a) => !a.writable && a.signer,
   ).length;
   const numReadonlyUnsigned = accounts.filter(
-    (a) => !a.writable && !a.signer
+    (a) => !a.writable && !a.signer,
   ).length;
 
   const accountToInfo = Object.fromEntries(
     accounts.map(({ address, signer, writable }, idx) => {
       return [address, { signer, writable, idx }];
-    })
+    }),
   );
   const addresses = accounts.map((a) => a.address);
 
@@ -461,7 +463,7 @@ const constructMessageBase64 = ({
         accountIdxs,
         data,
       };
-    }
+    },
   );
 
   const messageBuffer = TRANSACTION_MESSAGE.toBuffer({

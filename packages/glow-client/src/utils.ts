@@ -1,8 +1,10 @@
-import { GPublicKey, GTransaction, GKeypair } from "@glow-xyz/solana-client";
-import bs58 from "bs58";
 import { Buffer } from "buffer";
+
+import { GKeypair, GPublicKey, GTransaction } from "@glow-xyz/solana-client";
+import bs58 from "bs58";
 import { DateTime, Duration } from "luxon";
 import { sign } from "tweetnacl";
+
 import { Address } from "./window-types";
 
 const SIGN_IN_REGEX_STR =
@@ -11,7 +13,7 @@ const SIGN_IN_REGEX_STR =
 
         Domain: (?<domain>[A-Za-z0-9.\\-]+)
         Requested At: (?<requestedAt>.+)
-        Nonce: (?<nonce>[A-Za-z0-9\-\.]+)$`
+        Nonce: (?<nonce>[A-Za-z0-9.\\-]+)$`
     .split("\n")
     .map((s) => s.trim())
     .join("\n");
@@ -106,15 +108,15 @@ export const verifySignIn = ({
     });
     const messageFromTx = Buffer.from(
       gtransaction.instructions[0].data_base64,
-      "base64"
+      "base64",
     ).toString("utf-8");
     if (messageFromTx !== message) {
       throw new Error(
-        "The transaction message does not match the message passed in."
+        "The transaction message does not match the message passed in.",
       );
     }
     const signature = gtransaction.signatures.find(
-      (s) => s.address === address
+      (s) => s.address === address,
     )!.signature!;
 
     verifySignature({

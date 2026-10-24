@@ -1,6 +1,8 @@
+import { Buffer } from "buffer";
+
 import * as beet from "@glow-xyz/beet";
 import { FixableBeet, FixedSizeBeet } from "@glow-xyz/beet";
-import { Buffer } from "buffer";
+
 import { Solana } from "../base-types";
 import { FixableGlowBorsh, GlowBorsh } from "./base";
 
@@ -16,7 +18,7 @@ export const TransactionInstructionFormat: FixableBeet<
 > = {
   description: "TransactionInstruction",
   toFixedFromValue: (
-    ix: InstructionRawType
+    ix: InstructionRawType,
   ): FixedSizeBeet<InstructionRawType, InstructionRawType> => {
     const accountsCoderFixable = FixableGlowBorsh.compactArray({
       itemCoder: beet.u8,
@@ -35,7 +37,7 @@ export const TransactionInstructionFormat: FixableBeet<
       write: function (
         buff: Buffer,
         offset: number,
-        ix: InstructionRawType
+        ix: InstructionRawType,
       ): void {
         let cursor = offset;
         beet.u8.write(buff, cursor, ix.programIdx);
@@ -63,7 +65,7 @@ export const TransactionInstructionFormat: FixableBeet<
   },
   toFixedFromData: (
     buff: Buffer,
-    offset: number
+    offset: number,
   ): FixedSizeBeet<InstructionRawType, InstructionRawType> => {
     let cursor = offset + 1; // + 1 for the programIdx which is a u8
 
@@ -85,7 +87,7 @@ export const TransactionInstructionFormat: FixableBeet<
       write: function (
         buf: Buffer,
         offset: number,
-        ix: InstructionRawType
+        ix: InstructionRawType,
       ): void {
         let cursor = offset;
         beet.u8.write(buff, cursor, ix.programIdx);

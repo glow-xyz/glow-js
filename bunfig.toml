@@ -1,0 +1,3 @@
+[fmt]
+sortImports = true
+sortPackageJson = true

@@ -1,3 +1,5 @@
+import { Buffer } from "buffer";
+
 import type { GlowAdapter } from "@glow-xyz/glow-client";
 import { Network } from "@glow-xyz/glow-client";
 import type {
@@ -23,7 +25,7 @@ import type {
   EventsOnMethod,
 } from "@wallet-standard/features";
 import bs58 from "bs58";
-import { Buffer } from "buffer";
+
 import { GlowWalletAccount } from "./account.js";
 import { icon } from "./icon.js";
 import type { SolanaChain } from "./solana.js";
@@ -118,8 +120,12 @@ export class GlowWallet implements Wallet {
   }
 
   #on: EventsOnMethod = (event, listener) => {
-    this.#listeners[event]?.push(listener) ||
-      (this.#listeners[event] = [listener]);
+    const listeners = this.#listeners[event];
+    if (listeners) {
+      listeners.push(listener);
+    } else {
+      this.#listeners[event] = [listener];
+    }
     return (): void => this.#off(event, listener);
   };
 
@@ -133,7 +139,7 @@ export class GlowWallet implements Wallet {
 
   #off<E extends EventsNames>(event: E, listener: EventsListeners[E]): void {
     this.#listeners[event] = this.#listeners[event]?.filter(
-      (existingListener) => listener !== existingListener
+      (existingListener) => listener !== existingListener,
     );
   }
 
@@ -241,7 +247,7 @@ export class GlowWallet implements Wallet {
 
       outputs.push({
         signedTransaction: new Uint8Array(
-          Buffer.from(signedTransactionBase64, "base64")
+          Buffer.from(signedTransactionBase64, "base64"),
         ),
       });
     } else if (inputs.length > 1) {
@@ -265,22 +271,22 @@ export class GlowWallet implements Wallet {
       }
 
       const transactionsBase64 = inputs.map(({ transaction }) =>
-        Buffer.from(transaction).toString("base64")
+        Buffer.from(transaction).toString("base64"),
       );
 
       const { signedTransactionsBase64 } = await this.#glow.signAllTransactions(
         {
           transactionsBase64,
           network: chain ? getNetworkForChain(chain) : Network.Mainnet,
-        }
+        },
       );
 
       outputs.push(
         ...signedTransactionsBase64.map((signedTransactionBase64) => ({
           signedTransaction: new Uint8Array(
-            Buffer.from(signedTransactionBase64, "base64")
+            Buffer.from(signedTransactionBase64, "base64"),
           ),
-        }))
+        })),
       );
     }
 
@@ -306,7 +312,7 @@ export class GlowWallet implements Wallet {
       });
 
       const signature = new Uint8Array(
-        Buffer.from(signedMessageBase64, "base64")
+        Buffer.from(signedMessageBase64, "base64"),
       );
 
       outputs.push({ signedMessage: message, signature });

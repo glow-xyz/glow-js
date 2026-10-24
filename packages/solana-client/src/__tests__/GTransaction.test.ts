@@ -1,4 +1,7 @@
+import { Buffer } from "buffer";
 import { describe, expect, test } from "bun:test";
+import { randomBytes } from "node:crypto";
+
 import {
   Keypair,
   PublicKey,
@@ -9,8 +12,7 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import bs58 from "bs58";
-import { Buffer } from "buffer";
-import { randomBytes } from "node:crypto";
+
 import { Base64 } from "../base-types";
 import { GlowBorshTypes } from "../borsh/GlowBorshTypes";
 import { GKeypair } from "../GKeypair";
@@ -68,7 +70,7 @@ const TXS_BASE64: Base64[] = [
 ];
 
 const convertSolanaIxToGtransactionIxFactory = (
-  ix: TransactionInstruction
+  ix: TransactionInstruction,
 ): GTransaction.InstructionFactory => ({
   accounts: ix.keys.map(({ isWritable, isSigner, pubkey }) => ({
     address: pubkey.toString(),
@@ -91,7 +93,7 @@ describe("GTransaction", () => {
         transaction.signatures.map((sig) => ({
           signature: bs58.encode(sig.signature!) as string | null,
           address: sig.publicKey.toBase58(),
-        }))
+        })),
       ).toEqual(gTransaction.signatures);
 
       const message = transaction.compileMessage();
@@ -100,7 +102,7 @@ describe("GTransaction", () => {
           address: publicKey.toBase58(),
           signer: message.isAccountSigner(idx),
           writable: message.isAccountWritable(idx),
-        }))
+        })),
       ).toEqual(gTransaction.accounts);
       expect(transaction.recentBlockhash).toEqual(gTransaction.latestBlockhash);
       expect(
@@ -108,7 +110,7 @@ describe("GTransaction", () => {
           program: inst.programId.toBase58(),
           accounts: inst.keys.map((k) => k.pubkey.toBase58()),
           data_base64: inst.data.toString("base64"),
-        }))
+        })),
       ).toEqual(gTransaction.instructions);
     }
   });
@@ -133,11 +135,11 @@ describe("GTransaction", () => {
       expect(
         GTransaction.parse({
           buffer: reshuffledGTxBuffer,
-        })
+        }),
       ).toEqual(
         GTransaction.parse({
           buffer: reshuffledTxBuffer,
-        })
+        }),
       );
     }
   });
@@ -181,14 +183,14 @@ describe("GTransaction", () => {
         expect(
           GTransaction.parse({
             buffer: signedReshuffledSignedGTxBuffer,
-          })
+          }),
         ).toEqual(
           GTransaction.parse({
             buffer: signedReshuffledSignedTxBuffer,
-          })
+          }),
         );
         expect(signedReshuffledSignedTxBuffer).toEqual(
-          signedReshuffledSignedGTxBuffer
+          signedReshuffledSignedGTxBuffer,
         );
       }
     }
@@ -207,7 +209,7 @@ describe("GTransaction", () => {
         fromPubkey: from.publicKey as unknown as PublicKey,
         toPubkey: to.publicKey as unknown as PublicKey,
         lamports: 5_000 * 1.5,
-      })
+      }),
     );
     const transactionBuffer = transaction.serialize({
       requireAllSignatures: false,
@@ -219,7 +221,7 @@ describe("GTransaction", () => {
 
     // Sanity check - verify that serialized versions are equal
     expect(transactionBuffer).toEqual(
-      GTransaction.toBuffer({ gtransaction: gTransaction })
+      GTransaction.toBuffer({ gtransaction: gTransaction }),
     );
 
     // Add a new signature
@@ -232,7 +234,7 @@ describe("GTransaction", () => {
 
     // Verify that serialized transactions with more signatures are equal too
     expect(transaction.serialize()).toEqual(
-      GTransaction.toBuffer({ gtransaction: gTransaction })
+      GTransaction.toBuffer({ gtransaction: gTransaction }),
     );
   });
 
@@ -283,7 +285,7 @@ describe("GTransaction", () => {
         fromPubkey: from.publicKey as unknown as PublicKey,
         toPubkey: to.publicKey as unknown as PublicKey,
         lamports: 5_000 * 1.5,
-      })
+      }),
     );
     const transactionBuffer = transaction.serialize({
       requireAllSignatures: false,
@@ -295,7 +297,7 @@ describe("GTransaction", () => {
 
     // Sanity check - verify that serialized versions are equal
     expect(transactionBuffer).toEqual(
-      GTransaction.toBuffer({ gtransaction: gTransaction })
+      GTransaction.toBuffer({ gtransaction: gTransaction }),
     );
 
     // Add a new signature
@@ -307,7 +309,7 @@ describe("GTransaction", () => {
 
     // Verify that serialized transactions with more signatures are equal too
     expect(transaction.serialize()).toEqual(
-      GTransaction.toBuffer({ gtransaction: gTransaction })
+      GTransaction.toBuffer({ gtransaction: gTransaction }),
     );
   });
 
@@ -336,13 +338,13 @@ describe("GTransaction", () => {
 
     // Sanity check - transaction without signatures shouldn't equal gtransaction with them
     expect(transaction.serialize({ requireAllSignatures: false })).not.toEqual(
-      GTransaction.toBuffer({ gtransaction })
+      GTransaction.toBuffer({ gtransaction }),
     );
 
     transaction.partialSign(from as unknown as Keypair);
     // Verify that signed transactions are equal
     expect(transaction.serialize()).toEqual(
-      GTransaction.toBuffer({ gtransaction })
+      GTransaction.toBuffer({ gtransaction }),
     );
   });
 
@@ -352,8 +354,8 @@ describe("GTransaction", () => {
     // We need static to since we match error message against obsolete signer address
     const to = GKeypair.fromSecretKey(
       bs58.decode(
-        "2EhQ3g6KrXfPrK8ad5Aa4aCXxKWoGaFD5jRq8ADQxnZ6xr9PxaYj81KtJBseDGudomTPYvEPt2rn8bKpHtcYYtFc"
-      )
+        "2EhQ3g6KrXfPrK8ad5Aa4aCXxKWoGaFD5jRq8ADQxnZ6xr9PxaYj81KtJBseDGudomTPYvEPt2rn8bKpHtcYYtFc",
+      ),
     );
     const ix = SystemProgram.transfer({
       fromPubkey: from.publicKey as unknown as PublicKey,
@@ -386,13 +388,13 @@ describe("GTransaction", () => {
 
     // Sanity check - transaction without signatures shouldn't equal gtransaction with them
     expect(transaction.serialize({ requireAllSignatures: false })).not.toEqual(
-      GTransaction.toBuffer({ gtransaction })
+      GTransaction.toBuffer({ gtransaction }),
     );
 
     transaction.partialSign(from as unknown as Keypair);
     // Verify that signed transactions are equal
     expect(transaction.serialize()).toEqual(
-      GTransaction.toBuffer({ gtransaction })
+      GTransaction.toBuffer({ gtransaction }),
     );
   });
 
@@ -402,8 +404,8 @@ describe("GTransaction", () => {
     // We need static to since we match error message against obsolete signer address
     const to = GKeypair.fromSecretKey(
       bs58.decode(
-        "2EhQ3g6KrXfPrK8ad5Aa4aCXxKWoGaFD5jRq8ADQxnZ6xr9PxaYj81KtJBseDGudomTPYvEPt2rn8bKpHtcYYtFc"
-      )
+        "2EhQ3g6KrXfPrK8ad5Aa4aCXxKWoGaFD5jRq8ADQxnZ6xr9PxaYj81KtJBseDGudomTPYvEPt2rn8bKpHtcYYtFc",
+      ),
     );
     const ix = SystemProgram.transfer({
       fromPubkey: from.publicKey as unknown as PublicKey,
@@ -432,7 +434,7 @@ describe("GTransaction", () => {
 
     // Sanity check - verify that serialized versions are equal
     expect(transaction.serialize({ requireAllSignatures: false })).toEqual(
-      GTransaction.toBuffer({ gtransaction })
+      GTransaction.toBuffer({ gtransaction }),
     );
 
     expect(() => {
@@ -448,7 +450,7 @@ describe("GTransaction", () => {
 
     // Verify that serialized transactions with more signatures are equal too
     expect(transaction.serialize()).toEqual(
-      GTransaction.toBuffer({ gtransaction })
+      GTransaction.toBuffer({ gtransaction }),
     );
   });
 
@@ -558,7 +560,7 @@ describe("GTransaction", () => {
 
     // We freeze the `gTransaction` object so that we don't accidentally modify it improperly
     expect(() => {
-      // @ts-expect-error
+      // @ts-expect-error: recentBlockhash is not assignable
       gtransaction.recentBlockhash = "x";
     }).toThrow();
   });
@@ -606,7 +608,7 @@ describe("GTransaction", () => {
       feePayer: wallet,
     });
     expect(
-      walletTransaction.accounts.map(({ address }) => address)
+      walletTransaction.accounts.map(({ address }) => address),
     ).not.toContain(GPublicKey.nullString);
   });
 
@@ -620,10 +622,10 @@ describe("GTransaction", () => {
           SystemProgram.transfer({
             fromPubkey: payerKeypair.publicKey,
             toPubkey: new PublicKey(
-              "3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm"
+              "3eusSkWamyiGU9sGywwfKvFLLKySndfNtF8C8T4e1sHm",
             ),
             lamports: 100,
-          })
+          }),
         ),
       ],
       latestBlockhash,
@@ -664,8 +666,8 @@ describe("GTransaction", () => {
             address: feePayer,
             signature: Buffer.from(
               bs58.decode(
-                "5MsbE3C4qz1v8u6FR7uCrWV5Sk5eWH5ay5Y2EshSm4Jnk33QPC81WHRHht7HLEYT85crVafjnuqxqo1hPKMRtQQP"
-              )
+                "5MsbE3C4qz1v8u6FR7uCrWV5Sk5eWH5ay5Y2EshSm4Jnk33QPC81WHRHht7HLEYT85crVafjnuqxqo1hPKMRtQQP",
+              ),
             ),
           }),
         });

@@ -1,6 +1,6 @@
-import { FixedSizeBeet } from "@glow-xyz/beet";
-import { FixableBeet } from "@glow-xyz/beet";
 import { Buffer } from "buffer";
+
+import { FixableBeet, FixedSizeBeet } from "@glow-xyz/beet";
 
 // https://github.com/solana-labs/solana/blob/master/web3.js/src/util/shortvec-encoding.ts
 export namespace CompactArray {
@@ -24,7 +24,7 @@ export namespace CompactArray {
     },
     toFixedFromData: (
       buffer: Buffer,
-      offset: number
+      offset: number,
     ): FixedSizeBeet<number, number> => {
       const { value: length, byteSize } = CompactArray.decodeLength({
         buffer,
@@ -48,9 +48,9 @@ export namespace CompactArray {
   };
 
   export function decodeLength({
-                                 buffer,
-                                 offset,
-                               }: {
+    buffer,
+    offset,
+  }: {
     buffer: Buffer;
     offset: number;
   }): {

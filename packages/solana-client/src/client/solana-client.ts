@@ -1,10 +1,12 @@
+import { Buffer } from "buffer";
+
 import axios from "axios";
 import BigNumber from "bignumber.js";
-import { Buffer } from "buffer";
 import chunk from "lodash/chunk";
 import { DateTime, Duration } from "luxon";
 import pLimit from "p-limit";
 import { z } from "zod";
+
 import { Base58, Solana } from "../base-types";
 import { FixableGlowBorsh, GlowBorsh } from "../borsh/base";
 import {
@@ -340,7 +342,7 @@ export namespace SolanaClient {
             };
           }
         }
-      })
+      }),
     );
 
     await Promise.all(promises);
@@ -526,7 +528,7 @@ export namespace SolanaClient {
         z.object({
           signature: z.string(),
           blockTime: z.number(),
-        })
+        }),
       ),
       timeout,
       ...config,
@@ -641,7 +643,7 @@ export namespace SolanaClient {
             amount: z.string(),
             decimals: z.number(),
             uiAmountString: z.string(),
-          })
+          }),
         ),
       }),
       timeout,
@@ -689,7 +691,7 @@ export namespace SolanaClient {
                 .enum(["processed", "confirmed", "finalized"])
                 .nullable(),
             })
-            .nullable()
+            .nullable(),
         ),
       }),
     });
@@ -835,7 +837,7 @@ const makeRpcRequest = async <Response>({
         method,
         params,
       },
-      { timeout: timeout.as("millisecond") }
+      { timeout: timeout.as("millisecond") },
     );
 
     const parseResult = zodSchema.safeParse(data.result);
@@ -866,7 +868,7 @@ const makeRpcRequest = async <Response>({
         params,
         parseError: parseResult.error,
         solanaResponse: data,
-      })
+      }),
     );
     throw new GlowError("Unexpected response from Solana.", {
       statusCode: 400,
@@ -877,9 +879,6 @@ const makeRpcRequest = async <Response>({
         reason: parseResult.error,
       },
     });
-  } catch (error) {
-    // event.add({ isError: true });
-    throw error;
   } finally {
     // Honeycomb after
     // const endHr = process.hrtime.bigint();
@@ -894,6 +893,6 @@ const makeRpcRequest = async <Response>({
 
 const sleep = async (duration: Duration) => {
   await new Promise((resolve) =>
-    setTimeout(resolve, duration.as("millisecond"))
+    setTimeout(resolve, duration.as("millisecond")),
   );
 };

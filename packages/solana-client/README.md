@@ -9,7 +9,7 @@ There are a few differences between this client and `@solana/web3.js`:
 - the types are a bit easier to use
 - the requests are less opinionated
 - coming soon
-  - we can add middleware to track performance / handle errors 
+  - we can add middleware to track performance / handle errors
 
 ## Installing
 

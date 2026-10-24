@@ -1,9 +1,11 @@
-import { describe, expect, test } from "bun:test";
-import { GPublicKey, GKeypair, GTransaction } from "@glow-xyz/solana-client";
-import bs58 from "bs58";
 import { Buffer } from "buffer";
+import { describe, expect, test } from "bun:test";
+
+import { GKeypair, GPublicKey, GTransaction } from "@glow-xyz/solana-client";
+import bs58 from "bs58";
 import { DateTime, Duration } from "luxon";
 import nacl from "tweetnacl";
+
 import {
   constructSignInMessage,
   constructSignInTx,
@@ -28,13 +30,15 @@ describe("verifySignature", () => {
 
   test("rejects an invalid signature", async () => {
     const keypair = nacl.sign.keyPair();
-    await expect((async () => {
-      verifySignature({
-        signature: "ab",
-        message: "hi",
-        signer: bs58.encode(keypair.publicKey),
-      });
-    })()).rejects.toThrow();
+    await expect(
+      (async () => {
+        verifySignature({
+          signature: "ab",
+          message: "hi",
+          signer: bs58.encode(keypair.publicKey),
+        });
+      })(),
+    ).rejects.toThrow();
   });
 });
 
@@ -393,7 +397,7 @@ Nonce: 869`;
 const signMessage = (message: string, keypair: nacl.SignKeyPair): string => {
   const signedMessage = nacl.sign.detached(
     Buffer.from(message),
-    keypair.secretKey
+    keypair.secretKey,
   );
   return Buffer.from(signedMessage).toString("base64");
 };

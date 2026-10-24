@@ -1,7 +1,9 @@
+import { Buffer } from "buffer";
+
 import * as beet from "@glow-xyz/beet";
 import { FixableBeet, FixedSizeBeet } from "@glow-xyz/beet";
 import bs58 from "bs58";
-import { Buffer } from "buffer";
+
 import { Base58 } from "../base-types";
 import { FixableGlowBorsh } from "./base";
 
@@ -45,7 +47,7 @@ export namespace GlowBorshTypes {
         signatureBeet.write(
           buffer,
           offset,
-          value ? bs58.decode(value) : Buffer.alloc(64)
+          value ? bs58.decode(value) : Buffer.alloc(64),
         );
       },
     };

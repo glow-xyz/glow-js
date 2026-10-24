@@ -1,6 +1,6 @@
+import { Buffer } from "buffer";
+
 import * as beet from "@glow-xyz/beet";
-import sum from "lodash/sum";
-import range from "lodash/range";
 import {
   BeetField,
   BeetStruct,
@@ -11,9 +11,11 @@ import {
   i64,
 } from "@glow-xyz/beet";
 import BN from "bn.js";
-import { Buffer } from "buffer";
 import { sha256 } from "js-sha256";
+import range from "lodash/range";
+import sum from "lodash/sum";
 import { DateTime } from "luxon";
+
 import { Solana } from "../base-types";
 import { GlowError } from "../error";
 import { GPublicKey } from "../GPublicKey";
@@ -183,7 +185,7 @@ export class GlowBorsh<InOut extends {}> extends BeetStruct<InOut, InOut> {
    * https://github.com/metaplex-foundation/beet/blob/82283026660e7e821ee5e05bb05dddb9ba30474b/beet/src/beets/string.ts
    */
   static fixedSizeUtf8String: (
-    length: number
+    length: number,
   ) => FixedSizeBeet<string, string> = (length: number) => {
     return {
       write: function (buf: Buffer, offset: number, value: string) {
@@ -316,7 +318,7 @@ export class GlowBorsh<InOut extends {}> extends BeetStruct<InOut, InOut> {
    * `AccountName` should be `PascalCase`
    */
   static accountDiscriminator = (
-    AccountName: string
+    AccountName: string,
   ): FixedSizeBeet<null, null> => {
     const preimage = `account:${AccountName}`;
     const hex = Buffer.from(sha256.digest(preimage))
@@ -335,7 +337,7 @@ export class GlowBorsh<InOut extends {}> extends BeetStruct<InOut, InOut> {
     read: function (buffer, offset) {
       const timestamp = i64.read(buffer, offset);
       return DateTime.fromSeconds(
-        typeof timestamp === "number" ? timestamp : timestamp.toNumber()
+        typeof timestamp === "number" ? timestamp : timestamp.toNumber(),
       );
     },
     write: function (buffer, offset, datetime) {
@@ -349,7 +351,10 @@ export class GlowBorsh<InOut extends {}> extends BeetStruct<InOut, InOut> {
  * Sometimes (eg. when using an optional argument, beet.coption)
  * we need a less strict than fixed - fixable format.
  */
-export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<InOut, InOut> {
+export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<
+  InOut,
+  InOut
+> {
   constructor({ fields }: { fields: BeetField<InOut, any>[] }) {
     super(fields, (args) => args, "FixableGlowBorsh");
   }
@@ -409,7 +414,7 @@ export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<InOut,
   static utf8String: FixableBeet<string, string> = {
     toFixedFromData(
       buf: Buffer,
-      offset: number
+      offset: number,
     ): FixedSizeBeet<string, string> {
       const len = beet.u32.read(buf, offset);
       return GlowBorsh.fixedSizeUtf8String(len);
@@ -436,7 +441,7 @@ export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<InOut,
       description: "CompactArray",
       toFixedFromValue(val: Item[]): FixedSizeBeet<Item[], Item[]> {
         const compactArrayLength = CompactArray.Borsh.toFixedFromValue(
-          val.length
+          val.length,
         );
         const byteSize =
           compactArrayLength.byteSize + itemCoder.byteSize * val.length;
@@ -469,11 +474,11 @@ export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<InOut,
       },
       toFixedFromData(
         buff: Buffer,
-        offset: number
+        offset: number,
       ): FixedSizeBeet<Item[], Item[]> {
         const compactArrayLength = CompactArray.Borsh.toFixedFromData(
           buff,
-          offset
+          offset,
         );
         const length = compactArrayLength.read(buff, offset);
         const byteSize =
@@ -520,10 +525,10 @@ export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<InOut,
       description: "CompactArrayFixable",
       toFixedFromValue(items: Item[]): FixedSizeBeet<Item[], Item[]> {
         const compactArrayLength = CompactArray.Borsh.toFixedFromValue(
-          items.length
+          items.length,
         );
         const itemCoders = items.map((item) =>
-          elemCoder.toFixedFromValue(item)
+          elemCoder.toFixedFromValue(item),
         );
         const itemsByteSize = sum(itemCoders.map((ic) => ic.byteSize));
         const byteSize = compactArrayLength.byteSize + itemsByteSize;
@@ -558,11 +563,11 @@ export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<InOut,
       },
       toFixedFromData(
         buff: Buffer,
-        offset: number
+        offset: number,
       ): FixedSizeBeet<Item[], Item[]> {
         const compactArrayLength = CompactArray.Borsh.toFixedFromData(
           buff,
-          offset
+          offset,
         );
         let cursor = offset + compactArrayLength.byteSize;
         const length = compactArrayLength.read(buff, offset);
