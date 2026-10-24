@@ -12,8 +12,6 @@ import {
 } from "@glow-xyz/beet";
 import BN from "bn.js";
 import { sha256 } from "js-sha256";
-import range from "lodash/range";
-import sum from "lodash/sum";
 import { DateTime } from "luxon";
 
 import { Solana } from "../base-types";
@@ -530,7 +528,10 @@ export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<
         const itemCoders = items.map((item) =>
           elemCoder.toFixedFromValue(item),
         );
-        const itemsByteSize = sum(itemCoders.map((ic) => ic.byteSize));
+        const itemsByteSize = itemCoders.reduce(
+          (total, ic) => total + ic.byteSize,
+          0,
+        );
         const byteSize = compactArrayLength.byteSize + itemsByteSize;
 
         return {
@@ -573,13 +574,16 @@ export class FixableGlowBorsh<InOut extends {}> extends FixableBeetStruct<
         const length = compactArrayLength.read(buff, offset);
 
         const itemCoders: FixedSizeBeet<Item>[] = [];
-        for (const _idx of range(length)) {
+        for (let idx = 0; idx < length; idx++) {
           const itemCoder = elemCoder.toFixedFromData(buff, cursor);
           itemCoders.push(itemCoder);
           cursor += itemCoder.byteSize;
         }
 
-        const itemsByteSize = sum(itemCoders.map((ic) => ic.byteSize));
+        const itemsByteSize = itemCoders.reduce(
+          (total, ic) => total + ic.byteSize,
+          0,
+        );
         const byteSize = compactArrayLength.byteSize + itemsByteSize;
 
         return {

@@ -1,8 +1,6 @@
 import { Buffer } from "buffer";
 
-import axios from "axios";
 import BigNumber from "bignumber.js";
-import chunk from "lodash/chunk";
 import { DateTime, Duration } from "luxon";
 import pLimit from "p-limit";
 import { z } from "zod";
@@ -302,7 +300,10 @@ export namespace SolanaClient {
     Record<Solana.Address, SolanaClientTypes.Account | null>
   > => {
     const limit = pLimit(20);
-    const chunks = chunk(addresses, MAX_ACCOUNTS_IN_ONE_REQUEST);
+    const chunks: Solana.Address[][] = [];
+    for (let i = 0; i < addresses.length; i += MAX_ACCOUNTS_IN_ONE_REQUEST) {
+      chunks.push(addresses.slice(i, i + MAX_ACCOUNTS_IN_ONE_REQUEST));
+    }
 
     const output: Record<Solana.Address, SolanaClientTypes.Account | null> = {};
 
@@ -829,16 +830,20 @@ const makeRpcRequest = async <Response>({
 
   try {
     timeout ||= Duration.fromObject({ minutes: 10 });
-    const { data } = await axios.post<{ result?: unknown; error?: any }>(
-      rpcUrl,
-      {
-        jsonrpc: "2.0",
-        id: "1",
-        method,
-        params,
-      },
-      { timeout: timeout.as("millisecond") },
-    );
+    const response = await fetch(rpcUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jsonrpc: "2.0", id: "1", method, params }),
+      signal: AbortSignal.timeout(timeout.as("millisecond")),
+    });
+    if (!response.ok) {
+      throw new GlowError(`Solana RPC request failed (${response.status})`, {
+        code: "rpc-http-error",
+        statusCode: response.status,
+        extraData: { method, params },
+      });
+    }
+    const data: { result?: unknown; error?: any } = await response.json();
 
     const parseResult = zodSchema.safeParse(data.result);
 

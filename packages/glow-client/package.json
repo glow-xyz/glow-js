@@ -6,7 +6,9 @@
   "license": "ISC",
   "files": [
     "dist/**/*",
-    "src/**/*"
+    "src/**/*",
+    "!**/__tests__/**",
+    "!**/*.tsbuildinfo"
   ],
   "sideEffects": false,
   "main": "dist/index.js",
@@ -14,7 +16,7 @@
   "scripts": {
     "tsc": "tsc --noEmit",
     "test": "bun test src",
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
     "release": "bun run build && release-it"
   },
   "dependencies": {
