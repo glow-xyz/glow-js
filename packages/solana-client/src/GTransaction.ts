@@ -1,8 +1,6 @@
 import { Buffer } from "buffer";
 
 import bs58 from "bs58";
-import keyBy from "lodash/keyBy";
-import sortBy from "lodash/sortBy";
 import nacl from "tweetnacl";
 import { z } from "zod";
 
@@ -115,23 +113,29 @@ export namespace GTransaction {
       ([address, { writable, signer }]) => ({ writable, signer, address }),
     );
 
-    const accounts = sortBy(
-      unsortedAccounts,
-      ({ signer, address, writable }) => {
-        if (address === feePayer) {
-          return [0, address];
-        }
-        if (signer && writable) {
-          return [2, address];
-        }
-        if (signer) {
-          return [3, address];
-        }
-        if (writable) {
-          return [4, address];
-        }
-        return [5, address];
-      },
+    const rank = ({
+      signer,
+      address,
+      writable,
+    }: (typeof unsortedAccounts)[number]) => {
+      if (address === feePayer) {
+        return 0;
+      }
+      if (signer && writable) {
+        return 2;
+      }
+      if (signer) {
+        return 3;
+      }
+      if (writable) {
+        return 4;
+      }
+      return 5;
+    };
+    const accounts = [...unsortedAccounts].sort(
+      (a, b) =>
+        rank(a) - rank(b) ||
+        (a.address < b.address ? -1 : a.address > b.address ? 1 : 0),
     );
     const signerAccounts = accounts.filter((a) => a.signer);
     const signatures = signerAccounts.map((a) => ({
@@ -369,7 +373,9 @@ export namespace GTransaction {
     gtransaction: GTransaction;
     feePayer: Solana.Address;
   }): GTransaction => {
-    const accountsMap = keyBy(gtransaction.accounts, "address");
+    const accountsMap = Object.fromEntries(
+      gtransaction.accounts.map((account) => [account.address, account]),
+    );
     // Recreate transaction not to copy old feePayer
     const unsignedTransaction = create({
       instructions: gtransaction.instructions.map((ix) => ({

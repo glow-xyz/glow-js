@@ -2,7 +2,6 @@ import { Buffer } from "buffer";
 import { describe, expect, test } from "bun:test";
 
 import * as web3 from "@solana/web3.js";
-import zip from "lodash/zip";
 
 import { GKeypair } from "../../GKeypair";
 import { GPublicKey } from "../../GPublicKey";
@@ -120,10 +119,8 @@ describe("vTransaction", () => {
     expect(vTransaction.instructions.length).toBe(
       web3TxMessage.instructions.length,
     );
-    for (const [web3Ix, ix] of zip(
-      web3TxMessage.instructions,
-      vTransaction.instructions,
-    )) {
+    for (const [idx, web3Ix] of web3TxMessage.instructions.entries()) {
+      const ix = vTransaction.instructions[idx];
       expect(ix).toEqual({
         accounts: web3Ix!.keys.map(({ pubkey }) => pubkey.toBase58()),
         program: web3Ix!.programId.toBase58(),
