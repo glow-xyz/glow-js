@@ -29,5 +29,6 @@ bun install
 bun run build   # build all packages in dependency order
 bun run tsc     # typecheck
 bun run test    # run tests
-bun run lint
+bun run lint    # oxlint
+bun fmt         # format
 ```
