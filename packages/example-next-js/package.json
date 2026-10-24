@@ -8,8 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@glow-xyz/glow-client": "1.5.x",
-    "@glow-xyz/glow-react": "1.1.x",
+    "@glow-xyz/glow-client": "workspace:*",
+    "@glow-xyz/glow-react": "workspace:*",
     "@popperjs/core": "2.11.6",
     "bootstrap": "5.2.3",
     "classnames": "2.3.2",
@@ -18,11 +18,11 @@
     "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@types/node": "^18.11.10",
-    "@types/node-fetch": "^2.6.2",
+    "@types/node": "18.19.130",
+    "@types/node-fetch": "2.6.13",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
-    "sass": "^1.105.1",
+    "sass": "1.105.1",
     "typescript": "5.6.3"
   }
 }
