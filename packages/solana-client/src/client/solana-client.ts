@@ -412,17 +412,23 @@ export namespace SolanaClient {
     const end = DateTime.now().plus({ minutes: 2 });
 
     while (DateTime.now() < end) {
+      let tx: SolanaClientTypes.TransactionWithMeta | null = null;
       try {
-        const tx = await getTransaction({
+        tx = await getTransaction({
           rpcUrl,
           signature,
           commitment: "confirmed",
         });
-
-        if (tx) {
-          return;
-        }
       } catch (e) {}
+
+      if (tx) {
+        if (tx.meta?.err) {
+          throw new GlowError("Transaction failed.", {
+            extraData: { signature, err: tx.meta.err },
+          });
+        }
+        return;
+      }
 
       await sleep(pollInterval);
     }
@@ -480,7 +486,7 @@ export namespace SolanaClient {
         value: z.object({
           err: z.any(),
           logs: z.array(z.string()).nullable(),
-          accounts: z.array(SolanaRpcTypes.AccountZ.nullable()),
+          accounts: z.array(SolanaRpcTypes.AccountZ.nullable()).nullish(),
           unitsConsumed: z.number().optional(),
         }),
       }),
@@ -488,7 +494,7 @@ export namespace SolanaClient {
     });
 
     const postAccounts = result.value.accounts;
-    if (result.value.err || postAccounts.some((account) => account === null)) {
+    if (result.value.err || postAccounts?.some((account) => account === null)) {
       // TODO: add error parsing
 
       throw new GlowError("Error with simulation.");

@@ -79,6 +79,9 @@ export const verifySignIn = ({
   } = match.groups;
   const nonce = _nonce;
   const requestedAt = DateTime.fromISO(_requestedAt).toUTC();
+  if (!requestedAt.isValid) {
+    throw new Error("Invalid requested at date.");
+  }
 
   if (Array.isArray(expectedDomain)) {
     if (expectedDomain.indexOf(domain) === -1) {

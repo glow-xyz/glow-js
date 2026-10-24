@@ -43,6 +43,27 @@ describe("verifySignature", () => {
 });
 
 describe("verifySignIn", () => {
+  test("rejects an invalid requested at date", () => {
+    const keypair = nacl.sign.keyPair();
+    const expectedAddress = bs58.encode(keypair.publicKey);
+
+    const message = `would like you to sign in with your Solana account:
+${expectedAddress}
+
+Domain: localhost
+Requested At: definitely-not-a-date
+Nonce: 825`;
+
+    expect(() =>
+      verifySignIn({
+        signature: signMessage(message, keypair),
+        message,
+        expectedAddress,
+        expectedDomain: "localhost",
+      }),
+    ).toThrow("Invalid requested at date.");
+  });
+
   test("parses a localhost message", () => {
     const keypair = nacl.sign.keyPair();
     const expectedAddress = bs58.encode(keypair.publicKey);

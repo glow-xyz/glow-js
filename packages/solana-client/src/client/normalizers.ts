@@ -5,6 +5,8 @@ import { DateTime } from "luxon";
 
 import { Solana } from "../base-types";
 import { GTransaction } from "../GTransaction";
+import { getTransactionVersion } from "../transaction/transaction-utils";
+import { VTransaction } from "../transaction/VTransaction";
 import { SolanaClientTypes } from "./client-types";
 import { SolanaRpcTypes } from "./rpc-types";
 
@@ -58,8 +60,9 @@ export const normalizeTransactionWithMeta = (
     transaction: [transaction_base64],
     meta,
   } = txContainer;
-  const transaction = GTransaction.parse({
-    buffer: Buffer.from(transaction_base64, "base64"),
+  const transaction = parseTransaction({
+    base64: transaction_base64,
+    loadedAddresses: meta?.loadedAddresses ?? null,
   });
   const addressAtIndex = (idx: number): Solana.Address =>
     transaction.accounts[idx].address;
@@ -85,5 +88,47 @@ export const normalizeTransactionWithMeta = (
         }),
       ),
     },
+  };
+};
+
+// Returns a GTransaction for both legacy and v0 transactions. For v0, `accounts`
+// includes the addresses loaded from lookup tables, in the order Solana indexes them.
+const parseTransaction = ({
+  base64,
+  loadedAddresses,
+}: {
+  base64: string;
+  loadedAddresses: SolanaRpcTypes.LoadedAddresses | null;
+}): GTransaction.GTransaction => {
+  const buffer = Buffer.from(base64, "base64");
+  const { version, signatures, messageBuffer } = getTransactionVersion({
+    buffer,
+  });
+
+  if (version === "legacy") {
+    return GTransaction.parse({ buffer });
+  }
+
+  if (version !== 0) {
+    throw new Error(`Unsupported transaction version: ${version}.`);
+  }
+
+  const vTransaction = new VTransaction({ base64, loadedAddresses });
+  const accounts = vTransaction.accounts;
+
+  return {
+    signature: vTransaction.signature,
+    signatures: signatures.map((signature, idx) => ({
+      signature,
+      address: accounts[idx].address,
+    })),
+    accounts: accounts.map(({ address, signer, writable }) => ({
+      address,
+      signer,
+      writable,
+    })),
+    latestBlockhash: vTransaction.latestBlockhash,
+    instructions: vTransaction.instructions,
+    messageBase64: messageBuffer.toString("base64"),
   };
 };

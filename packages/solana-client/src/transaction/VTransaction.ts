@@ -108,7 +108,8 @@ export class VTransaction implements TransactionInterface {
       const accountIndex = this.#message.addresses.findIndex(
         (a) => a === address,
       );
-      if (accountIndex === -1) {
+      // Only required signers have a signature slot
+      if (accountIndex === -1 || accountIndex >= this.numRequiredSigs) {
         continue;
       }
 

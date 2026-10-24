@@ -164,4 +164,32 @@ describe("vTransaction", () => {
     const signedHex = Buffer.from(web3Transaction.serialize()).toString("hex");
     expect(vtransaction.sign({ signers: [keypair] }).toHex()).toBe(signedHex);
   });
+
+  test("ignores signers that aren't required signers", () => {
+    const payer = GKeypair.generate();
+    const recipient = GKeypair.generate();
+
+    const messageV0 = new web3.TransactionMessage({
+      payerKey: new web3.PublicKey(payer.address),
+      recentBlockhash: GPublicKey.nullString,
+      instructions: [
+        web3.SystemProgram.transfer({
+          fromPubkey: new web3.PublicKey(payer.address),
+          toPubkey: new web3.PublicKey(recipient.address),
+          lamports: 100000,
+        }),
+      ],
+    }).compileToV0Message();
+    const initialHex = Buffer.from(
+      new web3.VersionedTransaction(messageV0).serialize(),
+    ).toString("hex");
+
+    const vtransaction = new VTransaction({
+      base64: Buffer.from(initialHex, "hex").toString("base64"),
+      loadedAddresses: { writable: [], readonly: [] },
+    });
+    expect(vtransaction.sign({ signers: [recipient] }).toHex()).toBe(
+      initialHex,
+    );
+  });
 });
