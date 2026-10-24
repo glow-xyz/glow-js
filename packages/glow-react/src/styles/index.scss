@@ -9,8 +9,9 @@ body {
   --glow--purple-gradient-start: rgb(var(--glow--puprple-gradient-start-rgb));
   --glow--white: #ffffff;
 
-  --glow--font: "SF Pro", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  --glow--font:
+    "SF Pro", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 .glow--sign-in-button {
@@ -150,7 +151,8 @@ body {
     );
 
     &::before {
-      background: linear-gradient(
+      background:
+        linear-gradient(
           93deg,
           rgba(var(--glow--puprple-gradient-start-rgb), 0.7) 1.51%,
           rgba(var(--glow--puprple-gradient-end-rgb), 0.7) 99.28%

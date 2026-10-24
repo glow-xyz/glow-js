@@ -1,6 +1,8 @@
-import * as bs58 from "bs58";
 import { Buffer } from "buffer";
+
+import * as bs58 from "bs58";
 import { DateTime } from "luxon";
+
 import { Solana } from "../base-types";
 import { GTransaction } from "../GTransaction";
 import { SolanaClientTypes } from "./client-types";
@@ -25,8 +27,7 @@ export const normalizeRpcParsedAccountWithPubkey = ({
   account,
   pubkey,
 }: SolanaRpcTypes.ParsedAccountWithPubkey):
-  | SolanaClientTypes.Account
-  | SolanaClientTypes.ParsedAccountGeneric => {
+  SolanaClientTypes.Account | SolanaClientTypes.ParsedAccountGeneric => {
   if (Array.isArray(account.data) && account.data[1] === "base64") {
     return normalizeRpcAccountWithPubkey({
       account: {
@@ -49,7 +50,7 @@ export const normalizeRpcParsedAccountWithPubkey = ({
 };
 
 export const normalizeTransactionWithMeta = (
-  txContainer: SolanaRpcTypes.TransactionRawWithMeta
+  txContainer: SolanaRpcTypes.TransactionRawWithMeta,
 ): SolanaClientTypes.TransactionWithMeta => {
   const {
     blockTime,
@@ -81,7 +82,7 @@ export const normalizeTransactionWithMeta = (
               : "",
             program: addressAtIndex(ix.programIdIndex),
           })),
-        })
+        }),
       ),
     },
   };

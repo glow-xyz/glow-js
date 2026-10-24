@@ -1,7 +1,9 @@
+import { Buffer } from "buffer";
+
 import * as beet from "@glow-xyz/beet";
 import bs58 from "bs58";
 import nacl from "tweetnacl";
-import { Buffer } from "buffer";
+
 import { Base64, Hex, Solana } from "../base-types";
 import {
   FixableGlowBorsh,
@@ -40,7 +42,7 @@ export class LTransaction implements TransactionInterface {
 
     if (version !== "legacy") {
       throw new Error(
-        `Unsupported transaction version. Expected legacy, received ${version}.`
+        `Unsupported transaction version. Expected legacy, received ${version}.`,
       );
     }
 
@@ -110,7 +112,7 @@ export class LTransaction implements TransactionInterface {
       const address = bs58.encode(keypair.publicKey);
 
       const accountIndex = this.#message.addresses.findIndex(
-        (a) => a === address
+        (a) => a === address,
       );
       if (accountIndex === -1) {
         continue;

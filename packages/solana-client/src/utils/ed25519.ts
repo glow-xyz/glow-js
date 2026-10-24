@@ -1,6 +1,6 @@
+import * as ed25519 from "@noble/ed25519";
 // Pulled from https://github.com/solana-labs/solana-web3.js/blob/master/src/utils/ed25519.ts
-import {sha512} from '@noble/hashes/sha512';
-import * as ed25519 from '@noble/ed25519';
+import { sha512 } from "@noble/hashes/sha512";
 
 /**
  * A 64 byte secret key, the first 32 bytes of which is the
@@ -45,4 +45,3 @@ export const sign = (
   secretKey: Ed25519SecretKey,
 ) => ed25519.sync.sign(message, secretKey.slice(0, 32));
 export const verify = ed25519.sync.verify;
-

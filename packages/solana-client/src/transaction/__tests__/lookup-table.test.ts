@@ -1,5 +1,6 @@
-import { describe, expect, test } from "bun:test";
 import { Buffer } from "buffer";
+import { describe, expect, test } from "bun:test";
+
 import { Base64 } from "../../base-types";
 import { parseLookupTable } from "../AddressLookupTable";
 
@@ -15,7 +16,7 @@ describe("LookupTable", () => {
 
     expect(lookupTable!.typeIndex).toBe(1);
     expect(lookupTable!.authority).toBe(
-      "9FRhPDoDk9JrpCqc4r51qTWgdBTxM892TdjexeErQUNs"
+      "9FRhPDoDk9JrpCqc4r51qTWgdBTxM892TdjexeErQUNs",
     );
     expect(lookupTable!.lastExtendedSlot.toNumber()).toBe(154743039);
     expect(lookupTable!.addresses.slice(0, 3)).toEqual([

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+
 import { useOnMount } from "./useOnMount";
 
 // From here https://overreacted.io/making-setinterval-declarative-with-react-hooks/
@@ -6,7 +7,7 @@ import { useOnMount } from "./useOnMount";
 export const usePolling = (
   callback: () => void,
   intervalMs: number | null,
-  { runOnMount }: { runOnMount: boolean } = { runOnMount: false }
+  { runOnMount }: { runOnMount: boolean } = { runOnMount: false },
 ) => {
   const savedCallback = useRef<() => void>(() => null);
 

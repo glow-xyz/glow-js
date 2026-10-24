@@ -1,4 +1,5 @@
 import nacl from "tweetnacl";
+
 import { Solana } from "./base-types";
 import { GPublicKey } from "./GPublicKey";
 

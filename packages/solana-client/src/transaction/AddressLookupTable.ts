@@ -1,6 +1,8 @@
+import { Buffer } from "buffer";
+
 import * as beet from "@glow-xyz/beet";
 import BN from "bn.js";
-import { Buffer } from "buffer";
+
 import { Solana } from "../base-types";
 import { FixableGlowBorsh, GlowBorsh } from "../borsh";
 import { GPublicKey } from "../GPublicKey";
@@ -53,7 +55,7 @@ export const parseLookupTable = ({
   const addressBytes = Array.from(buffer).slice(LookupTableAddressesOffset);
   if (addressBytes.length % GPublicKey.byteLength !== 0) {
     console.error(
-      `Invalid account size. The address section ${addressBytes.length} is not a multiple of ${GPublicKey.byteLength}.`
+      `Invalid account size. The address section ${addressBytes.length} is not a multiple of ${GPublicKey.byteLength}.`,
     );
     return null;
   }
@@ -63,7 +65,7 @@ export const parseLookupTable = ({
   let idx = LookupTableAddressesOffset;
   while (idx < buffer.length) {
     addresses.push(
-      new GPublicKey(buffer.slice(idx, idx + GPublicKey.byteLength)).toBase58()
+      new GPublicKey(buffer.slice(idx, idx + GPublicKey.byteLength)).toBase58(),
     );
     idx += GPublicKey.byteLength;
   }

@@ -9,7 +9,6 @@ If you're building a website that interacts with Solana, you can use the `@glow-
 - sign messages
 - approve transactions
 
-
 ## Installing
 
 ```sh
@@ -39,15 +38,15 @@ const { address } = await glowClient.connect();
 
 // Sign Message
 const { signature_base64: sig1 } = await glowClient.signMessage({
-  message_utf8: 'Hi this is a message!'
+  message_utf8: "Hi this is a message!",
 });
 const { signature_base64: sig2 } = await glowClient.signMessage({
-  message_hex: 'deadbeef' // You can specify different message formats
+  message_hex: "deadbeef", // You can specify different message formats
 });
 
 // Sign Transaction
 // Transaction from @solana/web3.js
-const transaction = Transaction.from(Buffer.from(str, 'base64'));
+const transaction = Transaction.from(Buffer.from(str, "base64"));
 await glowClient.signTransaction({
   transaction,
   network: Solana.Network.Devnet,

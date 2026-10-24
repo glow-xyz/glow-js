@@ -1,5 +1,7 @@
-import { sha256 } from "@noble/hashes/sha256";
 import { Buffer } from "buffer";
+
+import { sha256 } from "@noble/hashes/sha256";
+
 import { Solana } from "./base-types";
 import { GPublicKey, PublicKeyInitData } from "./GPublicKey";
 import { isOnCurve as _isOnCurve } from "./utils/ed25519";
@@ -24,7 +26,7 @@ export namespace EllipticCurve {
    */
   export const createProgramAddress = (
     seeds: Array<Buffer>,
-    programId: Solana.Address
+    programId: Solana.Address,
   ): Solana.Address => {
     let buffer = Buffer.alloc(0);
     seeds.forEach(function (seed) {
@@ -54,7 +56,7 @@ export namespace EllipticCurve {
    */
   export const findProgramAddress = (
     seeds: Array<Buffer>,
-    programId: Solana.Address
+    programId: Solana.Address,
   ): [Solana.Address, number] => {
     let nonce = 255;
     let address: Solana.Address;
@@ -87,5 +89,5 @@ export namespace EllipticCurve {
     } catch {
       return false;
     }
-  }
+  };
 }

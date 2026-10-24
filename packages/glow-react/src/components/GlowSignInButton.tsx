@@ -1,9 +1,10 @@
 import { Solana } from "@glow-xyz/solana-client";
 import classNames from "classnames";
 import React from "react";
-import { useGlowContext } from "../GlowContext";
+
 import { GlowIcon } from "../assets/GlowIcon";
 import { GlowIcon3D } from "../assets/GlowIcon3D";
+import { useGlowContext } from "../GlowContext";
 
 type Props = StyledProps | RenderProps;
 

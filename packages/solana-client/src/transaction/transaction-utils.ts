@@ -1,6 +1,8 @@
-import bs58 from "bs58";
 import { Buffer } from "buffer";
+
+import bs58 from "bs58";
 import nacl from "tweetnacl";
+
 import { Base58, Base64, Solana } from "../base-types";
 import { GlowBorshTypes } from "../borsh";
 import { GKeypair } from "../GKeypair";
@@ -101,10 +103,10 @@ export const signXTransaction = ({
   });
 
   const signature = Buffer.from(
-    nacl.sign.detached(new Uint8Array(messageBuffer), signer.secretKey)
+    nacl.sign.detached(new Uint8Array(messageBuffer), signer.secretKey),
   );
   const signatureIdx = addresses.findIndex(
-    (address) => address === signer.address
+    (address) => address === signer.address,
   );
 
   const newSignatures = oldSignatures.map((sig, idx) => {

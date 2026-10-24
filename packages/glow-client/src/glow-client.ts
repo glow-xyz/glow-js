@@ -1,5 +1,7 @@
 import { Buffer } from "buffer";
+
 import EventEmitter from "eventemitter3";
+
 import { verifySignIn } from "./utils";
 import { Address, GlowAdapter, Network, SolanaWindow } from "./window-types";
 
@@ -182,7 +184,7 @@ export class GlowClient extends EventEmitter {
       {
         transactionsBase64,
         network,
-      }
+      },
     );
     return { signedTransactionsBase64 };
   }
@@ -200,7 +202,7 @@ export class GlowClient extends EventEmitter {
         }
       | {
           messageBuffer: Buffer;
-        }
+        },
   ): Promise<{ signatureBase64: string }> {
     if (!this._wallet) {
       throw new Error("Not connected.");

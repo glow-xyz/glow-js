@@ -1,14 +1,16 @@
 {
   "name": "@glow-xyz/glow-client",
   "version": "1.5.1",
+  "private": false,
   "description": "",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "license": "ISC",
   "files": [
     "dist/**/*",
     "src/**/*"
   ],
   "sideEffects": false,
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "tsc": "tsc --noEmit",
     "test": "bun test src",
@@ -30,7 +32,5 @@
     "@types/luxon": "^3.1.0",
     "esbuild": "^0.15.17",
     "typescript": "^5.6.3"
-  },
-  "private": false,
-  "license": "ISC"
+  }
 }
