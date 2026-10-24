@@ -537,7 +537,7 @@ export namespace SolanaClient {
 
     return results.map((r) => ({
       signature: r.signature,
-      timestamp: DateTime.fromSeconds(r.blockTime).toUTC().toISO(),
+      timestamp: DateTime.fromSeconds(r.blockTime).toUTC().toISO()!,
     }));
   };
 

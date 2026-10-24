@@ -149,6 +149,7 @@ body {
       var(--glow--purple-gradient-start) 1.51%,
       var(--glow--purple-gradient-end) 99.28%
     );
+    color: var(--glow--white);
 
     &::before {
       background:
@@ -169,8 +170,6 @@ body {
       opacity: 0;
       transition: opacity 200ms;
     }
-
-    color: var(--glow--white);
   }
 
   &.glow--variant-white-naked {
