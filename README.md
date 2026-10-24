@@ -19,3 +19,15 @@ We have made this as easy as possible, so you should be able to integrate Glow i
 ## Developer Support
 
 You can join our Telegram chat here: [https://t.me/+-yjcsc1WStNiODA5](https://t.me/+-yjcsc1WStNiODA5)
+
+## Development
+
+This repo uses [Bun](https://bun.sh) workspaces.
+
+```sh
+bun install
+bun run build   # build all packages in dependency order
+bun run tsc     # typecheck
+bun run test    # run tests
+bun run lint
+```

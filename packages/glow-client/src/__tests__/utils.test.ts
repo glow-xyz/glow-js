@@ -1,3 +1,4 @@
+import { describe, expect, test } from "bun:test";
 import { GPublicKey, GKeypair, GTransaction } from "@glow-xyz/solana-client";
 import bs58 from "bs58";
 import { Buffer } from "buffer";
@@ -27,13 +28,13 @@ describe("verifySignature", () => {
 
   test("rejects an invalid signature", async () => {
     const keypair = nacl.sign.keyPair();
-    await expect(async () => {
+    await expect((async () => {
       verifySignature({
         signature: "ab",
         message: "hi",
         signer: bs58.encode(keypair.publicKey),
       });
-    }).rejects.toThrow();
+    })()).rejects.toThrow();
   });
 });
 

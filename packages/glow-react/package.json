@@ -10,10 +10,10 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "npm run build:js && npm run build:css",
+    "build": "bun run build:js && npm run build:css",
     "build:js": "tsc",
     "build:css": "sass src/styles/index.scss:dist/styles.css",
-    "release": "pnpm build && release-it"
+    "release": "bun run build && release-it"
   },
   "dependencies": {
     "@glow-xyz/glow-client": "^1.5.0",
@@ -25,7 +25,6 @@
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "esbuild": "0.15.17",
-    "esbuild-register": "3.4.1",
     "prettier": "2.8.0",
     "sass": "1.56.1"
   },

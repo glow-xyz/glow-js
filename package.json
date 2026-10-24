@@ -2,7 +2,17 @@
   "name": "glow-js",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter '*' --filter '!@glow-xyz/example-next-js' build",
+    "lint": "bun run --filter '*' lint",
+    "test": "bun run --filter '*' test",
+    "tsc": "bun run --filter '*' tsc"
+  },
   "devDependencies": {
+    "@types/bun": "1.3.1",
     "prettier": "2.8.0",
     "release-it": "15.5.1",
     "typescript": "5.6.3"
