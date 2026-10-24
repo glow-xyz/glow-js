@@ -5,3 +5,6 @@ sortPackageJson = true
 [install]
 # Supply-chain protection: only install versions published at least 14 days ago
 minimumReleaseAge = 1209600 # seconds
+
+# Pin exact versions on `bun add`
+exact = true
